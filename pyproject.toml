@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "seqia-llm"
+version = "0.1.0"
+description = ""
+authors = ["Javier Vela <javier.vela00@gmail.com>"]
+readme = "README.md"
+packages = [{include = "seqia_gen", from = "src"}]
+
+[tool.poetry.scripts]
+main = "seqia_gen:main"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+langchain = "^0.2.9"
+langchain-community = "^0.2.7"
+
+[tool.poetry.dev-dependencies]
+pytest = "^7.0.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
