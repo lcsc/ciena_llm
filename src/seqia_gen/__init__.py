@@ -23,8 +23,6 @@ impacts = [
     "farming",
     "hidrological_resources",
     "energy",
-    "economy",
-    "social",
 ]
 
 
@@ -47,8 +45,11 @@ def extract_drought_info(text):
 def main():
     loader = ArticleLoader()
     articles = loader(
-        "/home/javier/Developer/SeqIA/data/test-datasets-small/test-jvela-00-10/"
+        "/home/javier/Developer/SeqIA/data/test-datasets-small/news-elpais-binary-5T-2F/sample/"
     )
+
+    loader.write_excluded_problematic_articles_to_csv("./results/excluded.csv")
+
     for article in articles:
         extracted_info = extract_drought_info(
             article.get_headline_and_body(separator=".")
