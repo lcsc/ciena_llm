@@ -1,0 +1,3 @@
+[submodule "src/seqia"]
+	path = src/seqia
+	url = git@github.com:lcsc/seqia.git

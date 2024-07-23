@@ -2,8 +2,8 @@ import json
 import logging
 
 from langchain_community.llms import Ollama
+from seqia.article.loader import ArticleLoader
 
-from seqia_gen.article import text2
 from seqia_gen.prompt import prompt
 
 # Setup logging
@@ -45,8 +45,15 @@ def extract_drought_info(text):
 
 
 def main():
-    extracted_info = extract_drought_info(text2)
-    print(extracted_info)
+    loader = ArticleLoader()
+    articles = loader(
+        "/home/javier/Developer/SeqIA/data/test-datasets-small/test-jvela-00-10/"
+    )
+    for article in articles:
+        extracted_info = extract_drought_info(
+            article.get_headline_and_body(separator=".")
+        )
+        print(f"Article {article.filename}:\n{extracted_info}")
 
 
 if __name__ == "__main__":
