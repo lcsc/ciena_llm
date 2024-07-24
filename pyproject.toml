@@ -7,7 +7,7 @@ readme = "README.md"
 packages = [{include = "seqia_gen", from = "src"}]
 
 [tool.poetry.scripts]
-main = "seqia_gen:main"
+main = "seqia_gen.main:main"
 
 [tool.poetry.dependencies]
 python = "^3.12"
