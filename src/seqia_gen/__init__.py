@@ -1,15 +1,33 @@
 import json
 import logging
+import os
+from typing import Optional
+from tqdm import tqdm
 
+import dotenv
+
+dotenv.load_dotenv()
 from langchain_community.llms import Ollama
+from seqia.article import Article
 from seqia.article.loader import ArticleLoader
+from seqia.utils.output import write_summary_to_csv
 
 from seqia_gen.prompt import prompt
+from seqia_gen.response import parse_response
 
 # Setup logging
 logging.basicConfig(
-    level=logging.DEBUG, format="%(asctime)s - %(levelname)s - %(message)s"
+    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
 )
+
+
+TEST_NAME = "news-elpais-binary-50T-50F"
+# TEST_NAME = "news-elpais-binary-50T-50F"
+DATASET_PATH = (
+    f"/home/javier/Developer/SeqIA/data/test-datasets-small/{TEST_NAME}/sample"
+)
+RESULTS_DIR = f"./results/{TEST_NAME}/"
+os.makedirs(os.path.dirname(RESULTS_DIR), exist_ok=True)
 
 
 # Initialize the Ollama model
@@ -23,38 +41,45 @@ impacts = [
     "farming",
     "hidrological_resources",
     "energy",
+    "other",
 ]
 
 
-def extract_drought_info(text):
-    # Call the chain with the provided text
+def extract(article: Article) -> Optional[Article]:
+    text = article.get_headline_and_body(separator=".")
     response = chain.invoke({"text": text, "impacts": impacts})
+    article, parsed = parse_response(article, response)
 
-    logging.debug(f"Response: {response}")
-
-    # Load the response as a JSON object
-    try:
-        result = json.loads(response)
-    except json.JSONDecodeError as e:
-        print(f"Failed to parse JSON response: {e}")
-        result = {}
-
-    return result
+    if parsed:
+        return article
 
 
 def main():
     loader = ArticleLoader()
-    articles = loader(
-        "/home/javier/Developer/SeqIA/data/test-datasets-small/news-elpais-binary-5T-2F/sample/"
+    articles = loader(DATASET_PATH)
+
+    loader.write_excluded_problematic_articles_to_csv(f"{RESULTS_DIR}/excluded.csv")
+
+    for article in tqdm(articles, desc="Extracting impacts from articles."):
+        article = extract(article)
+
+        if article:
+            logging.debug(f"Article {article.filename}:\n{article}")
+
+    write_summary_to_csv(
+        articles,
+        f"{RESULTS_DIR}/summary.csv",
+        [
+            "article_filename",
+            "article_drought",
+            "article_impacts_aggregated",
+            "article_locations_aggregated",
+            "article_locations_aggregated",
+            "article_date",
+            "article_url",
+            "article_headline",
+        ],
     )
-
-    loader.write_excluded_problematic_articles_to_csv("./results/excluded.csv")
-
-    for article in articles:
-        extracted_info = extract_drought_info(
-            article.get_headline_and_body(separator=".")
-        )
-        print(f"Article {article.filename}:\n{extracted_info}")
 
 
 if __name__ == "__main__":
