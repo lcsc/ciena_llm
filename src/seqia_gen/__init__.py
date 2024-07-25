@@ -35,13 +35,14 @@ class ClimateImpactExtractor:
     def __call__(self, dataset_path: str) -> List[Article]:
         articles = self.article_loader(dataset_path)
 
-        for article in tqdm(articles, desc="Extracting impacts from articles."):
-            
+        for article in tqdm(articles, desc="Extracting impacts from articles"):
+
             article = self.extract(article)
 
             if article:
                 logging.debug(f"Article {article.filename}:\n{article}")
 
+        return articles
     def extract(self, article: Article) -> Optional[Article]:
         text = article.get_headline_and_body(separator=".")
         response = self.chain.invoke({"text": text, "impacts": self.impacts})
@@ -50,8 +51,8 @@ class ClimateImpactExtractor:
         if parsed:
             return article
 
-    def write_excluded_problematic_articles_to_csv(file: str):
+    def write_excluded_problematic_articles_to_csv(self, file: str):
         self.article_loader.write_excluded_problematic_articles_to_csv(file)
 
-    def write_summary_to_csv(articles: List[Article], file: str):
+    def write_summary_to_csv(self, articles: List[Article], file: str):
         write_summary_to_csv(articles, file, self.config["output"]["summary"])
