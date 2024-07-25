@@ -1,10 +1,11 @@
 import json
 import logging
+from typing import Optional
 
 from seqia.article import Article
 
 
-def parse_response(article: Article, response: str) -> (Article, bool):
+def parse_response_json(article: Article, response: str) -> (Article, bool):
 
     logging.debug(f"Response: {response}")
 
@@ -28,3 +29,12 @@ def parse_response(article: Article, response: str) -> (Article, bool):
     )
 
     return (article, True)
+
+
+def parse_response_bool(response: str) -> Optional[bool]:
+    response = response.strip().lower()
+    # Ensure the response is exactly "true" or "false"
+    if response not in {"true", "false"}:
+        logging.error(f"Unexpected response: {response}")
+        return None
+    return response == "true"

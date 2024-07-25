@@ -12,7 +12,7 @@ from seqia.article import Article
 from seqia.article.loader import ArticleLoader
 from seqia.utils.output import write_summary_to_csv
 
-from seqia_gen.prompt import prompt
+from seqia_gen.response import parse_response_bool, parse_response_json
 from seqia_gen.response import parse_response
 from seqia_gen.config.loader import ConfigLoader
 
