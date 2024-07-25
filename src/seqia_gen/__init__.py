@@ -13,7 +13,7 @@ from seqia.article.loader import ArticleLoader
 from seqia.utils.output import write_summary_to_csv
 
 from seqia_gen.response import parse_response_bool, parse_response_json
-from seqia_gen.prompt import prompt
+from seqia_gen.prompt import get_binary_prompt, get_impact_prompt
 from seqia_gen.config.loader import ConfigLoader
 
 
@@ -26,12 +26,8 @@ class ClimateImpactExtractor:
         # Initialize the Ollama model
         self.llm = Ollama(model=model_name)
 
-        # Create the LangChain with the LLM and the prompt template
-        self.chain = prompt | self.llm
-
         # Load impacts from configuration
         self.impacts = self.config["impacts"]
-        self.impacts_tags = {impact["text"]: impact["tag"] for impact in self.impacts}
 
     def __call__(self, dataset_path: str) -> List[Article]:
         articles = self.article_loader(dataset_path)
@@ -47,12 +43,27 @@ class ClimateImpactExtractor:
 
     def extract(self, article: Article) -> Optional[Article]:
         text = article.get_headline_and_body(separator=".")
-        impacts_text = [impact["text"] for impact in self.impacts]
-        response = self.chain.invoke({"text": text, "impacts": impacts_text})
-        article, parsed = parse_response_json(article, response, self.impacts_tags)
 
-        if parsed:
-            return article
+        binary_prompt = get_binary_prompt()
+        binary_chain = binary_prompt | self.llm
+        binary_response = binary_chain.invoke({"text": text})
+        binary_response = parse_response_bool(binary_response)
+
+        article.drought = binary_response
+
+        if not binary_response:
+            return
+
+        for impact in self.impacts:
+            impact_prompt = get_impact_prompt(impact["text"])
+            impact_chain = impact_prompt | self.llm
+            impact_response = impact_chain.invoke({"text": text})
+            impact_response = parse_response_bool(impact_response)
+
+            if impact_response:
+                article.impacts_aggregated.append(impact["tag"])
+
+        return article
 
     def write_excluded_problematic_articles_to_csv(self, file: str):
         self.article_loader.write_excluded_problematic_articles_to_csv(file)

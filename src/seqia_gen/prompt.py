@@ -1,32 +1,29 @@
+from typing import List
+
 from langchain.prompts import PromptTemplate
 
 
-custom_prompt = """
-Por favor, analiza el siguiente texto y extrae la información relacionada con la sequía climatológica, sus impactos y la localización de los impactos.
-Estructura la información estrictamente en formato JSON de la siguiente manera sin incluir ninguna otra explicación:
-{{
-    "drought": "True/False",
-    "impacts": []
-}}
-Solo incluye impactos si hay menciones a la sequía climatológica. Si no hay menciones a la sequía climatológica, responde con:
-{{
-    "drought": "False",
-    "impacts": []
-}}
-Extrae cada uno de los impactos en la siguiente estructura:
-{{
-    "impact_class": "impact class",
-    "impact": "impact description",
-    "location": [{{"name": "location", "type": "location_type"}}, ...]
-}}
-Asigna cada impacto a una clase ("impact_class") de la siguiente lista: {impacts}.
-Si uno de los impactos no aparece, añádelo en una clase "other" y pon entre paréntesis la nueva clase que tú le asignarías de la siguiente manera: "other (clase)".
-En el campo "impact" incluye una descripción muy breve del impacto.
-En el campo "location" incluye una lista de las localizaciones afectadas por el impacto. Para cada localización, incluye su nombre "name" y tipo de localización "type". Es posible que localizaciones con el mismo nombre se refieran a tipos diferentes (e.g. provincia o ciudad). Ejemplos: Comunidad de Madrid (comunidad autónoma), Zaragoza (provincia), Ebro (río), cuenca del Duero (cuenca).
-Quiero que la respuesta sea únicamente un JSON válido con la estructura mencionada. No añadas ningún otro texto adicional.
+binary_prompt_str = """
+Analiza el siguiente artículo y determina si la noticia está relacionada con la sequía climática.
 Texto:
 {text}
+Por ejemplo, si el artículo está relacionado con la sequía climática, responde únicamente la palabra "True" y si no lo está, responde "False". No añadas ningún signo de puntuación ni proporciones ninguna explicación adicional. Sólo True/False.
 """
 
-# Create the prompt template
-prompt = PromptTemplate(template=custom_prompt, input_variables=["text", "impacts"])
+impact_prompt_str = """
+Analiza el siguiente artículo relacionado con la sequía climática. Determina si esta noticia menciona un impacto de la sequía en %s.
+Texto:
+{text}
+Por ejemplo, si el artículo menciona un impacto en %s, responde únicamente la palabra "True" y si no lo está, responde "False". No añadas ningún signo de puntuación ni proporciones ninguna explicación adicional. Sólo True/False.
+"""
+
+
+def get_binary_prompt() -> PromptTemplate:
+    prompt = PromptTemplate(template=binary_prompt_str, input_variables=["text"])
+    return prompt
+
+
+def get_impact_prompt(impact: str) -> PromptTemplate:
+    impact_prompt_str % (impact, impact)
+    prompt = PromptTemplate(template=impact_prompt_str, input_variables=["text"])
+    return prompt
