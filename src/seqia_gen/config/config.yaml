@@ -1,9 +1,12 @@
 impacts:
-  - "agriculture"
-  - "farming"
-  - "hidrological_resources"
-  - "energy"
-  - "other"
+  - tag: "agriculture"
+    text: "agricultura"
+  - tag: "farming"
+    text: "ganadería"
+  - tag: "hydrological-resources"
+    text: "recursos hídricos"
+  - tag: "energy"
+    text: "energía"
 output:
   summary:
     - "article_filename"

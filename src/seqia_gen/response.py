@@ -1,11 +1,13 @@
 import json
 import logging
-from typing import Optional
+from typing import Optional, Dict
 
 from seqia.article import Article
 
 
-def parse_response_json(article: Article, response: str) -> (Article, bool):
+def parse_response_json(
+    article: Article, response: str, impact_tags: Dict[str, str]
+) -> (Article, bool):
 
     logging.debug(f"Response: {response}")
 
@@ -25,7 +27,7 @@ def parse_response_json(article: Article, response: str) -> (Article, bool):
 
     article.drought = result["drought"]
     article.impacts_aggregated = list(
-        {impact["impact_class"] for impact in result["impacts"]}
+        {impact_tags[impact["impact_class"]] for impact in result["impacts"]}
     )
 
     return (article, True)

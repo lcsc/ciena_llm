@@ -31,6 +31,7 @@ class ClimateImpactExtractor:
 
         # Load impacts from configuration
         self.impacts = self.config["impacts"]
+        self.impacts_tags = {impact["text"]: impact["tag"] for impact in self.impacts}
 
     def __call__(self, dataset_path: str) -> List[Article]:
         articles = self.article_loader(dataset_path)
@@ -43,10 +44,12 @@ class ClimateImpactExtractor:
                 logging.debug(f"Article {article.filename}:\n{article}")
 
         return articles
+
     def extract(self, article: Article) -> Optional[Article]:
         text = article.get_headline_and_body(separator=".")
-        response = self.chain.invoke({"text": text, "impacts": self.impacts})
-        article, parsed = parse_response(article, response)
+        impacts_text = [impact["text"] for impact in self.impacts]
+        response = self.chain.invoke({"text": text, "impacts": impacts_text})
+        article, parsed = parse_response_json(article, response, self.impacts_tags)
 
         if parsed:
             return article
