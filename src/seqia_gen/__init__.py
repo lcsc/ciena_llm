@@ -24,7 +24,7 @@ class ClimateImpactExtractor:
         self.article_loader = ArticleLoader()
 
         # Initialize the Ollama model
-        self.llm = Ollama(model=model_name)
+        self.llm = Ollama(model=model_name, temperature=0)
 
         # Load impacts from configuration
         self.impacts = self.config["impacts"]
