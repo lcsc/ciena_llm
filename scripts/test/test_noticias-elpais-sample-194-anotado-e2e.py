@@ -1,5 +1,7 @@
 import logging
 import os
+import tempfile
+import yaml
 
 from seqia_gen import ClimateImpactExtractor
 
@@ -13,8 +15,13 @@ DATASET_PATH = f"/home/javier/Developer/SeqIA/data/{TEST_NAME}/sample"
 RESULTS_DIR = f"./results/{TEST_NAME}/"
 os.makedirs(os.path.dirname(RESULTS_DIR), exist_ok=True)
 
+override_config = {"llm": {"model": "llama3:70b"}}
+with tempfile.NamedTemporaryFile(suffix=".yaml", delete=False) as temp_config_file:
+    override_config_path = temp_config_file.name
+    yaml_str = yaml.dump(override_config, default_flow_style=False, allow_unicode=True)
+    temp_config_file.write(yaml_str.encode("utf-8"))
 
-extractor = ClimateImpactExtractor()
+extractor = ClimateImpactExtractor(override_config_path=override_config_path)
 
 articles = extractor(
     dataset_path=DATASET_PATH,

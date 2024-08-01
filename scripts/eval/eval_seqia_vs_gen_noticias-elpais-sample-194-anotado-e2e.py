@@ -268,7 +268,7 @@ for impact in IMPACTS:
     plot_confusion_matrix(
         true_labels_impacts,
         seqia_predictions_labels_impacts,
-        title="True vs Seqia (Impacts)",
+        title=f"True vs Seqia (Impacts: {impact})",
         true_label="True",
         pred_label="Seqia",
         save_path=f"{RESULTS_DIR}/confusion_matrices/true_vs_seqia_impact_{impact}.png",
@@ -278,7 +278,7 @@ for impact in IMPACTS:
     plot_confusion_matrix(
         true_labels_impacts,
         gen_predictions_labels_impacts,
-        title="True vs Gen (Impacts)",
+        title=f"True vs Gen (Impacts: {impact})",
         true_label="True",
         pred_label="Gen",
         save_path=f"{RESULTS_DIR}/confusion_matrices/true_vs_gen_impact_{impact}.png",

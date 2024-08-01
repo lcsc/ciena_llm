@@ -1,8 +1,6 @@
 import os
-import sys
 from dataclasses import dataclass
-from typing import Optional, Union, Dict, Any, List, Tuple
-
+from typing import Optional, Dict, Any
 import yaml
 
 
@@ -73,10 +71,7 @@ class ConfigLoader:
         :return: Merged configuration dictionary.
         """
         for key, value in override_config.items():
-            if key == "pipeline":
-                # Override entire pipeline section
-                base_config[key] = value
-            elif isinstance(value, dict) and key in base_config:
+            if isinstance(value, dict) and key in base_config:
                 base_config[key] = self.merge_configs(base_config.get(key, {}), value)
             else:
                 base_config[key] = value

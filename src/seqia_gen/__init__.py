@@ -18,13 +18,15 @@ from seqia_gen.config.loader import ConfigLoader
 
 
 class ClimateImpactExtractor:
-    def __init__(self, model_name: str = "llama3"):
+    def __init__(self, override_config_path=None):
+        self.config = ConfigLoader(override_config_path=override_config_path).config
 
-        self.config = ConfigLoader().config
         self.article_loader = ArticleLoader()
 
         # Initialize the Ollama model
-        self.llm = Ollama(model=model_name, temperature=0)
+        self.llm_model = self.config["llm"]["model"]
+        self.llm_temperature = self.config["llm"]["temperature"]
+        self.llm = Ollama(model=self.llm_model, temperature=self.llm_temperature)
 
         # Load impacts from configuration
         self.impacts = self.config["impacts"]

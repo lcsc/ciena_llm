@@ -1,3 +1,6 @@
+llm:
+  model: "llama3"
+  temperature: 0
 impacts:
   - tag: "agriculture"
     text: "agricultura"
