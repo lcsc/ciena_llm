@@ -14,14 +14,14 @@ from sklearn.metrics import (
 
 import numpy as np
 
-from seqia_gen.config.loader import ConfigLoader
+from ciena_llm.config.loader import ConfigLoader
 
 TEST_NAME = "news-elpais-binary-50T-50F"
 SEQIA_RESULTS_SUMMARY = (
     f"/home/javier/Developer/SeqIA/seqia/results/{TEST_NAME}/summary.csv"
 )
 GEN_RESULTS_SUMMARY = (
-    f"/home/javier/Developer/SeqIA/seqia_gen/results/{TEST_NAME}/summary.csv"
+    f"/home/javier/Developer/SeqIA/ciena_llm/results/{TEST_NAME}/summary.csv"
 )
 LABELS_DROUGHT = (
     f"/home/javier/Developer/SeqIA/data/test-datasets-small/{TEST_NAME}/annotations.csv"

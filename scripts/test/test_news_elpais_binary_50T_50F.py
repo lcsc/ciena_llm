@@ -1,7 +1,7 @@
 import logging
 import os
 
-from seqia_gen import ClimateImpactExtractor
+from ciena_llm import ClimateImpactExtractor
 
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"

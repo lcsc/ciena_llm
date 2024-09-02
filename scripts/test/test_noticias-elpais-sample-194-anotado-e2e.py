@@ -3,7 +3,7 @@ import os
 import tempfile
 import yaml
 
-from seqia_gen import ClimateImpactExtractor
+from ciena_llm import ClimateImpactExtractor
 
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
@@ -16,6 +16,7 @@ RESULTS_DIR = f"./results/{TEST_NAME}/"
 os.makedirs(os.path.dirname(RESULTS_DIR), exist_ok=True)
 
 override_config = {"llm": {"model": "llama3:70b"}}
+# override_config = {}
 with tempfile.NamedTemporaryFile(suffix=".yaml", delete=False) as temp_config_file:
     override_config_path = temp_config_file.name
     yaml_str = yaml.dump(override_config, default_flow_style=False, allow_unicode=True)

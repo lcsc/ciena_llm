@@ -1,13 +1,13 @@
 [tool.poetry]
-name = "seqia_gen"
+name = "ciena_llm"
 version = "0.1.0"
 description = ""
 authors = ["Javier Vela <javier.vela00@gmail.com>"]
 readme = "README.md"
-packages = [{include = "seqia_gen", from = "src"}]
+packages = [{ include = "ciena_llm", from = "src" }]
 
 [tool.poetry.scripts]
-main = "seqia_gen.main:main"
+main = "ciena_llm.main:main"
 
 [tool.poetry.dependencies]
 python = "^3.12"
