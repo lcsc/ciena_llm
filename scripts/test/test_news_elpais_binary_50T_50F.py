@@ -1,9 +1,8 @@
-import logging
 import os
 
-from ciena_llm import ClimateImpactExtractor
-
 from common import setup_logging
+
+from ciena_llm import ClimateImpactExtractor
 
 
 TEST_NAME = "news-elpais-binary-50T-50F"

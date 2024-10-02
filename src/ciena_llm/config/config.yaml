@@ -28,7 +28,6 @@ output:
     - article_drought
     - article_impacts_aggregated
     - article_locations_aggregated
-    - article_locations_aggregated
     - article_date
     - article_url
     - article_headline

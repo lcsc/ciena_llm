@@ -1,4 +1,4 @@
-from typing import Literal, List, Optional
+from typing import List, Optional
 
 from pydantic import BaseModel, Field, root_validator
 
@@ -24,7 +24,7 @@ LOCATION_TYPES = [
 ]
 
 LOCATION_NAME_DESCRIPTION = "Name of the location. Must be only the proper name of the location without any additional information."
-LOCATION_TYPE_DESCRIPTION = f"Type of the location (in English). Must be one of: {', '.join(LOCATION_TYPES)}. If the location is not one of the predefined types, select 'other' and provide a 'location_type_suggestion' for the type"
+LOCATION_TYPE_DESCRIPTION = f"Type of the location. Must be one of: {', '.join(LOCATION_TYPES)}. If the location is not one of the predefined types, select 'other' and provide a 'location_type_suggestion' for the type"
 
 
 class LLMResponseLocation(BaseModel):
