@@ -1,4 +1,3 @@
-import logging
 import os
 
 from ciena_llm import ClimateImpactExtractor
@@ -6,7 +5,7 @@ from ciena_llm import ClimateImpactExtractor
 from common import setup_logging
 
 
-TEST_NAME = "news-elpais-binary-50T-50F"
+TEST_NAME = "news-elpais-binary-5T-2F"
 DATASET_PATH = (
     f"/home/javier/Developer/SeqIA/data/test-datasets-small/{TEST_NAME}/sample"
 )
