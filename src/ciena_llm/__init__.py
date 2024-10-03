@@ -36,6 +36,8 @@ class ClimateImpactExtractor:
         for article in tqdm(
             articles, desc="Extracting impacts and locations from articles"
         ):
+
+            # TODO read pipeline from config to apply each extractor extractors
             article = self.impact_extractor.extract_impacts(article)
             if not article:
                 continue

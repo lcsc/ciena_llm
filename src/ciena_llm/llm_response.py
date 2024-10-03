@@ -5,7 +5,7 @@ from pydantic import BaseModel, Field, root_validator
 
 LOCATION_TYPES = [
     "country",
-    "region",
+    # "region",
     "province",
     "state",
     "autonomous community",
