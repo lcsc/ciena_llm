@@ -23,3 +23,5 @@ articles = extractor(
 extractor.write_summary_to_csv(articles, f"{RESULTS_DIR}/summary.csv")
 
 extractor.write_location_to_csv(articles, f"{RESULTS_DIR}/locations.csv")
+
+extractor.write_config(f"{RESULTS_DIR}/config.yaml")
