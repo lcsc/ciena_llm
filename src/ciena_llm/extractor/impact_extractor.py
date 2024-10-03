@@ -1,4 +1,3 @@
-import logging
 from typing import Optional
 
 from seqia.article import Article
@@ -26,14 +25,14 @@ class ImpactExtractor(BaseExtractor):
     def extract_impacts(self, article: Article) -> Optional[Article]:
         text = article.get_headline_and_body(separator=".")
 
-        # DEBUG
-        full_prompt = self.binary_prompt_template.invoke({"text": text})
-        logging.debug("Full Prompt:\n %s", full_prompt)
-
         self.check_context_length(text, self.binary_prompt_template)
 
-        # TODO intermediate step logging
-        binary_chain = self.binary_prompt_template | self.llm
+        binary_chain = (
+            self.binary_prompt_template
+            | (lambda text: self.log("Input to LLM (Binary)", text))
+            | self.llm
+            | (lambda text: self.log("Output from LLM (Binary)", text))
+        )
         binary_response = binary_chain.invoke({"text": text})
         binary_response = parse_response_bool(binary_response)
 
@@ -43,7 +42,12 @@ class ImpactExtractor(BaseExtractor):
             return
 
         for impact in self.impacts:
-            impact_chain = self.impact_prompt_template | self.llm
+            impact_chain = (
+                self.impact_prompt_template
+                | (lambda text: self.log("Input to LLM (Impacts)", text))
+                | self.llm
+                | (lambda text: self.log("Output from LLM (Impacts)", text))
+            )
             impact_response = impact_chain.invoke(
                 {"text": text, "impact": impact["text"]}
             )

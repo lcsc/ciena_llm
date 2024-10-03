@@ -32,13 +32,13 @@ class LocationExtractor(BaseExtractor):
 
         location_chain = (
             self.location_prompt_template
-            | (lambda output: self.log("Input to LLM (Location)", output))
+            | (lambda text: self.log("Input to LLM (Location)", text))
             | self.llm
-            | (lambda output: self.log("Output from LLM (Location)", output))
+            | (lambda text: self.log("Output from LLM (Location)", text))
             | self.answer_extractor_location_template
-            | (lambda output: self.log("Input to LLM (Answer Extractor)", output))
+            | (lambda text: self.log("Input to LLM (Answer Extractor)", text))
             | self.llm
-            | (lambda output: self.log("Output from LLM (Answer Extractor)", output))
+            | (lambda text: self.log("Output from LLM (Answer Extractor)", text))
             | self.parser_location
         )
 
