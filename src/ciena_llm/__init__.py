@@ -18,10 +18,11 @@ from ciena_llm.extractor.location_extractor import LocationExtractor
 
 class ClimateImpactExtractor:
     def __init__(self, override_config_path=None):
-        self.config = ConfigLoader(
+        self.config_loader = ConfigLoader(
             config_path=os.path.join(os.path.dirname(__file__), "config/config.yaml"),
             override_config_path=override_config_path,
-        ).config
+        )
+        self.config = self.config_loader.config
 
         # TODO pass only extractor specific config
         self.impact_extractor = ImpactExtractor(self.config)
@@ -64,4 +65,4 @@ class ClimateImpactExtractor:
         )
 
     def write_config(self, file: str):
-        self.config.save_config(file)
+        self.config_loader.save_config(file)

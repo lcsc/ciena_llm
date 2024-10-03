@@ -1,6 +1,6 @@
 from langchain_core.prompts import PromptTemplate
 
-BINARY_ES_PROMPT_TEMPLATE_STR = """
+DROUGHT_ES_PROMPT_TEMPLATE_STR = """
 Analiza el siguiente artículo y determina si la noticia está relacionada con la sequía climática.
 Texto:
 {text}
@@ -15,7 +15,7 @@ Por ejemplo, si el artículo menciona un impacto en {impact}, responde únicamen
 """
 
 LOCATION_ES_PROMPT_TEMPLATE_STR = """
-Analiza el siguiente artículo relacionado con la sequía climática. Determina las localizaciones que aparecen en el texto que impactadas por la sequía. Además, indica a que tipo de localización se refiere (e.g. municipio, provincia, comunidad autonoma, río, presa, cuenca, etc.). Lista únicamente aquellas que estén directamente relacionadas con la sequía. En el caso de que no haya ninguna localización impactada por la sequía, no menciones ninguna.
+Analiza el siguiente artículo relacionado con la sequía climática. Determina las localizaciones que aparecen en el texto que impactadas por la sequía. Además, indica a que tipo de localización se refiere (e.g. municipio, provincia, comunidad autonoma, río, presa, cuenca, etc.). Lista únicamente aquellas que estén directamente relacionadas con la sequía. Por localización, indica una pequeña descripción del impacto de la sequía en esa localización según la noticia. En el caso de que no haya ninguna localización impactada por la sequía, no menciones ninguna.
 Texto:
 {text}
 """
@@ -48,8 +48,8 @@ Text:
 class PromptTemplateManager:
     def __init__(self):
         self.templates = {
-            "binary_es": {
-                "template": BINARY_ES_PROMPT_TEMPLATE_STR,
+            "drought_es": {
+                "template": DROUGHT_ES_PROMPT_TEMPLATE_STR,
                 "variables": ["text"],
             },
             "impact_es": {

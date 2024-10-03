@@ -6,39 +6,37 @@ from langchain_core.output_parsers import JsonOutputParser
 from seqia.article import Article
 from seqia.location import Location
 
-from ciena_llm.extractor import BaseExtractor
+from ciena_llm.llm import LLM
 from ciena_llm.llm_response import LLMResponseLocationList
 from ciena_llm.prompt_template_manager import PromptTemplateManager
 
 
-class LocationExtractor(BaseExtractor):
+class LocationExtractor:
     def __init__(self, config):
-        super().__init__(config)
-
         self.ptm = PromptTemplateManager()
 
         self.location_prompt_template = self.ptm.get_prompt_template(
-            self.config["prompt"]["location"]
+            config["prompt"]["location"]
         )
 
         self.parser_location = JsonOutputParser(pydantic_object=LLMResponseLocationList)
         self.answer_extractor_location_template = self.ptm.get_prompt_template(
-            self.config["prompt"]["answer_extractor"],
+            config["prompt"]["answer_extractor"],
             format_instructions=self.parser_location.get_format_instructions(),
         )
+
+        # Create LLMs for different stages
+        self.location_llm = LLM(config=config["llm"], stage="location")
+        self.answer_extractor_llm = LLM(config=config["llm"], stage="answer_extractor")
 
     def extract_locations(self, article: Article) -> Optional[Article]:
         text = article.get_headline_and_body(separator=". ")
 
         location_chain = (
             self.location_prompt_template
-            | (lambda text: self.log("Input to LLM (Location)", text))
-            | self.llm
-            | (lambda text: self.log("Output from LLM (Location)", text))
+            | self.location_llm
             | self.answer_extractor_location_template
-            | (lambda text: self.log("Input to LLM (Answer Extractor)", text))
-            | self.llm
-            | (lambda text: self.log("Output from LLM (Answer Extractor)", text))
+            | self.answer_extractor_llm
             | self.parser_location
         )
 
@@ -52,7 +50,7 @@ class LocationExtractor(BaseExtractor):
 
         location_response: LLMResponseLocationList = LLMResponseLocationList.parse_obj(
             location_response
-        )
+        )  # TODO FIX Deprecated
 
         locations = []
         for location in location_response.locations:

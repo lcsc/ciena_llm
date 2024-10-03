@@ -1,14 +1,25 @@
 llm:
-  name: "llama3.1"
-  temperature: 0
-  # Max: 131072
-  context_length: 32768
+  default:
+    name: "llama3.1"
+    temperature: 0
+    # Max: 131072
+    context_length: 32768
 # llm:
-#   name: "llama3"
-#   temperature: 0
-#   context_length: 8192
+#   default:
+#     name: "llama3"
+#     temperature: 0
+#     context_length: 8192
+#   impact:
+#     name: "impact-model"
+#     temperature: 0.6
+#   location:
+#     name: "location-model"
+#     temperature: 0.8
+#   answer_extractor:
+#     name: "answer-extractor-model"
+#     context_length: 8192
 prompt:
-  binary: "binary_es"
+  drought: "drought_es"
   impact: "impact_es"
   location: "location_es"
   # answer_extractor: "answer_extractor_location_json_adhoc_en"
