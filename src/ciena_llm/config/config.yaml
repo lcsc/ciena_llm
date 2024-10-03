@@ -9,21 +9,22 @@ llm:
 #     name: "llama3"
 #     temperature: 0
 #     context_length: 8192
-#   impact:
-#     name: "impact-model"
+#   impact_extraction:
+#     name: ""
 #     temperature: 0.6
-#   location:
-#     name: "location-model"
-#     temperature: 0.8
-#   answer_extractor:
-#     name: "answer-extractor-model"
-#     context_length: 8192
+#   location_extraction:
+#     name: ""
+#     temperature: 0.1
+#   location_response_parser:
+#     name: ""
+#     context_length: 1234
 prompt:
-  drought: "drought_es"
-  impact: "impact_es"
-  location: "location_es"
-  # answer_extractor: "answer_extractor_location_json_adhoc_en"
-  answer_extractor: "answer_extractor_location_json_parser_en"
+  drought_extraction: "drought_extraction_es"
+  impact_extraction: "impact_extraction_es"
+  location_extraction: "location_extraction_es"
+  drought_response_parser: "drought_response_parser_en"
+  impact_response_parser: "impact_response_parser_en"
+  location_response_parser: "location_response_parser_en"
 impacts:
   - tag: "agriculture"
     text: "agricultura"

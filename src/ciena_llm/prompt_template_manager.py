@@ -1,42 +1,33 @@
 from langchain_core.prompts import PromptTemplate
 
-DROUGHT_ES_PROMPT_TEMPLATE_STR = """
+DROUGHT_EXTRACTION_ES = """
 Analiza el siguiente artículo y determina si la noticia está relacionada con la sequía climática.
 Texto:
 {text}
 Por ejemplo, si el artículo está relacionado con la sequía climática, responde únicamente la palabra "True" y si no lo está, responde "False". No añadas ningún signo de puntuación ni proporciones ninguna explicación adicional. Sólo True/False.
 """
 
-IMPACT_ES_PROMPT_TEMPLATE_STR = """
+IMPACT_EXTRACTION_ES = """
 Analiza el siguiente artículo relacionado con la sequía climática. Determina si esta noticia menciona un impacto de la sequía en {impact}.
 Texto:
 {text}
 Por ejemplo, si el artículo menciona un impacto en {impact}, responde únicamente la palabra "True" y si no lo está, responde "False". No añadas ningún signo de puntuación ni proporciones ninguna explicación adicional. Sólo True/False.
 """
 
-LOCATION_ES_PROMPT_TEMPLATE_STR = """
+LOCATION_EXTRACTION_ES = """
 Analiza el siguiente artículo relacionado con la sequía climática. Determina las localizaciones que aparecen en el texto que impactadas por la sequía. Además, indica a que tipo de localización se refiere (e.g. municipio, provincia, comunidad autonoma, río, presa, cuenca, etc.). Lista únicamente aquellas que estén directamente relacionadas con la sequía. Por localización, indica una pequeña descripción del impacto de la sequía en esa localización según la noticia. En el caso de que no haya ninguna localización impactada por la sequía, no menciones ninguna.
 Texto:
 {text}
 """
 
-ANSWER_EXTRACTOR_LOCATION_JSON_ADHOC_EN_TEMPLATE_STR = """
-Extract the locations impacted by climate drought from the following text. Also, extract the type of these locations (e.g. town, province, community, river, dam, lake, etc.). Ensure the output is a valid JSON object. If there are no locations impacted by climate drought, provide an empty JSON object. The JSON object should have the following structure:
-{{
-    "locations": [
-        {{
-            "location_name": "name of the location",
-            "location_type": "type of the location",
-        }},
-        ...
-    ]
-}}
-Texto:
-{text}
-Make sure your output is only the JSON object and nothing else.
+DROUGHT_RESPONSE_PARSER_EN = """
+# TODO
+"""
+IMPACT_RESPONSE_PARSER_EN = """
+# TODO
 """
 
-ANSWER_EXTRACTOR_LOCATION_JSON_PARSER_EN_TEMPLATE_STR = """
+LOCATION_RESPONSE_PARSER_EN = """
 Extract the locations impacted by climate drought from the following text.
 {format_instructions}
 If there are no locations impacted by climate drought, provide an empty JSON object.
@@ -48,24 +39,30 @@ Text:
 class PromptTemplateManager:
     def __init__(self):
         self.templates = {
-            "drought_es": {
-                "template": DROUGHT_ES_PROMPT_TEMPLATE_STR,
+            "drought_extraction_es": {
+                "template": DROUGHT_EXTRACTION_ES,
                 "variables": ["text"],
             },
-            "impact_es": {
-                "template": IMPACT_ES_PROMPT_TEMPLATE_STR,
+            "impact_extraction_es": {
+                "template": IMPACT_EXTRACTION_ES,
+                "variables": ["text", "impact"], # TODO specify impacts separated with commas
+            },
+            "location_extraction_es": {
+                "template": LOCATION_EXTRACTION_ES,
+                "variables": ["text"],
+            },
+            "drought_response_parser_en": {
+                "template": DROUGHT_RESPONSE_PARSER_EN,
+                "variables": ["text"],
+                "partial_variables": ["format_instructions"],
+            },
+            "impact_response_parser_en": {
+                "template": IMPACT_RESPONSE_PARSER_EN,
                 "variables": ["text", "impact"],
+                "partial_variables": ["format_instructions"],
             },
-            "location_es": {
-                "template": LOCATION_ES_PROMPT_TEMPLATE_STR,
-                "variables": ["text"],
-            },
-            "answer_extractor_location_json_adhoc_en": {
-                "template": ANSWER_EXTRACTOR_LOCATION_JSON_ADHOC_EN_TEMPLATE_STR,
-                "variables": ["text"],
-            },
-            "answer_extractor_location_json_parser_en": {
-                "template": ANSWER_EXTRACTOR_LOCATION_JSON_PARSER_EN_TEMPLATE_STR,
+            "location_response_parser_en": {
+                "template": LOCATION_RESPONSE_PARSER_EN,
                 "variables": ["text"],
                 "partial_variables": ["format_instructions"],
             },

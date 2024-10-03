@@ -4,6 +4,8 @@ from typing import Optional, Dict
 
 from seqia.article import Article
 
+# TODO remove this functions and use an LLM extractor
+
 
 def parse_response_json(
     article: Article, response: str, impact_tags: Dict[str, str]

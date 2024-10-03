@@ -1,19 +1,19 @@
-import logging
 import os
-from typing import Optional, List
+from typing import List
 from tqdm import tqdm
 
 import dotenv
 
 # pylint: disable=wrong-import-position
 dotenv.load_dotenv()
+
 from seqia.article import Article
 from seqia.article.loader import ArticleLoader
-from seqia.utils.output import write_to_csv
 from seqia.config.loader import ConfigLoader
+from seqia.utils.output import write_to_csv
 
-from ciena_llm.extractor.impact_extractor import ImpactExtractor
-from ciena_llm.extractor.location_extractor import LocationExtractor
+from ciena_llm.extractor.drought import ImpactExtractor
+from ciena_llm.extractor.location import LocationExtractor
 
 
 class ClimateImpactExtractor:

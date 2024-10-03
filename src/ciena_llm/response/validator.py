@@ -3,21 +3,22 @@ from typing import List
 
 from seqia.article import Article
 
-from ciena_llm.llm_response import LLMResponseLocationList
+from ciena_llm.response.location import LocationListLLMResponse
 
 
-class ResponseValidatorLocations:
+# TODO use
+class LocationResponseValidator:
     def __init__(self):
         pass
 
     def __call__(
-        self, articles: List[Article], location_responses: List[LLMResponseLocationList]
+        self, articles: List[Article], location_responses: List[LocationListLLMResponse]
     ):
         for article, location_response in zip(articles, location_responses):
             self.validate_locations(article, location_response)
 
     def validate_locations(
-        self, article: Article, location_response: LLMResponseLocationList
+        self, article: Article, location_response: LocationListLLMResponse
     ):
         """
         Validate the location responses extracted from the article.
@@ -28,7 +29,7 @@ class ResponseValidatorLocations:
         for location in location_response.locations:
             self.validate_location(article, location)
 
-    def validate_location(self, article: Article, location: LLMResponseLocationList):
+    def validate_location(self, article: Article, location: LocationListLLMResponse):
         """
         Validate a single location response extracted from the article.
 
