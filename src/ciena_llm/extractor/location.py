@@ -74,7 +74,9 @@ class LocationExtractor:
             raise e
 
         # Parse the response
-        location_response = LocationListLLMResponse(**location_response)
+        location_response_data: LocationListLLMResponse = LocationListLLMResponse(
+            **location_response
+        )
 
         # Update the article with the extracted locations
         article.locations_aggregated = [
@@ -84,7 +86,7 @@ class LocationExtractor:
                 start=None,  # TODO anything else?
                 end=None,
             )
-            for location in location_response.locations  # TODO error here beacuse "it is not iterable"
+            for location in location_response_data.locations  # TODO error here beacuse "it is not iterable"
         ]
 
         logging.debug("Article %s completed location extraction", article.filename)
