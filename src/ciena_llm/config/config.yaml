@@ -30,9 +30,9 @@ llm:
 #     name: ""
 #     context_length: 1234
 prompt:
-  drought_extraction: "drought_extraction_es"
-  impact_extraction: "impact_extraction_es"
-  location_extraction: "location_extraction_es"
+  drought_extraction: "drought_extraction_en"
+  impact_extraction: "impact_extraction_en"
+  location_extraction: "location_extraction_en"
   drought_response_parser: "drought_response_parser_en"
   impact_response_parser: "impact_response_parser_en"
   location_response_parser: "location_response_parser_en"
