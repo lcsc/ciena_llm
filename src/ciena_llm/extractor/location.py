@@ -73,12 +73,10 @@ class LocationExtractor:
             logging.error("Failed to parse response: %s", e)
             raise e
 
-        # TODO FIX Deprecated
-        location_response: LocationListLLMResponse = LocationListLLMResponse.parse_obj(
-            location_response
-        )
+        # Parse the response
+        location_response = LocationListLLMResponse(**location_response)
 
-        # Add the extracted locations to the article
+        # Update the article with the extracted locations
         article.locations_aggregated = [
             Location(
                 name=location.location_name,
@@ -86,7 +84,9 @@ class LocationExtractor:
                 start=None,  # TODO anything else?
                 end=None,
             )
-            for location in location_response.locations
+            for location in location_response.locations  # TODO error here beacuse "it is not iterable"
         ]
+
+        logging.debug("Article %s completed location extraction", article.filename)
 
         return article
