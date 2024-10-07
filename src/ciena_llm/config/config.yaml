@@ -4,7 +4,7 @@ pipeline:
     exclude: True
     order: 100
   impact:
-    enable: False # TODO WIP
+    enable: True
     order: 200
   location:
     enable: True
@@ -38,13 +38,17 @@ prompt:
   location_response_parser: "location_response_parser_en"
 impacts:
   - tag: "agriculture"
-    text: "agricultura"
+    text_es: "agricultura"
+    text_en: "agriculture"
   - tag: "farming"
-    text: "ganadería"
-  - tag: "hydrological-resources"
-    text: "recursos hídricos"
+    text_es: "ganadería"
+    text_en: "farming"
+  - tag: "hydrological_resources"
+    text_es: "recursos hídricos"
+    text_en: "hydrological resources"
   - tag: "energy"
-    text: "energía"
+    text_es: "energía"
+    text_en: "energy"
 output:
   summary:
     - article_filename

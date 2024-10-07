@@ -1,3 +1,4 @@
+import logging
 from typing import Dict
 
 import pydantic
@@ -16,6 +17,8 @@ class ImpactExtractor:
 
         :param config: The configuration for the ImpactExtractor.
         """
+        self.impacts = config["impacts"]
+
         self.ptm = PromptTemplateManager()
 
         # Create prompt templates
@@ -41,13 +44,47 @@ class ImpactExtractor:
         )
 
     def extract_impact(self, article: Article) -> bool:
-        text = article.get_headline_and_body(separator=".")
 
         # Check context length for impact prompt
-        self.impact_llm.check_context_length(text, self.impact_prompt_template)
+        # DEBUG
+        # self.impact_llm.check_context_length(text, self.drought_prompt_template)
 
-        impact_chain = self.impact_prompt_template | self.impact_llm
-        impact_response = impact_chain.invoke({"text": text})
-        impact_response = parse_response_bool(impact_response)
+        # Define the chain
+        impact_chain = (
+            self.impact_prompt_template
+            | self.impact_llm
+            | (lambda text: {"text": text, "impact": impact["text_en"]})
+            | self.impact_response_parser_prompt_template
+            | self.impact_response_parser_llm
+            | self.impact_response_parser
+        )
 
-        return impact_response
+        # Get the text to analyze
+        text = article.get_headline_and_body(separator=".")
+
+        # Invoke the chain
+        for impact in self.impacts:
+            try:
+                impact_response = impact_chain.invoke(
+                    {"text": text, "impact": impact["text_en"]}
+                )
+                # TODO What to do if prompt is in Spanish?
+            except pydantic.ValidationError as e:
+                # TODO Handle this error
+                logging.error("Failed to parse response: %s", e)
+                raise e
+
+            # Parse the response
+            impact_response = ImpactLLMResponse(**impact_response)
+
+            # Update the article with the extracted impact
+            if impact_response.impact:
+                article.impacts_aggregated.append(impact["tag"])
+
+            logging.debug(
+                "Article %s completed impact (%s) extraction",
+                article.filename,
+                impact["tag"],
+            )
+
+        return article

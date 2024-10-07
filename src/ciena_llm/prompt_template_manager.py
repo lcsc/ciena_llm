@@ -58,7 +58,10 @@ Text:
 """
 
 IMPACT_RESPONSE_PARSER_EN = """
-# TODO
+Extract whether the following text mentions an impact of climate drought on {impact}.
+{format_instructions}
+Text:
+{text}
 """
 
 LOCATION_RESPONSE_PARSER_EN = """
