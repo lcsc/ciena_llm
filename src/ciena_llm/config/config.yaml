@@ -1,3 +1,14 @@
+pipeline:
+  drought:
+    enable: True
+    exclude: True
+    order: 100
+  impact:
+    enable: False # TODO WIP
+    order: 200
+  location:
+    enable: True
+    order: 300
 llm:
   default:
     name: "llama3.1"

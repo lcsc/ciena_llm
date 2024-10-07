@@ -1,3 +1,4 @@
+import logging
 import os
 from typing import List
 from tqdm import tqdm
@@ -12,7 +13,8 @@ from seqia.article.loader import ArticleLoader
 from seqia.config.loader import ConfigLoader
 from seqia.utils.output import write_to_csv
 
-from ciena_llm.extractor.drought import ImpactExtractor
+from ciena_llm.extractor.drought import DroughtExtractor
+from ciena_llm.extractor.impact import ImpactExtractor
 from ciena_llm.extractor.location import LocationExtractor
 
 
@@ -23,13 +25,20 @@ class ClimateImpactExtractor:
             override_config_path=override_config_path,
         )
         self.config = self.config_loader.config
+        self.pipeline = self.config_loader.get_ordered_pipeline()
+        self.pipeline_stages = [stage for stage, _ in self.pipeline]
 
-        # TODO pass only extractor specific config
-        self.impact_extractor = ImpactExtractor(self.config)
-        # TODO pass only extractor specific config
-        self.location_extractor = LocationExtractor(self.config)
+        logging.info(f"Pipeline: {self.pipeline_stages}")
 
         self.article_loader = ArticleLoader()
+
+        # TODO pass only extractor specific config
+        if "drought" in self.pipeline_stages:
+            self.drought_extractor = DroughtExtractor(self.config)
+        if "impact" in self.pipeline_stages:
+            self.impact_extractor = ImpactExtractor(self.config)
+        if "location" in self.pipeline_stages:
+            self.location_extractor = LocationExtractor(self.config)
 
     def __call__(self, dataset_path: str) -> List[Article]:
         articles = self.article_loader(dataset_path)
@@ -38,15 +47,19 @@ class ClimateImpactExtractor:
             articles, desc="Extracting impacts and locations from articles"
         ):
 
-            # TODO read pipeline from config to apply each extractor extractors
-            article = self.impact_extractor.extract_impacts(article)
-            if not article:
-                continue
-            article = self.location_extractor.extract_locations(article)
-
-            # DEBUG
-            # if article:
-            #     logging.debug("Article %s:\n%s", article.filename, article)
+            for stage, stage_config in self.pipeline:
+                match stage:
+                    case "drought":
+                        article = self.drought_extractor.extract_drought(article)
+                        if stage_config["exclude"]:
+                            if not article.drought:
+                                continue
+                    case "impact":
+                        # TODO for impact in impacts ?
+                        # TODO pass impact name to extractor and to prompt template
+                        article = self.impact_extractor.extract_impact(article)
+                    case "location":
+                        article = self.location_extractor.extract_locations(article)
 
         return articles
 
