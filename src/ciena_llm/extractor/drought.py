@@ -1,3 +1,4 @@
+import logging
 from typing import Dict
 
 import pydantic
@@ -6,7 +7,7 @@ from seqia.article import Article
 
 from ciena_llm.llm import LLM
 from ciena_llm.prompt_template_manager import PromptTemplateManager
-from ciena_llm.response.impact import DroughtLLMResponse
+from ciena_llm.response.drought import DroughtLLMResponse
 
 
 class DroughtExtractor:
@@ -40,14 +41,38 @@ class DroughtExtractor:
             stage="drought_response_parser",
         )
 
-    def extract_drought(self, article: Article) -> bool:
-        text = article.get_headline_and_body(separator=".")
+    def extract_drought(self, article: Article) -> Article:
 
         # Check context length for drought prompt
-        self.drought_llm.check_context_length(text, self.drought_prompt_template)
+        # DEBUG
+        # self.drought_llm.check_context_length(text, self.drought_prompt_template)
 
-        drought_chain = self.drought_prompt_template | self.drought_llm
-        drought_response = drought_chain.invoke({"text": text})
-        drought_response = parse_response_bool(drought_response)
+        # Define the chain
+        drought_chain = (
+            self.drought_prompt_template
+            | self.drought_llm
+            | self.drought_response_parser_prompt_template
+            | self.drought_response_parser_llm
+            | self.drought_response_parser
+        )
 
-        return drought_response
+        # Get the text to analyze
+        text = article.get_headline_and_body(separator=". ")
+
+        # Invoke the chain
+        try:
+            drought_response = drought_chain.invoke({"text": text})
+        except pydantic.ValidationError as e:
+            # TODO Handle this error
+            logging.error("Failed to parse response: %s", e)
+            raise e
+
+        # Parse the response
+        drought_response = DroughtLLMResponse(**drought_response)
+
+        # Update the article with the extracted drought information
+        article.drought = drought_response.drought
+
+        logging.debug("Article %s completed drought extraction", article.filename)
+
+        return article
