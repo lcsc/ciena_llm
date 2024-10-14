@@ -8,10 +8,9 @@ from common import setup_logging
 from ciena_llm import ClimateImpactExtractor
 
 
-TEST_NAME = "news-elpais-binary-50T-50F"
-DATASET_PATH = (
-    f"/home/javier/Developer/SeqIA/data/test-datasets-small/{TEST_NAME}/sample"
-)
+TEST_NAME = "news-elpais-e2e-70b"
+DATASET_DIR = "noticias-elpais-sample-194-anotado-e2e"
+DATASET_PATH = f"/home/javier/Developer/SeqIA/data/{DATASET_DIR}/sample/"
 RESULTS_DIR = f"./results/{TEST_NAME}/"
 os.makedirs(os.path.dirname(RESULTS_DIR), exist_ok=True)
 
@@ -19,7 +18,9 @@ setup_logging(f"{RESULTS_DIR}/execution.log")
 
 override_config = {
     "llm": {
-        "name": "llama3.1:70b",
+        "default": {
+            "name": "llama3.1:70b",
+        },
     },
 }
 with tempfile.NamedTemporaryFile(suffix=".yaml", delete=False) as temp_config_file:
