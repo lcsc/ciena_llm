@@ -1,6 +1,6 @@
-from typing import List, Optional
+from typing import List, Optional, Union
 
-from pydantic import BaseModel, Field, root_validator
+from pydantic import BaseModel, Field, root_validator, validator
 
 
 LOCATION_TYPES = [
@@ -28,24 +28,33 @@ LOCATION_TYPE_DESCRIPTION = f"Type of the location. Must be one of: {', '.join(L
 
 
 class LocationLLMResponse(BaseModel):
-    location_name: str = Field(
+    location_name: Optional[str] = Field(
+        default=None,
         description=LOCATION_NAME_DESCRIPTION,
     )
-    location_type: str = Field(
+    location_type: Optional[str] = Field(
         default="unknown",
         description=LOCATION_TYPE_DESCRIPTION,
     )
-    location_type_suggestion: Optional[str] = Field(
-        default=None,
-        description="Suggested type of location when 'other' is selected",
+    location_type_suggestion: Optional[str] = (
+        Field(  # TODO remove and only use the validator?
+            default=None,
+            description="Suggested type of location when 'other' is selected",
+        )
     )
-    impact: str = Field(
-        description="Impact on the location in the language of the prompt",
+    location_provinces: Optional[Union[List[str], str]] = Field(
+        default_factory=list,
+        description="List of the provinces where the impacted location is. In the case of the location being in multiple provinces, list them all. In the case of the location being a province, the province should be listed here.",
+    )
+    impact: Optional[str] = Field(
+        default=None,
+        description="Impact on the location",
     )
 
     @root_validator(pre=True)
-    @classmethod
     def check_location_type(cls, values):
+        if values.get("location_type"):
+            values["location_type"] = values["location_type"].lower()
         location_type = values.get("location_type")
         if not location_type:
             values["location_type"] = "unknown"
@@ -60,6 +69,3 @@ class LocationListLLMResponse(BaseModel):
         default_factory=list,
         description="A list of locations, each with a name and type",
     )
-
-    # class Config:
-    #     validate_assignment = True  # Enable detailed validation

@@ -45,30 +45,44 @@ Texto:
 """
 
 LOCATION_EXTRACTION_EN = """
-Analyze the following article related to climate drought. Determine the locations mentioned in the text that are impacted by the drought. Additionally, indicate the type of location (e.g., municipality, province, autonomous community, river, dam, basin, etc.). List only those that are directly related to the drought. For each location, provide a brief description of the drought's impact on that location according to the news. If there are no locations impacted by the drought, do not mention any.
+Analyze the following article related to climate drought.
+Determine the named geographical locations mentioned in the text that are directly impacted by the drought.
+If no locations are impacted by the drought, do not return any output.
+For each impacted location, provide the following information:
+- The proper name of the location without additional descriptive text.
+- The type of location (e.g., municipality, province, autonomous community, river, dam, basin, etc.). Only assign one type.
+- A brief description of the drought's impact on that location.
+- The list of provinces or equivalent administrative division where the location is situated, if mentioned or inferable. In the case of multiple provinces impacted, list them all. 
 Text:
 {text}
 """
 
 DROUGHT_RESPONSE_PARSER_EN = """
 Extract whether the following text is related to climate drought.
+Format instructions:
 {format_instructions}
+Return only the JSON inside a markdown fenced code block (without syntax highlighting and no additional text around it).
 Text:
 {text}
 """
 
 IMPACT_RESPONSE_PARSER_EN = """
 Extract whether the following text mentions an impact of climate drought on {impact}.
+Format instructions:
 {format_instructions}
+Return only the JSON inside a markdown fenced code block (without syntax highlighting and no additional text around it).
 Text:
 {text}
 """
 
 LOCATION_RESPONSE_PARSER_EN = """
-Extract the locations impacted by climate drought from the following text.
+Extract the locations impacted by climate drought from the given text.
+The output must be a valid JSON object formatted according to the schema, including any optional fields where applicable.
+Format instructions:
 {format_instructions}
-If there are no locations impacted by climate drought, provide an empty JSON object.
-Only provide the JSON between a markdown fenced code block without syntax highlighting and no other text around it.
+For each location, include all properties as specified in the schema, including optional ones, if they appear in the text.
+If there are no locations impacted by the climate drought, provide an empty JSON object.
+Return only the JSON inside a markdown fenced code block (without syntax highlighting and no additional text around it).
 Text:
 {text}
 """

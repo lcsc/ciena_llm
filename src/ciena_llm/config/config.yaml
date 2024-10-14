@@ -1,10 +1,10 @@
 pipeline:
   drought:
-    enable: True
+    enable: False
     exclude: True
     order: 100
   impact:
-    enable: True
+    enable: False
     order: 200
   location:
     enable: True
@@ -63,3 +63,4 @@ output:
     - article_body
     - location_name
     - location_type
+    - location_other

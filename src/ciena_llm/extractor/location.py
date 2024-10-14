@@ -74,6 +74,9 @@ class LocationExtractor:
             raise e
 
         # Parse the response
+        if isinstance(location_response, list):
+            location_response = {"locations": location_response}
+
         location_response_data: LocationListLLMResponse = LocationListLLMResponse(
             **location_response
         )
@@ -85,8 +88,12 @@ class LocationExtractor:
                 type=location.location_type,
                 start=None,  # TODO anything else?
                 end=None,
+                other={
+                    "provinces": location.location_provinces,
+                    "type_suggestion": location.location_type_suggestion,
+                },
             )
-            for location in location_response_data.locations  # TODO error here beacuse "it is not iterable"
+            for location in location_response_data.locations
         ]
 
         logging.debug("Article %s completed location extraction", article.filename)
