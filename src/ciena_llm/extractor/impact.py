@@ -22,7 +22,7 @@ class ImpactExtractor:
         self.ptm = PromptTemplateManager()
 
         # Create prompt templates
-        self.impact_prompt_template = self.ptm.get_prompt_template(
+        self.impact_extraction_prompt_template = self.ptm.get_prompt_template(
             config["prompt"]["impact_extraction"]
         )
         self.impact_response_parser = JsonOutputParser(
@@ -43,6 +43,18 @@ class ImpactExtractor:
             stage="impact_response_parser",
         )
 
+        # Save prompts
+        self.prompts = {
+            "impact_extraction": {
+            "name": config["prompt"]["impact_extraction"],
+            "prompt": self.impact_extraction_prompt_template.template
+            },
+            "impact_response_parser": {
+            "name": config["prompt"]["impact_response_parser"],
+            "prompt": self.impact_response_parser_prompt_template.template
+            }
+        }
+
     def extract_impact(self, article: Article) -> bool:
 
         # Check context length for impact prompt
@@ -51,7 +63,7 @@ class ImpactExtractor:
 
         # Define the chain
         impact_chain = (
-            self.impact_prompt_template
+            self.impact_extraction_prompt_template
             | self.impact_llm
             | (lambda text: {"text": text, "impact": impact["text_en"]})
             | self.impact_response_parser_prompt_template

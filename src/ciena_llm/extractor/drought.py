@@ -20,7 +20,7 @@ class DroughtExtractor:
         self.ptm = PromptTemplateManager()
 
         # Create prompt templates
-        self.drought_prompt_template = self.ptm.get_prompt_template(
+        self.drought_extraction_prompt_template = self.ptm.get_prompt_template(
             config["prompt"]["drought_extraction"]
         )
         self.drought_response_parser = JsonOutputParser(
@@ -41,15 +41,27 @@ class DroughtExtractor:
             stage="drought_response_parser",
         )
 
+        # Save prompts
+        self.prompts = {
+            "drought_extraction": {
+            "name": config["prompt"]["drought_extraction"],
+            "prompt": self.drought_extraction_prompt_template.template,
+            },
+            "drought_response_parser": {
+            "name": config["prompt"]["drought_response_parser"],
+            "prompt": self.drought_response_parser_prompt_template.template,
+            },
+        }
+
     def extract_drought(self, article: Article) -> Article:
 
         # Check context length for drought prompt
         # DEBUG
-        # self.drought_llm.check_context_length(text, self.drought_prompt_template)
+        # self.drought_llm.check_context_length(text, self.drought_extraction_prompt_template)
 
         # Define the chain
         drought_chain = (
-            self.drought_prompt_template
+            self.drought_extraction_prompt_template
             | self.drought_llm
             | self.drought_response_parser_prompt_template
             | self.drought_response_parser_llm

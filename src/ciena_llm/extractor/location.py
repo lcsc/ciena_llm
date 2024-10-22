@@ -44,6 +44,18 @@ class LocationExtractor:
             config=config["llm"], stage="location_response_parser"
         )
 
+        # Save prompts
+        self.prompts = {
+            "location_extraction": {
+            "name": config["prompt"]["location_extraction"],
+            "prompt": self.location_extraction_prompt_template,
+            },
+            "location_response_parser": {
+            "name": config["prompt"]["location_response_parser"],
+            "prompt": self.location_response_parser_prompt_template,
+            },
+        }
+
     def extract_locations(self, article: Article) -> Article:
         """
         Extract locations from the given article.

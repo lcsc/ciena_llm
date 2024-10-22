@@ -4,6 +4,7 @@ from typing import List
 from tqdm import tqdm
 
 import dotenv
+import json
 
 # pylint: disable=wrong-import-position
 dotenv.load_dotenv()
@@ -79,3 +80,21 @@ class ClimateImpactExtractor:
 
     def write_config(self, file: str):
         self.config_loader.save_config(file)
+
+    def write_prompts_to_json(self, file: str):
+        """
+        Write the prompts used by the extractors to the given JSON file.
+
+        :param file: The file to write the prompts to.
+        """
+        prompts = {}
+
+        if "drought" in self.pipeline_stages:
+            prompts.update(self.drought_extractor.prompts)
+        if "impact" in self.pipeline_stages:
+            prompts.update(self.impact_extractor.prompts)
+        if "location" in self.pipeline_stages:
+            prompts.update(self.location_extractor.prompts)
+
+        with open(file, "w") as f:
+            json.dump(prompts, f, indent=4)
