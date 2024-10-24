@@ -1,29 +1,8 @@
-import os
-
-from common import setup_logging
-
-from ciena_llm import ClimateImpactExtractor
-
+from common import ClimateImpactExtractorTest
 
 TEST_NAME = "test-jvela-long-articles-5"
-DATASET_PATH = (
-    f"/home/javier/Developer/SeqIA/data/test-datasets-small/{TEST_NAME}/sample"
-)
-RESULTS_DIR = f"./results/{TEST_NAME}/"
-os.makedirs(os.path.dirname(RESULTS_DIR), exist_ok=True)
+DATASET_DIR = "test-datasets-small"
+DATASET_PATH = f"/home/javier/Developer/SeqIA/data/{DATASET_DIR}/{TEST_NAME}/sample"
 
-setup_logging(f"{RESULTS_DIR}/execution.log")
-
-extractor = ClimateImpactExtractor()
-
-articles = extractor(
-    dataset_path=DATASET_PATH,
-)
-
-extractor.write_excluded_problematic_articles_to_csv(file=f"{RESULTS_DIR}/excluded.csv")
-
-extractor.write_summary_to_csv(articles, f"{RESULTS_DIR}/summary.csv")
-
-extractor.write_location_to_csv(articles, f"{RESULTS_DIR}/locations.csv")
-
-extractor.write_config(f"{RESULTS_DIR}/config.yaml")
+test = ClimateImpactExtractorTest(TEST_NAME, DATASET_DIR, DATASET_PATH)
+test.run()
