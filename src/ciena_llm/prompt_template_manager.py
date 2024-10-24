@@ -57,6 +57,37 @@ Text:
 {text}
 """
 
+LOCATION_PROVINCES_EXTRACTION_EN = """
+Analyze the following news article related to climate drought.
+Determine the named locations and geographical accidents impacted by the drought according to the text.
+If a location is not impacted by the drought, do not list it.
+Return the names for the locations and the provinces in Spanish.
+It is possible that some locations are not directly mentioned in the text. In these cases, you should infer the location based on the context of the article. If you are unable to infer the location, do not include it in the output.
+For each impacted location, provide the following information:
+1. The toponym of the location or geographical accident. 
+    It is not necessary to extract the name as it appears in the text.
+    Give the location proper name without additional descriptive text  
+    Do not list a general location type as a specific toponym.
+    Examples (1): 
+    - "Ebro" instead of "el río Ebro" and "Yesa" instead of "el pantano de Yesa", and include the type in the location type field.
+    - Do not list "río" as a location as it is not a specific toponym.
+2. The type of location. Only return a single type for each location. If the location could be many different types, infer which one is the most appropriate based on the context.
+    Examples (2):
+    - "river" for "Ebro"
+    - "dam" for "el pantano de Yesa"
+    - "basin" for "la cuenca del Ebro"
+    - "province" instead of "province/municipality" if the article is about the province
+3. The list of provinces impacted where the location are situated, if mentioned or inferable. In the case of multiple provinces impacted, list them all. If the location is a province, include the province in the list of provinces. If the location has multiple provinces, only include the impacted provinces.
+    In Spain, provinces are the primary subnational administrative divisions within autonomous communities. Each province consists of multiple municipalities and serves as a local government structure, below the national and regional (autonomous community) levels. Spain is divided into 50 provinces. Provinces should not be confused with autonomous communities, which are larger political entities that may include several provinces within their borders.
+    Return a list of provinces as strings, for all the locations. If the location is a province, include the province in the list of provinces.
+    Examples (3):
+    - "Cantabria, Palencia, Burgos, Álava, La Rioja, Navarra, Zaragoza, Huesca, Lérida, Tarragona" for "Ebro" if the article is about the Ebro River in Spain
+    - "Tarragona" for "Ebro" if the article is about the mouth of the Ebro River in Spain
+    - "Sevilla, Cádiz" instead of "Almería, Cádiz, Córdoba, Granada, Huelva, Jaén, Málaga, Sevilla" for "Andalucía" if the article only mentions impacts in Sevilla and Cádiz
+Text:
+{text}
+"""
+
 DROUGHT_RESPONSE_PARSER_EN = """
 Extract whether the following text is related to climate drought.
 Format instructions:
