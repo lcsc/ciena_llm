@@ -24,6 +24,7 @@ seaborn = "^0.13.2"
 pyqt6 = "^6.7.1"
 pylint = "^3.3.1"
 pylint-pydantic = "^0.3.2"
+pandas = "^2.2.3"
 
 [build-system]
 requires = ["poetry-core"]
