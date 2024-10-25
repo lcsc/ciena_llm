@@ -7,7 +7,7 @@ from seqia.article import Article
 
 from ciena_llm.llm import LLM
 from ciena_llm.prompt_template_manager import PromptTemplateManager
-from ciena_llm.response.impact import ImpactLLMResponse
+from ciena_llm.response.boolean import BooleanLLMResponse
 
 
 class ImpactExtractor:
@@ -26,7 +26,7 @@ class ImpactExtractor:
             config["prompt"]["impact_extraction"]
         )
         self.impact_response_parser = JsonOutputParser(
-            pydantic_object=ImpactLLMResponse
+            pydantic_object=BooleanLLMResponse
         )
         self.impact_response_parser_prompt_template = self.ptm.get_prompt_template(
             config["prompt"]["impact_response_parser"],
@@ -46,13 +46,13 @@ class ImpactExtractor:
         # Save prompts
         self.prompts = {
             "impact_extraction": {
-            "name": config["prompt"]["impact_extraction"],
-            "prompt": self.impact_extraction_prompt_template.template
+                "name": config["prompt"]["impact_extraction"],
+                "prompt": self.impact_extraction_prompt_template.template,
             },
             "impact_response_parser": {
-            "name": config["prompt"]["impact_response_parser"],
-            "prompt": self.impact_response_parser_prompt_template.template
-            }
+                "name": config["prompt"]["impact_response_parser"],
+                "prompt": self.impact_response_parser_prompt_template.template,
+            },
         }
 
     def extract_impact(self, article: Article) -> bool:
@@ -87,10 +87,10 @@ class ImpactExtractor:
                 raise e
 
             # Parse the response
-            impact_response = ImpactLLMResponse(**impact_response)
+            impact_response = BooleanLLMResponse(**impact_response)
 
             # Update the article with the extracted impact
-            if impact_response.impact:
+            if impact_response.response:
                 article.impacts_aggregated.append(impact["tag"])
 
             logging.debug(

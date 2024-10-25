@@ -1,3 +1,6 @@
+import json
+from typing import List
+
 from langchain_core.prompts import PromptTemplate
 
 DROUGHT_EXTRACTION_BOOL_ES = """
@@ -14,7 +17,8 @@ Texto:
 """
 
 DROUGHT_EXTRACTION_EN = """
-Analyze the following article and determine if the news is related to climate drought.
+Analyze the following article and determine if the news article is mentions the existance of climate drought.
+In your response, provide only an affirmative or negative answer.
 Text:
 {text}
 """
@@ -33,7 +37,8 @@ Texto:
 """
 
 IMPACT_EXTRACTION_EN = """
-Analyze the following article related to climate drought. Determine if this news mentions an impact of the drought on {impact}.
+Analyze the following article related to climate drought. Determine if this news article mentions an impact of the drought on {impact}.
+In your response, provide only an affirmative or negative answer.
 Text:
 {text}
 """
@@ -88,6 +93,16 @@ Text:
 {text}
 """
 
+
+BOOLEAN_RESPONSE_PARSER_EN = """
+Extract whether the following text is affirmative or negative.
+Format instructions:
+{format_instructions}
+Return only the JSON inside a markdown fenced code block (without syntax highlighting and no additional text around it).
+Text:
+{text}
+"""
+
 DROUGHT_RESPONSE_PARSER_EN = """
 Extract whether the following text is related to climate drought.
 Format instructions:
@@ -114,6 +129,7 @@ Format instructions:
 For each location, include all properties as specified in the schema, including optional ones, if they appear in the text.
 If there are no locations impacted by the climate drought, provide an empty JSON object.
 Return only the JSON inside a markdown fenced code block (without syntax highlighting and no additional text around it).
+Do not encode any special characters and do not use any Unicode escape sequences in the output.
 Text:
 {text}
 """
@@ -153,6 +169,15 @@ class PromptTemplateManager:
             "location_extraction_en": {
                 "template": LOCATION_EXTRACTION_EN,
                 "variables": ["text"],
+            },
+            "location_provinces_extraction_en": {
+                "template": LOCATION_PROVINCES_EXTRACTION_EN,
+                "variables": ["text"],
+            },
+            "boolean_response_parser_en": {
+                "template": BOOLEAN_RESPONSE_PARSER_EN,
+                "variables": ["text"],
+                "partial_variables": ["format_instructions"],
             },
             "drought_response_parser_en": {
                 "template": DROUGHT_RESPONSE_PARSER_EN,

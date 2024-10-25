@@ -7,7 +7,7 @@ from seqia.article import Article
 
 from ciena_llm.llm import LLM
 from ciena_llm.prompt_template_manager import PromptTemplateManager
-from ciena_llm.response.drought import DroughtLLMResponse
+from ciena_llm.response.boolean import BooleanLLMResponse
 
 
 class DroughtExtractor:
@@ -24,7 +24,7 @@ class DroughtExtractor:
             config["prompt"]["drought_extraction"]
         )
         self.drought_response_parser = JsonOutputParser(
-            pydantic_object=DroughtLLMResponse
+            pydantic_object=BooleanLLMResponse
         )
         self.drought_response_parser_prompt_template = self.ptm.get_prompt_template(
             config["prompt"]["drought_response_parser"],
@@ -44,12 +44,12 @@ class DroughtExtractor:
         # Save prompts
         self.prompts = {
             "drought_extraction": {
-            "name": config["prompt"]["drought_extraction"],
-            "prompt": self.drought_extraction_prompt_template.template,
+                "name": config["prompt"]["drought_extraction"],
+                "prompt": self.drought_extraction_prompt_template.template,
             },
             "drought_response_parser": {
-            "name": config["prompt"]["drought_response_parser"],
-            "prompt": self.drought_response_parser_prompt_template.template,
+                "name": config["prompt"]["drought_response_parser"],
+                "prompt": self.drought_response_parser_prompt_template.template,
             },
         }
 
@@ -80,10 +80,10 @@ class DroughtExtractor:
             raise e
 
         # Parse the response
-        drought_response = DroughtLLMResponse(**drought_response)
+        drought_response = BooleanLLMResponse(**drought_response)
 
         # Update the article with the extracted drought information
-        article.drought = drought_response.drought
+        article.drought = drought_response.response
 
         logging.debug("Article %s completed drought extraction", article.filename)
 
