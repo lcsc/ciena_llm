@@ -9,7 +9,7 @@ from ciena_llm import ClimateImpactExtractor
 
 
 TEST_NAME = "news-elpais-e2e-8b-provinces"
-DATASET_DIR = "noticias-elpais-sample-194-anotado-e2e"
+DATASET_DIR = "news-elpais-sample-194-annotated-e2e"
 DATASET_PATH = f"/home/javier/Developer/SeqIA/data/{DATASET_DIR}/sample/"
 RESULTS_DIR = f"./results/{TEST_NAME}/"
 os.makedirs(os.path.dirname(RESULTS_DIR), exist_ok=True)

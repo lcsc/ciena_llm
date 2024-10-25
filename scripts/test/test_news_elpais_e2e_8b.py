@@ -1,8 +1,7 @@
 from common import ClimateImpactExtractorTest
 
 TEST_NAME = "news-elpais-e2e-8b"
-DATASET_DIR = "noticias-elpais-sample-194-anotado-e2e"
-DATASET_PATH = f"/home/javier/Developer/SeqIA/data/{DATASET_DIR}/sample/"
+DATASET_DIR = "news-elpais-sample-194-annotated-e2e"
 OVERRIDE_CONFIG = {
     "llm": {
         "default": {

@@ -16,7 +16,7 @@ import numpy as np
 
 from ciena_llm.config.loader import ConfigLoader
 
-TEST_NAME = "noticias-elpais-sample-194-anotado-e2e"
+TEST_NAME = "news-elpais-sample-194-annotated-e2e"
 SEQIA_RESULTS_SUMMARY = (
     f"/home/javier/Developer/SeqIA/seqia/results/{TEST_NAME}/summary.csv"
 )
