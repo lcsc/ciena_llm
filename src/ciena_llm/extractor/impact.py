@@ -57,10 +57,6 @@ class ImpactExtractor:
 
     def extract_impact(self, article: Article) -> bool:
 
-        # Check context length for impact prompt
-        # DEBUG
-        # self.impact_llm.check_context_length(text, self.drought_prompt_template)
-
         # Define the chain
         impact_chain = (
             self.impact_extraction_prompt_template

@@ -55,10 +55,6 @@ class DroughtExtractor:
 
     def extract_drought(self, article: Article) -> Article:
 
-        # Check context length for drought prompt
-        # DEBUG
-        # self.drought_llm.check_context_length(text, self.drought_extraction_prompt_template)
-
         # Define the chain
         drought_chain = (
             self.drought_extraction_prompt_template

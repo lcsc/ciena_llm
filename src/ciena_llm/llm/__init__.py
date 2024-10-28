@@ -1,6 +1,5 @@
 import logging
 
-from langchain_core.prompts import PromptTemplate
 from langchain_ollama import OllamaLLM
 
 
@@ -36,12 +35,15 @@ class LLM:
         """Log function that logs the message along with the data."""
         logging.debug("%s: %s", message, data)
 
-    def __call__(self, text: str) -> str:
+    def __call__(self, text) -> str:
         """
         Call the LLM with the text and automatically log input/output with the stage.
         :param text: The input text to be passed to the LLM.
         :return: The output from the LLM.
         """
+        # Check context length before calling LLM
+        self.check_context_length(text)
+
         # Log input before calling LLM
         self.log(f"Input to LLM ({self.stage})", text)
         # Call the LLM with the input text using the `invoke` method
@@ -50,19 +52,18 @@ class LLM:
         self.log(f"Output from LLM ({self.stage})", response)
         return response
 
-    def check_context_length(self, text: str, prompt_template: PromptTemplate):
+    def check_context_length(self, text):
         """
         Check if the context length of the full prompt exceeds the LLM's context length.
+
+        :param text: The full prompt text.
         """
-        num_tokens_text = self.llm.get_num_tokens(text)
-        full_prompt = prompt_template.invoke({"text": text})
-        num_tokens_full_prompt = self.llm.get_num_tokens(full_prompt.to_string())
+        num_tokens_full_prompt = self.llm.get_num_tokens(text.to_string())
 
         logging.debug(
-            "Num. tokens (text / full prompt / max. context length): %s / %s / %s",
-            num_tokens_text,
+            "Num. tokens (full prompt / max. context length): %s / %s",
             num_tokens_full_prompt,
             self.llm_context_length,
         )
         if num_tokens_full_prompt > self.llm_context_length:
-            logging.warning("Full prompt exceeds context length.")
+            raise ValueError("Full prompt exceeds context length.")
