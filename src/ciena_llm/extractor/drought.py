@@ -45,11 +45,11 @@ class DroughtExtractor:
         self.prompts = {
             "drought_extraction": {
                 "name": config["prompt"]["drought_extraction"],
-                "prompt": self.drought_extraction_prompt_template.template,
+                "template": self.drought_extraction_prompt_template.pretty_repr(),
             },
             "drought_response_parser": {
                 "name": config["prompt"]["drought_response_parser"],
-                "prompt": self.drought_response_parser_prompt_template.template,
+                "template": self.drought_response_parser_prompt_template.pretty_repr(),
             },
         }
 

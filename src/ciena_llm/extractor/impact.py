@@ -47,11 +47,11 @@ class ImpactExtractor:
         self.prompts = {
             "impact_extraction": {
                 "name": config["prompt"]["impact_extraction"],
-                "prompt": self.impact_extraction_prompt_template.template,
+                "template": self.impact_extraction_prompt_template.pretty_repr(),
             },
             "impact_response_parser": {
                 "name": config["prompt"]["impact_response_parser"],
-                "prompt": self.impact_response_parser_prompt_template.template,
+                "template": self.impact_response_parser_prompt_template.pretty_repr(),
             },
         }
 

@@ -47,12 +47,12 @@ class LocationExtractor:
         # Save prompts
         self.prompts = {
             "location_extraction": {
-            "name": config["prompt"]["location_extraction"],
-            "prompt": self.location_extraction_prompt_template,
+                "name": config["prompt"]["location_extraction"],
+                "template": self.location_extraction_prompt_template.pretty_repr(),
             },
             "location_response_parser": {
-            "name": config["prompt"]["location_response_parser"],
-            "prompt": self.location_response_parser_prompt_template,
+                "name": config["prompt"]["location_response_parser"],
+                "template": self.location_response_parser_prompt_template.pretty_repr(),
             },
         }
 
