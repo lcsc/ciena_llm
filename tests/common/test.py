@@ -1,9 +1,12 @@
 import os
 import tempfile
+import time
+from datetime import datetime
 
 import yaml
-
 from ciena_llm import ClimateImpactExtractor
+
+from .log import setup_logging, format_execution_time
 
 
 class ClimateImpactExtractorTest:
@@ -12,11 +15,14 @@ class ClimateImpactExtractorTest:
         self.dataset_dir = dataset_dir
         self.dataset_path = dataset_path
         self.override_config = override_config
-        self.results_dir = f"./results/{self.test_name}/"
+        current_time = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+        self.results_dir = f"./results/{self.test_name}/{current_time}/"
         os.makedirs(os.path.dirname(self.results_dir), exist_ok=True)
         setup_logging(f"{self.results_dir}/execution.log")
 
     def run(self):
+        start_time = time.time()
+
         if self.override_config:
             with tempfile.NamedTemporaryFile(
                 suffix=".yaml", delete=False
@@ -35,3 +41,10 @@ class ClimateImpactExtractorTest:
         extractor.write_location_to_csv(articles, f"{self.results_dir}/locations.csv")
         extractor.write_config(f"{self.results_dir}/config.yaml")
         extractor.write_prompts_to_json(f"{self.results_dir}/prompts.json")
+
+        end_time = time.time()
+        execution_time = end_time - start_time
+
+        with open(f"{self.results_dir}/execution_time.txt", "w") as time_file:
+            time_str = format_execution_time(execution_time)
+            time_file.write(time_str)

@@ -31,3 +31,18 @@ def setup_logging(logging_file: str):
     # Uncomment if needed
     # set_verbose(True)
     # set_debug(True)
+
+
+def format_execution_time(execution_time):
+    days, remainder = divmod(execution_time, 86400)
+    hours, remainder = divmod(remainder, 3600)
+    minutes, seconds = divmod(remainder, 60)
+    time_str_parts = []
+    if days > 0:
+        time_str_parts.append(f"{int(days)} days")
+    if hours > 0 or days > 0:
+        time_str_parts.append(f"{int(hours)} hours")
+    if minutes > 0 or hours > 0 or days > 0:
+        time_str_parts.append(f"{int(minutes)} minutes")
+    time_str_parts.append(f"{seconds:.2f} seconds")
+    return "Execution time: " + " ".join(time_str_parts)
