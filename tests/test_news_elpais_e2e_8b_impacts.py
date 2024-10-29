@@ -1,6 +1,6 @@
 from common import ClimateImpactExtractorTest, ClimateImpactExtractorEvaluation
 
-TEST_NAME = "news-elpais-e2e-8b"
+TEST_NAME = "news-elpais-e2e-8b-impacts"
 DATASET_DIR = "news-elpais-sample-194-annotated-e2e"
 DATASET_BASE_PATH = f"/home/javier/Developer/SeqIA/data/{DATASET_DIR}/"
 DATASET_PATH = f"{DATASET_BASE_PATH}/sample-pred-drought/"
