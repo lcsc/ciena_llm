@@ -16,6 +16,7 @@ class ClimateImpactExtractorTest:
         self.dataset_path = dataset_path
         self.override_config = override_config
         current_time = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+        # TODO make sure results directory is always the same independently of where the script is run from
         self.results_dir = f"./results/{self.test_name}/{current_time}/"
         os.makedirs(os.path.dirname(self.results_dir), exist_ok=True)
         setup_logging(f"{self.results_dir}/execution.log")

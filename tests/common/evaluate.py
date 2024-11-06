@@ -1,7 +1,16 @@
 import os
 
 import yaml
+import pandas as pd
+import glob
+from datetime import datetime
 
+from .plot import (
+    compute_confusion_matrix_and_metrics,
+    print_confusion_matrix,
+    print_metrics,
+    plot_confusion_matrix,
+)
 
 IMPACT_EVALUATION_TYPE = "impact"
 DROUGHT_EVALUATION_TYPE = "drought"
@@ -9,14 +18,28 @@ EVALUATION_TYPES = [IMPACT_EVALUATION_TYPE, DROUGHT_EVALUATION_TYPE]
 
 
 class ClimateImpactExtractorEvaluation:
-    def __init__(self, test_name, annotations_path, evaluation_type):
+    def __init__(self, test_name, annotations_path, evaluation_type, result_dir=None):
         self.test_name = test_name
         self.annotations_path = annotations_path
-        self.results_dir = f"./results/{self.test_name}/"
+        if result_dir:
+            self.results_dir = result_dir
+        else:
+            result_dirs = glob.glob(f"./results/{self.test_name}/[0-9]*_[0-9]*")
+            result_dirs.sort(
+                key=lambda x: datetime.strptime(x.split("/")[-1], "%Y-%m-%d_%H-%M-%S"),
+                reverse=True,
+            )
+            if result_dirs:
+                self.results_dir = result_dirs[0]
+            else:
+                raise Exception(
+                    f"No results directory found for test {self.test_name}."
+                )
         if not os.path.exists(self.results_dir):
             raise Exception(
                 f"Results directory {self.results_dir} does not exist. Run the test first."
             )
+        print("Using results directory:", self.results_dir)
         self.plot_dir = f"{self.results_dir}/plots"
         os.makedirs(self.plot_dir, exist_ok=True)
         with open(
