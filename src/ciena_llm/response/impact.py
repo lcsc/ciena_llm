@@ -2,8 +2,8 @@ from pydantic import BaseModel, Field
 
 
 class ImpactLLMResponse(BaseModel):
-    impact: bool = Field(
-        description="Whether the article mentions impacts of a climatic drought."
+    response: bool = Field(
+        description="Whether the article mentions impacts of a climatic drought on the specific impact type."
     )
 
 

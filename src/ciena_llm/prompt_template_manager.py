@@ -1,13 +1,21 @@
-import json
-from typing import List
-
 from langchain_core.prompts import PromptTemplate
 
-DROUGHT_EXTRACTION_BOOL_ES = """
+################################################################################
+# Drough Extraction
+################################################################################
+
+DROUGHT_EXTRACTION_BOOLEAN_ES = """
 Analiza el siguiente artículo y determina si la noticia está relacionada con la sequía climática.
 Texto:
 {text}
 Por ejemplo, si el artículo está relacionado con la sequía climática, responde únicamente la palabra "True" y si no lo está, responde "False". No añadas ningún signo de puntuación ni proporciones ninguna explicación adicional. Sólo True/False.
+"""
+
+DROUGHT_EXTRACTION_BOOLEAN_EN = """
+Analyze the following article and determine if the news article is mentions the existance of climate drought.
+In your response, provide only an affirmative or negative answer.
+Text:
+{text}
 """
 
 DROUGHT_EXTRACTION_ES = """
@@ -16,18 +24,22 @@ Texto:
 {text}
 """
 
-DROUGHT_EXTRACTION_EN = """
-Analyze the following article and determine if the news article is mentions the existance of climate drought.
-In your response, provide only an affirmative or negative answer.
-Text:
-{text}
-"""
+################################################################################
+# Impact Extraction
+################################################################################
 
-IMPACT_EXTRACTION_BOOL_ES = """
+IMPACT_EXTRACTION_BOOLEAN_ES = """
 Analiza el siguiente artículo relacionado con la sequía climática. Determina si esta noticia menciona un impacto de la sequía en {impact}.
 Texto:
 {text}
 Por ejemplo, si el artículo menciona un impacto en {impact}, responde únicamente la palabra "True" y si no lo está, responde "False". No añadas ningún signo de puntuación ni proporciones ninguna explicación adicional. Sólo True/False.
+"""
+
+IMPACT_EXTRACTION_BOOLEAN_EN = """
+Analyze the following article related to climate drought. Determine if this news article mentions an impact of the drought on {impact}.
+In your response, provide only an affirmative or negative answer.
+Text:
+{text}
 """
 
 IMPACT_EXTRACTION_ES = """
@@ -38,10 +50,15 @@ Texto:
 
 IMPACT_EXTRACTION_EN = """
 Analyze the following article related to climate drought. Determine if this news article mentions an impact of the drought on {impact}.
-In your response, provide only an affirmative or negative answer.
+In your response, focus solely on the impact of the drought on {impact} as mentioned in the article.
 Text:
 {text}
 """
+
+
+################################################################################
+# Location Extraction
+################################################################################
 
 LOCATION_EXTRACTION_ES = """
 Analiza el siguiente artículo relacionado con la sequía climática. Determina las localizaciones que aparecen en el texto que impactadas por la sequía. Además, indica a que tipo de localización se refiere (e.g. municipio, provincia, comunidad autonoma, río, presa, cuenca, etc.). Lista únicamente aquellas que estén directamente relacionadas con la sequía. Por localización, indica una pequeña descripción del impacto de la sequía en esa localización según la noticia. En el caso de que no haya ninguna localización impactada por la sequía, no menciones ninguna.
@@ -93,6 +110,9 @@ Text:
 {text}
 """
 
+################################################################################
+# Boolean Response Parsers
+################################################################################
 
 BOOLEAN_RESPONSE_PARSER_EN = """
 Extract whether the following text is affirmative or negative.
@@ -103,6 +123,10 @@ Text:
 {text}
 """
 
+################################################################################
+# Drought Response Parsers
+################################################################################
+
 DROUGHT_RESPONSE_PARSER_EN = """
 Extract whether the following text is related to climate drought.
 Format instructions:
@@ -112,14 +136,23 @@ Text:
 {text}
 """
 
+################################################################################
+# Impact Response Parsers
+################################################################################
+
 IMPACT_RESPONSE_PARSER_EN = """
 Extract whether the following text mentions an impact of climate drought on {impact}.
+Focus solely on the impact of the drought on {impact} as mentioned in the text.
 Format instructions:
 {format_instructions}
 Return only the JSON inside a markdown fenced code block (without syntax highlighting and no additional text around it).
 Text:
 {text}
 """
+
+################################################################################
+# Location Response Parsers
+################################################################################
 
 LOCATION_RESPONSE_PARSER_EN = """
 Extract the locations impacted by climate drought from the given text.
@@ -138,29 +171,33 @@ Text:
 class PromptTemplateManager:
     def __init__(self):
         self.templates = {
+            "drought_extraction_boolean_es": {
+                "template": DROUGHT_EXTRACTION_BOOLEAN_ES,
+                "variables": ["text"],
+            },
+            "drought_extraction_boolean_en": {
+                "template": DROUGHT_EXTRACTION_BOOLEAN_EN,
+                "variables": ["text"],
+            },
             "drought_extraction_es": {
                 "template": DROUGHT_EXTRACTION_ES,
                 "variables": ["text"],
             },
-            "drought_extraction_bool_es": {
-                "template": DROUGHT_EXTRACTION_BOOL_ES,
+            "impact_extraction_boolean_es": {
+                "template": IMPACT_EXTRACTION_BOOLEAN_ES,
                 "variables": ["text"],
             },
-            "drought_extraction_en": {
-                "template": DROUGHT_EXTRACTION_EN,
+            "impact_extraction_boolean_en": {
+                "template": IMPACT_EXTRACTION_BOOLEAN_EN,
                 "variables": ["text"],
             },
             "impact_extraction_es": {
                 "template": IMPACT_EXTRACTION_ES,
                 "variables": ["text", "impact"],
             },
-            "impact_extraction_bool_es": {
-                "template": IMPACT_EXTRACTION_BOOL_ES,
-                "variables": ["text"],
-            },
             "impact_extraction_en": {
                 "template": IMPACT_EXTRACTION_EN,
-                "variables": ["text"],
+                "variables": ["text", "impact"],
             },
             "location_extraction_es": {
                 "template": LOCATION_EXTRACTION_ES,

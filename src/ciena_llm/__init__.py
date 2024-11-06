@@ -56,8 +56,6 @@ class ClimateImpactExtractor:
                             if not article.drought:
                                 continue
                     case "impact":
-                        # TODO for impact in impacts ?
-                        # TODO pass impact name to extractor and to prompt template
                         article = self.impact_extractor.extract_impact(article)
                     case "location":
                         article = self.location_extractor.extract_locations(article)
