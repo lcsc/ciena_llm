@@ -9,6 +9,9 @@ pipeline:
   location:
     enable: True
     order: 300
+  province:
+    enable: True
+    order: 400
 llm:
   default:
     name: "llama3.1"
@@ -35,10 +38,12 @@ prompt:
   impact_extraction: "impact_extraction_boolean_en"
   # impact_extraction: "impact_extraction_en"
   location_extraction: "location_extraction_en"
+  province_extraction: "provinces_extraction_parser_en"
   drought_response_parser: "drought_response_parser_en"
   impact_response_parser: "boolean_response_parser_en"
   # impact_response_parser: "impact_response_parser_en"
   location_response_parser: "location_response_parser_en"
+  province_response_parser: null
 impacts:
   - tag: "agriculture"
     text_es: "agricultura"
@@ -58,6 +63,7 @@ output:
     - article_drought
     - article_impacts_aggregated
     - article_locations_aggregated
+    - article_provinces
     - article_date
     - article_url
     - article_headline

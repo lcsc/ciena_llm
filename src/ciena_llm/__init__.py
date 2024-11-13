@@ -17,6 +17,7 @@ from seqia.utils.output import write_to_csv
 from ciena_llm.extractor.drought import DroughtExtractor
 from ciena_llm.extractor.impact import ImpactExtractor
 from ciena_llm.extractor.location import LocationExtractor
+from ciena_llm.extractor.province import ProvinceExtractor
 
 
 class ClimateImpactExtractor:
@@ -40,6 +41,8 @@ class ClimateImpactExtractor:
             self.impact_extractor = ImpactExtractor(self.config)
         if "location" in self.pipeline_stages:
             self.location_extractor = LocationExtractor(self.config)
+        if "province" in self.pipeline_stages:
+            self.province_extractor = ProvinceExtractor(self.config)
 
     def __call__(self, dataset_path: str) -> List[Article]:
         articles = self.article_loader(dataset_path)
@@ -59,6 +62,8 @@ class ClimateImpactExtractor:
                         article = self.impact_extractor.extract_impact(article)
                     case "location":
                         article = self.location_extractor.extract_locations(article)
+                    case "province":
+                        article = self.province_extractor.extract_provinces(article)
 
         return articles
 
@@ -93,6 +98,8 @@ class ClimateImpactExtractor:
             prompts.update(self.impact_extractor.prompts)
         if "location" in self.pipeline_stages:
             prompts.update(self.location_extractor.prompts)
+        if "province" in self.pipeline_stages:
+            prompts.update(self.province_extractor.prompts)
 
-        with open(file, "w") as f:
+        with open(file, "w", encoding="utf-8") as f:
             json.dump(prompts, f, indent=4)

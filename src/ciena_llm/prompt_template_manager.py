@@ -111,6 +111,25 @@ Text:
 """
 
 ################################################################################
+# Provinces Extraction
+################################################################################
+PROVINCES_EXTRACTION_PARSER_EN = """
+Given a news article describing drought impacts in Spanish regions, return the list of affected provinces.
+Identify provinces explicitly mentioned or infer them from the described locations.
+If you cannot identify specific provinces, return all provinces in the regions mentioned.
+Note that the text may refer to autonomous communities or specific cities, towns, and municipalities, which are not the provinces being requested. Do not include these autonomous communities or municipalities in the output.
+Return the province names in Spanish.
+Format instructions:
+{format_instructions}
+Return only the JSON inside a markdown fenced code block (without syntax highlighting and no additional text around it).
+Text:
+{text}
+"""
+# Output the list as parsable JSON with the following structure.
+# {"provinces":[]}
+# Do not output anything else but the list of provinces.
+
+################################################################################
 # Boolean Response Parsers
 ################################################################################
 
@@ -210,6 +229,11 @@ class PromptTemplateManager:
             "location_provinces_extraction_en": {
                 "template": LOCATION_PROVINCES_EXTRACTION_EN,
                 "variables": ["text"],
+            },
+            "provinces_extraction_parser_en": {
+                "template": PROVINCES_EXTRACTION_PARSER_EN,
+                "variables": ["text"],
+                "partial_variables": ["format_instructions"],
             },
             "boolean_response_parser_en": {
                 "template": BOOLEAN_RESPONSE_PARSER_EN,
