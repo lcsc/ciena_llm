@@ -17,9 +17,13 @@ class ClimateImpactExtractorTest:
         self.override_config = override_config
         current_time = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
         # TODO make sure results directory is always the same independently of where the script is run from
-        self.results_dir = f"./results/{self.test_name}/{current_time}/"
-        os.makedirs(os.path.dirname(self.results_dir), exist_ok=True)
-        setup_logging(f"{self.results_dir}/execution.log")
+        base_results_dir = os.path.abspath("./results")
+        self.results_dir = os.path.join(base_results_dir, self.test_name, current_time)
+        self.latest_results_dir = os.path.join(
+            base_results_dir, self.test_name, "latest"
+        )
+        os.makedirs(self.results_dir, exist_ok=True)
+        setup_logging(os.path.join(self.results_dir, "execution.log"))
 
     def run(self):
         start_time = time.time()
@@ -38,14 +42,26 @@ class ClimateImpactExtractorTest:
 
         extractor = ClimateImpactExtractor(override_config_path)
         articles = extractor(dataset_path=self.dataset_path)
-        extractor.write_summary_to_csv(articles, f"{self.results_dir}/summary.csv")
-        extractor.write_location_to_csv(articles, f"{self.results_dir}/locations.csv")
-        extractor.write_config(f"{self.results_dir}/config.yaml")
-        extractor.write_prompts_to_json(f"{self.results_dir}/prompts.json")
+        extractor.write_summary_to_csv(
+            articles, os.path.join(self.results_dir, "summary.csv")
+        )
+        extractor.write_location_to_csv(
+            articles, os.path.join(self.results_dir, "locations.csv")
+        )
+        extractor.write_config(os.path.join(self.results_dir, "config.yaml"))
+        extractor.write_prompts_to_json(os.path.join(self.results_dir, "prompts.json"))
 
         end_time = time.time()
         execution_time = end_time - start_time
 
-        with open(f"{self.results_dir}/execution_time.txt", "w") as time_file:
+        with open(
+            os.path.join(self.results_dir, "execution_time.txt"), "w", encoding="utf-8"
+        ) as time_file:
             time_str = format_execution_time(execution_time)
             time_file.write(time_str)
+
+        if os.path.islink(self.latest_results_dir) or os.path.exists(
+            self.latest_results_dir
+        ):
+            os.remove(self.latest_results_dir)
+        os.symlink(self.results_dir, self.latest_results_dir)
