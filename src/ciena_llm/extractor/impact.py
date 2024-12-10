@@ -21,51 +21,82 @@ class ImpactExtractor:
 
         self.ptm = PromptTemplateManager()
 
-        # Create prompt templates
-        self.impact_extraction_prompt_template = self.ptm.get_prompt_template(
-            config["prompt"]["impact_extraction"]
-        )
+        # Create response parser
         self.impact_response_parser = JsonOutputParser(
             pydantic_object=BooleanLLMResponse
         )
-        self.impact_response_parser_prompt_template = self.ptm.get_prompt_template(
-            config["prompt"]["impact_response_parser"],
-            format_instructions=self.impact_response_parser.get_format_instructions(),
+
+        self.impact_reponse_parser_enable = (
+            config["prompt"]["impact_response_parser"] is not None
         )
 
+        # Create prompt templates
+        if self.impact_reponse_parser_enable:
+            # - Impact extraction
+            self.impact_extraction_prompt_template = self.ptm.get_prompt_template(
+                config["prompt"]["impact_extraction"]
+            )
+            # - Impact response parser
+            self.impact_response_parser_prompt_template = self.ptm.get_prompt_template(
+                config["prompt"]["impact_response_parser"],
+                format_instructions=self.impact_response_parser.get_format_instructions(),
+            )
+        else:
+            # - Impact extraction + response parser
+            self.impact_extraction_prompt_template = self.ptm.get_prompt_template(
+                config["prompt"]["impact_extraction"],
+                # format_instructions=self.impact_response_parser.get_format_instructions(),  # TODO how to do if there are not format instructions partial variable
+            )
+
         # Create LLMs
+        # - Impact extraction
         self.impact_llm = LLM(
             config=config["llm"],
             stage="impact_extraction",
         )
-        self.impact_response_parser_llm = LLM(
-            config=config["llm"],
-            stage="impact_response_parser",
-        )
+        if self.impact_reponse_parser_enable:
+            # - Impact response parser
+            self.impact_response_parser_llm = LLM(
+                config=config["llm"],
+                stage="impact_response_parser",
+            )
 
         # Save prompts
         self.prompts = {
             "impact_extraction": {
                 "name": config["prompt"]["impact_extraction"],
                 "template": self.impact_extraction_prompt_template.pretty_repr(),
-            },
-            "impact_response_parser": {
-                "name": config["prompt"]["impact_response_parser"],
-                "template": self.impact_response_parser_prompt_template.pretty_repr(),
-            },
+            }
         }
+        if self.impact_reponse_parser_enable:
+            self.prompts.update(
+                {
+                    "impact_response_parser": {
+                        "name": config["prompt"]["impact_response_parser"],
+                        "template": self.impact_response_parser_prompt_template.pretty_repr(),
+                    }
+                }
+            )
 
     def extract_impact(self, article: Article) -> bool:
 
         # Define the chain
-        impact_chain = (
-            self.impact_extraction_prompt_template
-            | self.impact_llm
-            | (lambda text: {"text": text, "impact": impact["text_en"]})
-            | self.impact_response_parser_prompt_template
-            | self.impact_response_parser_llm
-            | self.impact_response_parser
-        )
+        if self.impact_reponse_parser_enable:
+
+            impact_chain = (
+                self.impact_extraction_prompt_template
+                | self.impact_llm
+                | (lambda text: {"text": text, "impact": impact["text_en"]})
+                | self.impact_response_parser_prompt_template
+                | self.impact_response_parser_llm
+                | self.impact_response_parser
+            )
+        else:
+            impact_chain = (
+                self.impact_extraction_prompt_template
+                | self.impact_llm
+                | self.impact_response_parser
+            )
 
         # Get the text to analyze
         text = article.get_headline_and_body(separator=".")
