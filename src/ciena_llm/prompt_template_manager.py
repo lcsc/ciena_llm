@@ -36,7 +36,8 @@ Por ejemplo, si el artículo menciona un impacto en {impact}, responde únicamen
 """
 
 IMPACT_EXTRACTION_BOOLEAN_EN = """
-Analyze the following article related to climate drought. Determine if this news article mentions an impact of the drought on {impact}.
+Analyze the following article related to climate drought. Determine whether the news article mentions an impact of drought on {impact}.
+In your response, focus solely on the impact of the drought on {impact} as mentioned in the article.
 In your response, provide only an affirmative or negative answer.
 Text:
 {text}
@@ -49,10 +50,48 @@ Texto:
 """
 
 IMPACT_EXTRACTION_EN = """
-Analyze the following article related to climate drought. Determine if this news article mentions an impact of the drought on {impact}.
+Analyze the following article related to climate drought. Determine whether the news article mentions an impact of drought on {impact}.
 In your response, focus solely on the impact of the drought on {impact} as mentioned in the article.
 Text:
 {text}
+"""
+
+IMPACT_EXTRACTION_DESCRIPTION_EN = """
+Analyze the following article related to climate drought. Determine whether the news article mentions an impact of drought on {impact}.
+In your response, focus solely on the impact of the drought on {impact} as mentioned in the article.
+The impact is defined as follows:
+{impact_description}
+Text:
+{text}
+Reason your answer and be brief. At the end of your response, provide a clear affirmative (True) or negative (False) answer.
+"""
+
+IMPACT_EXTRACTION_PARSER_DESCRIPTION_EN = """
+Analyze the following article related to climate drought. Determine whether the news article mentions an impact of drought on {impact}.
+In your response, focus solely on the impact of the drought on {impact} as mentioned in the article.
+The impact is defined as follows:
+{impact_description}
+Text:
+{text}
+Provide the only response in the following format:
+Format instructions:
+```json
+{{"response": true or false}}
+```
+"""
+
+IMPACT_EXTRACTION_PARSER_DESCRIPTION_ES = """
+Analiza el siguiente artículo relacionado con la sequía climática. Determina si esta noticia menciona un impacto de la sequía en {impact}.
+En tu respuesta, enfócate únicamente en el impacto de la sequía en {impact} tal como se menciona en el artículo.
+El impacto se define como sigue:
+{impact_description}
+Texto:
+{text}
+Proporciona la única respuesta en el siguiente formato:
+Instrucciones de formato:
+```json
+{{"response": true or false}}
+```
 """
 
 
@@ -217,6 +256,20 @@ class PromptTemplateManager:
             "impact_extraction_en": {
                 "template": IMPACT_EXTRACTION_EN,
                 "variables": ["text", "impact"],
+            },
+            "impact_extraction_description_en": {
+                "template": IMPACT_EXTRACTION_DESCRIPTION_EN,
+                "variables": ["text", "impact", "impact_description"],
+            },
+            "impact_extraction_parser_description_en": {
+                "template": IMPACT_EXTRACTION_PARSER_DESCRIPTION_EN,
+                "variables": ["text", "impact", "impact_description"],
+                # "partial_variables": ["format_instructions"],
+            },
+            "impact_extraction_parser_description_es": {
+                "template": IMPACT_EXTRACTION_PARSER_DESCRIPTION_ES,
+                "variables": ["text", "impact", "impact_description"],
+                # "partial_variables": ["format_instructions"],
             },
             "location_extraction_es": {
                 "template": LOCATION_EXTRACTION_ES,

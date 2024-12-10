@@ -113,6 +113,9 @@ class ImpactExtractor:
                     {
                         "text": text,
                         "impact": impact["text_es"],  # TODO language??
+                        "impact_description": impact[
+                            "description_es"
+                        ],  # TODO language??
                     }
                 )
                 # TODO What to do if prompt is in Spanish?
