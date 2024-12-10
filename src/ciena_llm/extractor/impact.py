@@ -86,7 +86,12 @@ class ImpactExtractor:
             impact_chain = (
                 self.impact_extraction_prompt_template
                 | self.impact_llm
-                | (lambda text: {"text": text, "impact": impact["text_en"]})
+                | (
+                    lambda text: {
+                        "text": text,
+                        "impact": impact["text_es"],  # TODO language??
+                    }
+                )
                 | self.impact_response_parser_prompt_template
                 | self.impact_response_parser_llm
                 | self.impact_response_parser
@@ -105,7 +110,10 @@ class ImpactExtractor:
         for impact in self.impacts:
             try:
                 impact_response = impact_chain.invoke(
-                    {"text": text, "impact": impact["text_en"]}
+                    {
+                        "text": text,
+                        "impact": impact["text_es"],  # TODO language??
+                    }
                 )
                 # TODO What to do if prompt is in Spanish?
             except pydantic.ValidationError as e:
