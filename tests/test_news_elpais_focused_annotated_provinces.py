@@ -1,13 +1,14 @@
 from common import ClimateImpactExtractorTest
 
 MODELS = [
-    "llama3.1:8b",
-    # "llama3.1:70b",
-    "llama3.2:3b",
-    "mistral-small:22b",
-    "gemma2:9b",
-    "gemma2:27b",
-    "qwen2.5:32b",
+    # "llama3.1:8b",
+    # # "llama3.1:70b",
+    # "llama3.2:3b",
+    # "mistral-small:22b",
+    # "gemma2:9b",
+    # "gemma2:27b",
+    # "qwen2.5:32b",
+    "qwq:32b",
 ]
 
 for model in MODELS:
@@ -26,7 +27,7 @@ for model in MODELS:
             "location": {
                 "enable": False,
             },
-            "province": {
+            "province": {  # Only province extraction
                 "enable": True,
             },
         },
