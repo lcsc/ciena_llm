@@ -121,10 +121,20 @@ class ClimateImpactExtractorEvaluation:
 
     def evaluate_single_impact(self, df_evaluation, impact):
         # From the evaluation df, get each impact's true and predicted labels
-        df_evaluation[f"{impact}_true"] = df_evaluation[f"{impact}_label"]
+        if f"{impact}_label" in df_evaluation.columns:
+            label = df_evaluation[f"{impact}_label"].astype(bool)
+        else:
+            label = df_evaluation[impact].astype(bool)
+
+        df_evaluation[f"{impact}_true"] = label
         df_evaluation[f"{impact}_predicted"] = df_evaluation[
             "article_impacts_aggregated"
         ].apply(lambda x: impact in x)
+
+        # Remove rows with NA values in true or predicted columns for the current impact
+        df_evaluation = df_evaluation.dropna(
+            subset=[f"{impact}_true", f"{impact}_predicted"]
+        )
 
         # Plot confusion matrix and calculate metrics for each impact
         cm, metrics = compute_confusion_matrix_and_metrics(df_evaluation, impact)
