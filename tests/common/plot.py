@@ -13,11 +13,21 @@ import seaborn as sns
 
 def compute_confusion_matrix_and_metrics(df, class_name):
     total_instances = len(df)
-    cm = confusion_matrix(df[f"{class_name}_true"], df[f"{class_name}_predicted"])
+
+    # Compute confusion matrix with labels
+    cm = confusion_matrix(
+        df[f"{class_name}_true"], df[f"{class_name}_predicted"], labels=[True, False]
+    )
     accuracy = accuracy_score(df[f"{class_name}_true"], df[f"{class_name}_predicted"])
-    precision = precision_score(df[f"{class_name}_true"], df[f"{class_name}_predicted"])
-    recall = recall_score(df[f"{class_name}_true"], df[f"{class_name}_predicted"])
-    f1 = f1_score(df[f"{class_name}_true"], df[f"{class_name}_predicted"])
+    precision = precision_score(
+        df[f"{class_name}_true"], df[f"{class_name}_predicted"], zero_division=0
+    )
+    recall = recall_score(
+        df[f"{class_name}_true"], df[f"{class_name}_predicted"], zero_division=0
+    )
+    f1 = f1_score(
+        df[f"{class_name}_true"], df[f"{class_name}_predicted"], zero_division=0
+    )
 
     metrics = {
         "total_instances": total_instances,
