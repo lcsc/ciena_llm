@@ -5,7 +5,7 @@ TEST_NAME = "test_short"
 DATASET_BASE_PATH = (
     "/home/javier/Developer/SeqIA/data/test-datasets-small/news-elpais-binary-5T-2F/"
 )
-DATASET_DIR = f"{DATASET_BASE_PATH}/sample"
+DATASET_PATH = f"{DATASET_BASE_PATH}/sample"
 ANNOTATION_PATH = f"{DATASET_BASE_PATH}/labels.csv"
 
 OVERRIDE_CONFIG = {
@@ -36,7 +36,7 @@ OVERRIDE_CONFIG = {
 
 
 test = ClimateImpactExtractorTest(
-    TEST_NAME, DATASET_BASE_PATH, DATASET_DIR, OVERRIDE_CONFIG
+    TEST_NAME, DATASET_PATH, OVERRIDE_CONFIG
 )
 test.run()
 

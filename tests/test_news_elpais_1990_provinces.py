@@ -29,5 +29,5 @@ OVERRIDE_CONFIG = {
     },
 }
 
-test = ClimateImpactExtractorTest(TEST_NAME, DATASET_DIR, DATASET_PATH, OVERRIDE_CONFIG)
+test = ClimateImpactExtractorTest(TEST_NAME, DATASET_PATH, OVERRIDE_CONFIG)
 test.run()

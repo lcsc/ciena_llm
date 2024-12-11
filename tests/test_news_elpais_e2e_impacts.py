@@ -49,7 +49,7 @@ for model in MODELS:
     }
 
     test = ClimateImpactExtractorTest(
-        TEST_NAME, DATASET_DIR, DATASET_PATH, OVERRIDE_CONFIG
+        TEST_NAME, DATASET_PATH, OVERRIDE_CONFIG
     )
     test.run()
 

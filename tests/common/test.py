@@ -10,9 +10,8 @@ from .log import setup_logging, format_execution_time
 
 
 class ClimateImpactExtractorTest:
-    def __init__(self, test_name, dataset_dir, dataset_path, override_config=None):
+    def __init__(self, test_name, dataset_path, override_config=None):
         self.test_name = test_name
-        self.dataset_dir = dataset_dir
         self.dataset_path = dataset_path
         self.override_config = override_config
         current_time = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
