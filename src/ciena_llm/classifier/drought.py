@@ -10,18 +10,18 @@ from ciena_llm.prompt_template_manager import PromptTemplateManager
 from ciena_llm.response.boolean import BooleanLLMResponse
 
 
-class DroughtExtractor:
+class DroughtClassifier:
     def __init__(self, config: Dict):
         """
-        Initialize the DroughtExtractor with the given configuration.
+        Initialize the DroughtClassifier with the given configuration.
 
-        :param config: The configuration for the DroughtExtractor.
+        :param config: The configuration for the DroughtClassifier.
         """
         self.ptm = PromptTemplateManager()
 
         # Create prompt templates
-        self.drought_extraction_prompt_template = self.ptm.get_prompt_template(
-            config["prompt"]["drought_extraction"]
+        self.drought_classification_prompt_template = self.ptm.get_prompt_template(
+            config["prompt"]["drought_classification"]
         )
         self.drought_response_parser = JsonOutputParser(
             pydantic_object=BooleanLLMResponse
@@ -34,7 +34,7 @@ class DroughtExtractor:
         # Create LLMs
         self.drought_llm = LLM(
             config=config["llm"],
-            stage="drought_extraction",
+            stage="drought_classification",
         )
         self.drought_response_parser_llm = LLM(
             config=config["llm"],
@@ -43,9 +43,9 @@ class DroughtExtractor:
 
         # Save prompts
         self.prompts = {
-            "drought_extraction": {
-                "name": config["prompt"]["drought_extraction"],
-                "template": self.drought_extraction_prompt_template.pretty_repr(),
+            "drought_classification": {
+                "name": config["prompt"]["drought_classification"],
+                "template": self.drought_classification_prompt_template.pretty_repr(),
             },
             "drought_response_parser": {
                 "name": config["prompt"]["drought_response_parser"],
@@ -53,11 +53,11 @@ class DroughtExtractor:
             },
         }
 
-    def extract_drought(self, article: Article) -> Article:
+    def classify(self, article: Article) -> Article:
 
         # Define the chain
         drought_chain = (
-            self.drought_extraction_prompt_template
+            self.drought_classification_prompt_template
             | self.drought_llm
             | self.drought_response_parser_prompt_template
             | self.drought_response_parser_llm
@@ -81,6 +81,6 @@ class DroughtExtractor:
         # Update the article with the extracted drought information
         article.drought = drought_response.response
 
-        logging.debug("Article %s completed drought extraction", article.filename)
+        logging.debug("Article %s completed drought classification", article.filename)
 
         return article

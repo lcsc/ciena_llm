@@ -24,7 +24,7 @@ llm:
 #     name: "llama3"
 #     temperature: 0
 #     context_length: 8192
-#   impact_extraction:
+#   impact_classification:
 #     name: ""
 #     temperature: 0.6
 #   location_extraction:
@@ -34,9 +34,8 @@ llm:
 #     name: ""
 #     context_length: 1234
 prompt:
-  drought_extraction: "drought_extraction_en"
-  impact_extraction: "impact_extraction_parser_description_en"
-  # impact_extraction: "impact_extraction_en"
+  drought_classification: "drought_classification_en"
+  impact_classification: "impact_classification_parser_description_en"
   location_extraction: "location_extraction_en"
   province_extraction: "provinces_extraction_parser_en"
   drought_response_parser: "drought_response_parser_en"

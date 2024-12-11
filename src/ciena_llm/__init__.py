@@ -14,8 +14,8 @@ from seqia.article.loader import ArticleLoader
 from seqia.config.loader import ConfigLoader
 from seqia.utils.output import write_to_csv
 
-from ciena_llm.extractor.drought import DroughtExtractor
-from ciena_llm.extractor.impact import ImpactExtractor
+from ciena_llm.classifier.drought import DroughtClassifier
+from ciena_llm.classifier.impact import ImpactClassifier
 from ciena_llm.extractor.location import LocationExtractor
 from ciena_llm.extractor.province import ProvinceExtractor
 
@@ -36,9 +36,9 @@ class ClimateImpactExtractor:
 
         # TODO pass only extractor specific config
         if "drought" in self.pipeline_stages:
-            self.drought_extractor = DroughtExtractor(self.config)
+            self.drought_classifier = DroughtClassifier(self.config)
         if "impact" in self.pipeline_stages:
-            self.impact_extractor = ImpactExtractor(self.config)
+            self.impact_classifier = ImpactClassifier(self.config)
         if "location" in self.pipeline_stages:
             self.location_extractor = LocationExtractor(self.config)
         if "province" in self.pipeline_stages:
@@ -54,12 +54,12 @@ class ClimateImpactExtractor:
             for stage, stage_config in self.pipeline:
                 match stage:
                     case "drought":
-                        article = self.drought_extractor.extract_drought(article)
+                        article = self.drought_classifier.classify(article)
                         if stage_config["exclude"]:
                             if not article.drought:
                                 continue
                     case "impact":
-                        article = self.impact_extractor.extract_impact(article)
+                        article = self.impact_classifier.classify(article)
                     case "location":
                         article = self.location_extractor.extract_locations(article)
                     case "province":
@@ -93,9 +93,9 @@ class ClimateImpactExtractor:
         prompts = {}
 
         if "drought" in self.pipeline_stages:
-            prompts.update(self.drought_extractor.prompts)
+            prompts.update(self.drought_classifier.prompts)
         if "impact" in self.pipeline_stages:
-            prompts.update(self.impact_extractor.prompts)
+            prompts.update(self.impact_classifier.prompts)
         if "location" in self.pipeline_stages:
             prompts.update(self.location_extractor.prompts)
         if "province" in self.pipeline_stages:

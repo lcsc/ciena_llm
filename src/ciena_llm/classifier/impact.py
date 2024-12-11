@@ -10,12 +10,12 @@ from ciena_llm.prompt_template_manager import PromptTemplateManager
 from ciena_llm.response.boolean import BooleanLLMResponse
 
 
-class ImpactExtractor:
+class ImpactClassifier:
     def __init__(self, config: Dict):
         """
-        Initialize the ImpactExtractor with the given configuration.
+        Initialize the ImpactClassifier with the given configuration.
 
-        :param config: The configuration for the ImpactExtractor.
+        :param config: The configuration for the ImpactClassifier.
         """
         self.impacts = config["impacts"]
 
@@ -32,9 +32,9 @@ class ImpactExtractor:
 
         # Create prompt templates
         if self.impact_reponse_parser_enable:
-            # - Impact extraction
-            self.impact_extraction_prompt_template = self.ptm.get_prompt_template(
-                config["prompt"]["impact_extraction"]
+            # - Impact classification
+            self.impact_classification_prompt_template = self.ptm.get_prompt_template(
+                config["prompt"]["impact_classification"]
             )
             # - Impact response parser
             self.impact_response_parser_prompt_template = self.ptm.get_prompt_template(
@@ -42,17 +42,17 @@ class ImpactExtractor:
                 format_instructions=self.impact_response_parser.get_format_instructions(),
             )
         else:
-            # - Impact extraction + response parser
-            self.impact_extraction_prompt_template = self.ptm.get_prompt_template(
-                config["prompt"]["impact_extraction"],
+            # - Impact classification + response parser
+            self.impact_classification_prompt_template = self.ptm.get_prompt_template(
+                config["prompt"]["impact_classification"],
                 # format_instructions=self.impact_response_parser.get_format_instructions(),  # TODO how to do if there are not format instructions partial variable
             )
 
         # Create LLMs
-        # - Impact extraction
+        # - Impact classification
         self.impact_llm = LLM(
             config=config["llm"],
-            stage="impact_extraction",
+            stage="impact_classification",
         )
         if self.impact_reponse_parser_enable:
             # - Impact response parser
@@ -63,9 +63,9 @@ class ImpactExtractor:
 
         # Save prompts
         self.prompts = {
-            "impact_extraction": {
-                "name": config["prompt"]["impact_extraction"],
-                "template": self.impact_extraction_prompt_template.pretty_repr(),
+            "impact_classification": {
+                "name": config["prompt"]["impact_classification"],
+                "template": self.impact_classification_prompt_template.pretty_repr(),
             }
         }
         if self.impact_reponse_parser_enable:
@@ -78,13 +78,13 @@ class ImpactExtractor:
                 }
             )
 
-    def extract_impact(self, article: Article) -> bool:
+    def classify(self, article: Article) -> bool:
 
         # Define the chain
         if self.impact_reponse_parser_enable:
 
             impact_chain = (
-                self.impact_extraction_prompt_template
+                self.impact_classification_prompt_template
                 | self.impact_llm
                 | (
                     lambda text: {
@@ -98,7 +98,7 @@ class ImpactExtractor:
             )
         else:
             impact_chain = (
-                self.impact_extraction_prompt_template
+                self.impact_classification_prompt_template
                 | self.impact_llm
                 | self.impact_response_parser
             )
@@ -132,7 +132,7 @@ class ImpactExtractor:
                 article.impacts_aggregated.append(impact["tag"])
 
             logging.debug(
-                "Article %s completed impact (%s) extraction",
+                "Article %s completed impact (%s) classification",
                 article.filename,
                 impact["tag"],
             )

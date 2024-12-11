@@ -1,41 +1,56 @@
 from langchain_core.prompts import PromptTemplate
 
+
 ################################################################################
-# Drough Extraction
+# Drough Classification
 ################################################################################
 
-DROUGHT_EXTRACTION_BOOLEAN_ES = """
+DROUGHT_CLASSIFICATION_BOOLEAN_ES = """
 Analiza el siguiente artículo y determina si la noticia está relacionada con la sequía climática.
 Texto:
 {text}
 Por ejemplo, si el artículo está relacionado con la sequía climática, responde únicamente la palabra "True" y si no lo está, responde "False". No añadas ningún signo de puntuación ni proporciones ninguna explicación adicional. Sólo True/False.
 """
 
-DROUGHT_EXTRACTION_BOOLEAN_EN = """
+DROUGHT_CLASSIFICATION_BOOLEAN_EN = """
 Analyze the following article and determine if the news article is mentions the existance of climate drought.
 In your response, provide only an affirmative or negative answer.
 Text:
 {text}
 """
 
-DROUGHT_EXTRACTION_ES = """
+DROUGHT_CLASSIFICATION_ES = """
 Analiza el siguiente artículo y determina si la noticia está relacionada con la sequía climática.
 Texto:
 {text}
 """
 
+DROUGHT_CLASSIFICATION_EN = """
+Analyze the following article and determine if the news article is mentions the existance of climate drought.
+Text:
+{text}
+"""
+
+
 ################################################################################
-# Impact Extraction
+# Drough Extraction
 ################################################################################
 
-IMPACT_EXTRACTION_BOOLEAN_ES = """
+# TODO
+
+
+################################################################################
+# Impact Classification
+################################################################################
+
+IMPACT_CLASSIFICATION_BOOLEAN_ES = """
 Analiza el siguiente artículo relacionado con la sequía climática. Determina si esta noticia menciona un impacto de la sequía en {impact}.
 Texto:
 {text}
 Por ejemplo, si el artículo menciona un impacto en {impact}, responde únicamente la palabra "True" y si no lo está, responde "False". No añadas ningún signo de puntuación ni proporciones ninguna explicación adicional. Sólo True/False.
 """
 
-IMPACT_EXTRACTION_BOOLEAN_EN = """
+IMPACT_CLASSIFICATION_BOOLEAN_EN = """
 Analyze the following article related to climate drought. Determine whether the news article mentions an impact of drought on {impact}.
 In your response, focus solely on the impact of the drought on {impact} as mentioned in the article.
 In your response, provide only an affirmative or negative answer.
@@ -43,20 +58,20 @@ Text:
 {text}
 """
 
-IMPACT_EXTRACTION_ES = """
+IMPACT_CLASSIFICATION_ES = """
 Analiza el siguiente artículo relacionado con la sequía climática. Determina si esta noticia menciona un impacto de la sequía en {impact}.
 Texto:
 {text}
 """
 
-IMPACT_EXTRACTION_EN = """
+IMPACT_CLASSIFICATION_EN = """
 Analyze the following article related to climate drought. Determine whether the news article mentions an impact of drought on {impact}.
 In your response, focus solely on the impact of the drought on {impact} as mentioned in the article.
 Text:
 {text}
 """
 
-IMPACT_EXTRACTION_DESCRIPTION_EN = """
+IMPACT_CLASSIFICATION_DESCRIPTION_EN = """
 Analyze the following article related to climate drought. Determine whether the news article mentions an impact of drought on {impact}.
 In your response, focus solely on the impact of the drought on {impact} as mentioned in the article.
 The impact is defined as follows:
@@ -66,7 +81,7 @@ Text:
 Reason your answer and be brief. At the end of your response, provide a clear affirmative (True) or negative (False) answer.
 """
 
-IMPACT_EXTRACTION_PARSER_DESCRIPTION_EN = """
+IMPACT_CLASSIFICATION_PARSER_DESCRIPTION_EN = """
 Analyze the following article related to climate drought. Determine whether the news article mentions an impact of drought on {impact}.
 In your response, focus solely on the impact of the drought on {impact} as mentioned in the article.
 The impact is defined as follows:
@@ -80,7 +95,7 @@ Format instructions:
 ```
 """
 
-IMPACT_EXTRACTION_PARSER_DESCRIPTION_ES = """
+IMPACT_CLASSIFICATION_PARSER_DESCRIPTION_ES = """
 Analiza el siguiente artículo relacionado con la sequía climática. Determina si esta noticia menciona un impacto de la sequía en {impact}.
 En tu respuesta, enfócate únicamente en el impacto de la sequía en {impact} tal como se menciona en el artículo.
 El impacto se define como sigue:
@@ -93,6 +108,12 @@ Instrucciones de formato:
 {{"response": true or false}}
 ```
 """
+
+################################################################################
+# Impact Extraction
+################################################################################
+
+# TODO
 
 
 ################################################################################
@@ -149,9 +170,11 @@ Text:
 {text}
 """
 
+
 ################################################################################
 # Provinces Extraction
 ################################################################################
+
 PROVINCES_EXTRACTION_PARSER_EN = """
 Given a news article describing drought impacts in Spanish regions, return the list of affected provinces.
 Identify provinces explicitly mentioned or infer them from the described locations.
@@ -168,6 +191,7 @@ Text:
 # {"provinces":[]}
 # Do not output anything else but the list of provinces.
 
+
 ################################################################################
 # Boolean Response Parsers
 ################################################################################
@@ -180,6 +204,7 @@ Return only the JSON inside a markdown fenced code block (without syntax highlig
 Text:
 {text}
 """
+
 
 ################################################################################
 # Drought Response Parsers
@@ -194,6 +219,7 @@ Text:
 {text}
 """
 
+
 ################################################################################
 # Impact Response Parsers
 ################################################################################
@@ -207,6 +233,7 @@ Return only the JSON inside a markdown fenced code block (without syntax highlig
 Text:
 {text}
 """
+
 
 ################################################################################
 # Location Response Parsers
@@ -229,45 +256,49 @@ Text:
 class PromptTemplateManager:
     def __init__(self):
         self.templates = {
-            "drought_extraction_boolean_es": {
-                "template": DROUGHT_EXTRACTION_BOOLEAN_ES,
+            "drought_classification_boolean_es": {
+                "template": DROUGHT_CLASSIFICATION_BOOLEAN_ES,
                 "variables": ["text"],
             },
-            "drought_extraction_boolean_en": {
-                "template": DROUGHT_EXTRACTION_BOOLEAN_EN,
+            "drought_classification_boolean_en": {
+                "template": DROUGHT_CLASSIFICATION_BOOLEAN_EN,
                 "variables": ["text"],
             },
-            "drought_extraction_es": {
-                "template": DROUGHT_EXTRACTION_ES,
+            "drought_classification_es": {
+                "template": DROUGHT_CLASSIFICATION_ES,
                 "variables": ["text"],
             },
-            "impact_extraction_boolean_es": {
-                "template": IMPACT_EXTRACTION_BOOLEAN_ES,
+            "drought_classification_en": {
+                "template": DROUGHT_CLASSIFICATION_EN,
                 "variables": ["text"],
             },
-            "impact_extraction_boolean_en": {
-                "template": IMPACT_EXTRACTION_BOOLEAN_EN,
+            "impact_classification_boolean_es": {
+                "template": IMPACT_CLASSIFICATION_BOOLEAN_ES,
                 "variables": ["text"],
             },
-            "impact_extraction_es": {
-                "template": IMPACT_EXTRACTION_ES,
+            "impact_classification_boolean_en": {
+                "template": IMPACT_CLASSIFICATION_BOOLEAN_EN,
+                "variables": ["text"],
+            },
+            "impact_classification_es": {
+                "template": IMPACT_CLASSIFICATION_ES,
                 "variables": ["text", "impact"],
             },
-            "impact_extraction_en": {
-                "template": IMPACT_EXTRACTION_EN,
+            "impact_classification_en": {
+                "template": IMPACT_CLASSIFICATION_EN,
                 "variables": ["text", "impact"],
             },
-            "impact_extraction_description_en": {
-                "template": IMPACT_EXTRACTION_DESCRIPTION_EN,
+            "impact_classification_description_en": {
+                "template": IMPACT_CLASSIFICATION_DESCRIPTION_EN,
                 "variables": ["text", "impact", "impact_description"],
             },
-            "impact_extraction_parser_description_en": {
-                "template": IMPACT_EXTRACTION_PARSER_DESCRIPTION_EN,
+            "impact_classification_parser_description_en": {
+                "template": IMPACT_CLASSIFICATION_PARSER_DESCRIPTION_EN,
                 "variables": ["text", "impact", "impact_description"],
                 # "partial_variables": ["format_instructions"],
             },
-            "impact_extraction_parser_description_es": {
-                "template": IMPACT_EXTRACTION_PARSER_DESCRIPTION_ES,
+            "impact_classification_parser_description_es": {
+                "template": IMPACT_CLASSIFICATION_PARSER_DESCRIPTION_ES,
                 "variables": ["text", "impact", "impact_description"],
                 # "partial_variables": ["format_instructions"],
             },
