@@ -32,17 +32,17 @@ class ProvinceExtractor:
         if self.province_response_parser_enable:
             # - Province extraction
             self.province_extraction_prompt_template = self.ptm.get_prompt_template(
-                config["prompt"]["province_extraction"]
+                **config["prompt"]["province_extraction"], step="extraction",
             )
             # - Province response parser
             self.province_response_parser_prompt_template = self.ptm.get_prompt_template(
-                config["prompt"]["province_response_parser"],
+                **config["prompt"]["province_response_parser"], step="response_parser",
                 format_instructions=self.province_response_parser.get_format_instructions(),
             )
         else:
             # - Province extraction + response parser
             self.province_extraction_prompt_template = self.ptm.get_prompt_template(
-                config["prompt"]["province_extraction"],
+                **config["prompt"]["province_extraction"], step="extraction",
                 format_instructions=self.province_response_parser.get_format_instructions(),  # TODO how to do if there are not format instructions partial variable
             )
 
@@ -60,7 +60,7 @@ class ProvinceExtractor:
         # Save prompts
         self.prompts = {
             "province_extraction": {
-                "name": config["prompt"]["province_extraction"],
+                "config": config["prompt"]["province_extraction"],
                 "template": self.province_extraction_prompt_template.pretty_repr(),
             },
         }
@@ -68,7 +68,7 @@ class ProvinceExtractor:
             self.prompts.update(
                 {
                     "province_response_parser": {
-                        "name": config["prompt"]["province_response_parser"],
+                        "config": config["prompt"]["province_response_parser"],
                         "template": self.province_response_parser_prompt_template.pretty_repr(),
                     },
                 }

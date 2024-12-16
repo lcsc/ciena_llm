@@ -256,103 +256,114 @@ Text:
 class PromptTemplateManager:
     def __init__(self):
         self.templates = {
-            "drought_classification_boolean_es": {
+            ("drought", "classification", "boolean", "es"): {
                 "template": DROUGHT_CLASSIFICATION_BOOLEAN_ES,
                 "variables": ["text"],
             },
-            "drought_classification_boolean_en": {
+            ("drought", "classification", "boolean", "en"): {
                 "template": DROUGHT_CLASSIFICATION_BOOLEAN_EN,
                 "variables": ["text"],
             },
-            "drought_classification_es": {
+            ("drought", "classification", "default", "es"): {
                 "template": DROUGHT_CLASSIFICATION_ES,
                 "variables": ["text"],
             },
-            "drought_classification_en": {
+            ("drought", "classification", "default", "en"): {
                 "template": DROUGHT_CLASSIFICATION_EN,
                 "variables": ["text"],
             },
-            "impact_classification_boolean_es": {
-                "template": IMPACT_CLASSIFICATION_BOOLEAN_ES,
-                "variables": ["text"],
-            },
-            "impact_classification_boolean_en": {
-                "template": IMPACT_CLASSIFICATION_BOOLEAN_EN,
-                "variables": ["text"],
-            },
-            "impact_classification_es": {
-                "template": IMPACT_CLASSIFICATION_ES,
-                "variables": ["text", "impact"],
-            },
-            "impact_classification_en": {
-                "template": IMPACT_CLASSIFICATION_EN,
-                "variables": ["text", "impact"],
-            },
-            "impact_classification_description_en": {
-                "template": IMPACT_CLASSIFICATION_DESCRIPTION_EN,
-                "variables": ["text", "impact", "impact_description"],
-            },
-            "impact_classification_parser_description_en": {
-                "template": IMPACT_CLASSIFICATION_PARSER_DESCRIPTION_EN,
-                "variables": ["text", "impact", "impact_description"],
-                # "partial_variables": ["format_instructions"],
-            },
-            "impact_classification_parser_description_es": {
-                "template": IMPACT_CLASSIFICATION_PARSER_DESCRIPTION_ES,
-                "variables": ["text", "impact", "impact_description"],
-                # "partial_variables": ["format_instructions"],
-            },
-            "location_extraction_es": {
-                "template": LOCATION_EXTRACTION_ES,
-                "variables": ["text"],
-            },
-            "location_extraction_en": {
-                "template": LOCATION_EXTRACTION_EN,
-                "variables": ["text"],
-            },
-            "location_provinces_extraction_en": {
-                "template": LOCATION_PROVINCES_EXTRACTION_EN,
-                "variables": ["text"],
-            },
-            "provinces_extraction_parser_en": {
-                "template": PROVINCES_EXTRACTION_PARSER_EN,
-                "variables": ["text"],
-                "partial_variables": ["format_instructions"],
-            },
-            "boolean_response_parser_en": {
-                "template": BOOLEAN_RESPONSE_PARSER_EN,
-                "variables": ["text"],
-                "partial_variables": ["format_instructions"],
-            },
-            "drought_response_parser_en": {
+            ("drought", "response_parser", "default", "en"): {
                 "template": DROUGHT_RESPONSE_PARSER_EN,
                 "variables": ["text"],
                 "partial_variables": ["format_instructions"],
             },
-            "impact_response_parser_en": {
+            ("impact", "classification", "boolean", "es"): {
+                "template": IMPACT_CLASSIFICATION_BOOLEAN_ES,
+                "variables": ["text", "impact"],
+            },
+            ("impact", "classification", "boolean", "en"): {
+                "template": IMPACT_CLASSIFICATION_BOOLEAN_EN,
+                "variables": ["text", "impact"],
+            },
+            ("impact", "classification", "default", "es"): {
+                "template": IMPACT_CLASSIFICATION_ES,
+                "variables": ["text", "impact"],
+            },
+            ("impact", "classification", "default", "en"): {
+                "template": IMPACT_CLASSIFICATION_EN,
+                "variables": ["text", "impact"],
+            },
+            ("impact", "classification", "description", "en"): {
+                "template": IMPACT_CLASSIFICATION_DESCRIPTION_EN,
+                "variables": ["text", "impact", "impact_description"],
+            },
+            ("impact", "classification", "parser_description", "en"): {
+                "template": IMPACT_CLASSIFICATION_PARSER_DESCRIPTION_EN,
+                "variables": ["text", "impact", "impact_description"],
+            },
+            ("impact", "classification", "parser_description", "es"): {
+                "template": IMPACT_CLASSIFICATION_PARSER_DESCRIPTION_ES,
+                "variables": ["text", "impact", "impact_description"],
+            },
+            ("impact", "response_parser", "default", "en"): {
                 "template": IMPACT_RESPONSE_PARSER_EN,
                 "variables": ["text", "impact"],
                 "partial_variables": ["format_instructions"],
             },
-            "location_response_parser_en": {
+            ("location", "extraction", "default", "es"): {
+                "template": LOCATION_EXTRACTION_ES,
+                "variables": ["text"],
+            },
+            ("location", "extraction", "default", "en"): {
+                "template": LOCATION_EXTRACTION_EN,
+                "variables": ["text"],
+            },
+            ("location", "extraction", "provinces", "en"): {
+                "template": LOCATION_PROVINCES_EXTRACTION_EN,
+                "variables": ["text"],
+            },
+            ("location", "response_parser", "default", "en"): {
                 "template": LOCATION_RESPONSE_PARSER_EN,
+                "variables": ["text"],
+                "partial_variables": ["format_instructions"],
+            },
+            ("province", "extraction", "parser", "en"): {
+                "template": PROVINCES_EXTRACTION_PARSER_EN,
+                "variables": ["text"],
+                "partial_variables": ["format_instructions"],
+            },
+            ("default", "response_parser", "boolean", "en"): {
+                "template": BOOLEAN_RESPONSE_PARSER_EN,
                 "variables": ["text"],
                 "partial_variables": ["format_instructions"],
             },
         }
 
-    def get_prompt_template(self, template_name: str, **kwargs) -> PromptTemplate:
+    def get_prompt_template(
+        self,
+        task: str,
+        step: str,
+        category: str = "default",
+        language: str = "en",
+        **kwargs,
+    ) -> PromptTemplate:
         """
-        Retrieves and returns a LangChain PromptTemplate for a given template name.
+        Retrieves and returns a LangChain PromptTemplate for a given task, step, language, and category.
 
-        :param template_name: The name of the template to retrieve.
+        :param task: The task type (e.g., "drought", "impact", "location").
+        :param step: The step within the task (e.g., "classification", "extraction").
+        :param category: The category within the step (default is "default").
+        :param language: The language of the template (default is "en").
         :param kwargs: Additional keyword arguments to format the template.
         :return: A LangChain PromptTemplate object.
         """
-        if template_name not in self.templates:
-            raise ValueError(f"Template '{template_name}' not recognized.")
+        try:
+            template_info = self.templates[(task, step, category, language)]
+        except KeyError:
+            raise ValueError(
+                f"Template for task '{task}', step '{step}', category '{category}', and language '{language}' not recognized."
+            )
 
-        template_info = self.templates[template_name]
         template_str = template_info["template"]
 
         # Separate partial variables from input variables

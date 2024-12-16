@@ -1,3 +1,4 @@
+version: 0.2.0
 pipeline:
   drought:
     enable: False
@@ -34,14 +35,37 @@ llm:
 #     name: ""
 #     context_length: 1234
 prompt:
-  drought_classification: "drought_classification_en"
-  impact_classification: "impact_classification_parser_description_en"
-  location_extraction: "location_extraction_en"
-  province_extraction: "provinces_extraction_parser_en"
-  drought_response_parser: "drought_response_parser_en"
+  drought_classification: 
+    task: drought
+    # step: classification  # TODO already in the name of config
+    category: default
+    language: en
+  impact_classification: 
+    task: impact
+    # step: classification
+    category: parser_description
+    language: en
+  location_extraction: 
+    task: location
+    # step: extraction
+    category: default
+    language: en
+  province_extraction: 
+    task: province
+    # step: classification
+    category: parser
+    language: en
+  drought_response_parser:
+    task: drought
+    # step: response_parser
+    category: default
+    language: en
   impact_response_parser: null
-  # impact_response_parser: "impact_response_parser_en"
-  location_response_parser: "location_response_parser_en"
+  location_response_parser:
+    task: "location"
+    # step: response_parser
+    category: default
+    language: en
   province_response_parser: null
 impacts:
   - tag: "agriculture"

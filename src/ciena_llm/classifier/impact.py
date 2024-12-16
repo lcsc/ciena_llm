@@ -34,17 +34,17 @@ class ImpactClassifier:
         if self.impact_reponse_parser_enable:
             # - Impact classification
             self.impact_classification_prompt_template = self.ptm.get_prompt_template(
-                config["prompt"]["impact_classification"]
+                **config["prompt"]["impact_classification"], step="classification",
             )
             # - Impact response parser
             self.impact_response_parser_prompt_template = self.ptm.get_prompt_template(
-                config["prompt"]["impact_response_parser"],
+                **config["prompt"]["impact_response_parser"], step="response_parser",
                 format_instructions=self.impact_response_parser.get_format_instructions(),
             )
         else:
             # - Impact classification + response parser
             self.impact_classification_prompt_template = self.ptm.get_prompt_template(
-                config["prompt"]["impact_classification"],
+                **config["prompt"]["impact_classification"], step="classification",
                 # format_instructions=self.impact_response_parser.get_format_instructions(),  # TODO how to do if there are not format instructions partial variable
             )
 
@@ -64,7 +64,7 @@ class ImpactClassifier:
         # Save prompts
         self.prompts = {
             "impact_classification": {
-                "name": config["prompt"]["impact_classification"],
+                "config": config["prompt"]["impact_classification"],
                 "template": self.impact_classification_prompt_template.pretty_repr(),
             }
         }
@@ -72,7 +72,7 @@ class ImpactClassifier:
             self.prompts.update(
                 {
                     "impact_response_parser": {
-                        "name": config["prompt"]["impact_response_parser"],
+                        "config": config["prompt"]["impact_response_parser"],
                         "template": self.impact_response_parser_prompt_template.pretty_repr(),
                     }
                 }

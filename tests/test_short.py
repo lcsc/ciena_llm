@@ -24,13 +24,7 @@ OVERRIDE_CONFIG = {
         },
     },
     "llm": {
-        "default": {"name": "llama3.1:8b"},
-    },
-    "prompt": {
-        "drought_classification": "drought_classification_en",
-        "drought_response_parser": "drought_response_parser_en",
-        "impact_classification": "impact_classification_parser_description_en",
-        "impact_response_parser": None,
+        "default": {"name": "llama3.2:3b"},
     },
 }
 

@@ -21,13 +21,13 @@ class DroughtClassifier:
 
         # Create prompt templates
         self.drought_classification_prompt_template = self.ptm.get_prompt_template(
-            config["prompt"]["drought_classification"]
+            **config["prompt"]["drought_classification"], step="classification"
         )
         self.drought_response_parser = JsonOutputParser(
             pydantic_object=BooleanLLMResponse
         )
         self.drought_response_parser_prompt_template = self.ptm.get_prompt_template(
-            config["prompt"]["drought_response_parser"],
+            **config["prompt"]["drought_response_parser"], step="response_parser",
             format_instructions=self.drought_response_parser.get_format_instructions(),
         )
 
@@ -44,11 +44,11 @@ class DroughtClassifier:
         # Save prompts
         self.prompts = {
             "drought_classification": {
-                "name": config["prompt"]["drought_classification"],
+                "config": config["prompt"]["drought_classification"],
                 "template": self.drought_classification_prompt_template.pretty_repr(),
             },
             "drought_response_parser": {
-                "name": config["prompt"]["drought_response_parser"],
+                "config": config["prompt"]["drought_response_parser"],
                 "template": self.drought_response_parser_prompt_template.pretty_repr(),
             },
         }

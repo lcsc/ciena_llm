@@ -23,14 +23,14 @@ class LocationExtractor:
         # Create prompt templates
         # - Location extraction
         self.location_extraction_prompt_template = self.ptm.get_prompt_template(
-            config["prompt"]["location_extraction"]
+            **config["prompt"]["location_extraction"], step="extraction",
         )
         # - Location response parser
         self.location_response_parser = JsonOutputParser(
             pydantic_object=LocationListLLMResponse
         )
         self.location_response_parser_prompt_template = self.ptm.get_prompt_template(
-            config["prompt"]["location_response_parser"],
+            **config["prompt"]["location_response_parser"], step="response_parser",
             format_instructions=self.location_response_parser.get_format_instructions(),
         )
 
@@ -47,11 +47,11 @@ class LocationExtractor:
         # Save prompts
         self.prompts = {
             "location_extraction": {
-                "name": config["prompt"]["location_extraction"],
+                "config": config["prompt"]["location_extraction"],
                 "template": self.location_extraction_prompt_template.pretty_repr(),
             },
             "location_response_parser": {
-                "name": config["prompt"]["location_response_parser"],
+                "config": config["prompt"]["location_response_parser"],
                 "template": self.location_response_parser_prompt_template.pretty_repr(),
             },
         }
