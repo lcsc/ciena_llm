@@ -6,7 +6,7 @@ from langchain_core.output_parsers import JsonOutputParser
 from seqia.article import Article
 
 from ciena_llm.llm import LLM
-from ciena_llm.prompt.prompt_template_manager import PromptTemplateManager
+from ciena_llm.prompt_template_manager import PromptTemplateManager
 from ciena_llm.response.boolean import BooleanLLMResponse
 
 

@@ -7,7 +7,7 @@ from seqia.article import Article
 from seqia.location import Location
 
 from ciena_llm.llm import LLM
-from ciena_llm.prompt.prompt_template_manager import PromptTemplateManager
+from ciena_llm.prompt_template_manager import PromptTemplateManager
 from ciena_llm.response.location import LocationListLLMResponse
 
 
