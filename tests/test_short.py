@@ -25,13 +25,12 @@ OVERRIDE_CONFIG = {
     },
     "llm": {
         "default": {"name": "llama3.2:3b"},
+        # "default": {"name": "llama3.1:8b"},
     },
 }
 
 
-test = ClimateImpactExtractorTest(
-    TEST_NAME, DATASET_PATH, OVERRIDE_CONFIG
-)
+test = ClimateImpactExtractorTest(TEST_NAME, DATASET_PATH, OVERRIDE_CONFIG)
 test.run()
 
 eval_drought = ClimateImpactExtractorEvaluation(TEST_NAME, ANNOTATION_PATH, "drought")

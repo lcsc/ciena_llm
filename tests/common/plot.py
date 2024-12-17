@@ -2,8 +2,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.colors import LogNorm
 from sklearn.metrics import (
-    accuracy_score,
     confusion_matrix,
+    accuracy_score,
+    cohen_kappa_score,
     f1_score,
     precision_score,
     recall_score,
@@ -16,9 +17,10 @@ def compute_confusion_matrix_and_metrics(df, class_name):
 
     # Compute confusion matrix with labels
     cm = confusion_matrix(
-        df[f"{class_name}_true"], df[f"{class_name}_predicted"], labels=[True, False]
+        df[f"{class_name}_true"], df[f"{class_name}_predicted"], labels=[False, True]
     )
     accuracy = accuracy_score(df[f"{class_name}_true"], df[f"{class_name}_predicted"])
+    kappa = cohen_kappa_score(df[f"{class_name}_true"], df[f"{class_name}_predicted"])
     precision = precision_score(
         df[f"{class_name}_true"], df[f"{class_name}_predicted"], zero_division=0
     )
@@ -32,6 +34,7 @@ def compute_confusion_matrix_and_metrics(df, class_name):
     metrics = {
         "total_instances": total_instances,
         "accuracy": round(accuracy, 3),
+        "kappa": round(kappa, 3),
         "precision": round(precision, 3),
         "recall": round(recall, 3),
         "f1": round(f1, 3),
@@ -57,13 +60,14 @@ def plot_confusion_matrix(class_name, cm, metrics, plot_dir):
             [
                 metrics["total_instances"],
                 metrics["accuracy"],
+                metrics["kappa"],
                 metrics["precision"],
                 metrics["recall"],
                 metrics["f1"],
             ]
         ]
     )
-    table_columns = ["Total", "Accuracy", "Precision", "Recall", "F1 Score"]
+    table_columns = ["Total", "Accuracy", "Kappa", "Precision", "Recall", "F1 Score"]
 
     table = ax.table(
         cellText=table_data,
@@ -80,12 +84,13 @@ def plot_confusion_matrix(class_name, cm, metrics, plot_dir):
     plt.close()
 
 
-def print_metrics(class_name, total_instances, accuracy, precision, recall, f1):
+def print_metrics(class_name, total_instances, accuracy, precision, recall, f1, kappa):
     print(f"Metrics:")
     print(f"Class: {class_name.upper()}\n")
 
     print(f"Total Instances: {total_instances}")
     print(f"Accuracy: {accuracy:.3f}")
+    print(f"Kappa: {kappa:.3f}")
     print(f"Precision: {precision:.3f}")
     print(f"Recall: {recall:.3f}")
     print(f"F1 Score: {f1:.3f}")
