@@ -81,7 +81,7 @@ Text:
 Reason your answer and be brief. At the end of your response, provide a clear affirmative (True) or negative (False) answer.
 """
 
-IMPACT_CLASSIFICATION_PARSER_DESCRIPTION_EN = """
+IMPACT_CLASSIFICATION_JSON_DESCRIPTION_EN = """
 Analyze the following article related to climate drought. Determine whether the news article mentions an impact of drought on {impact}.
 In your response, focus solely on the impact of the drought on {impact} as mentioned in the article.
 The impact is defined as follows:
@@ -95,7 +95,7 @@ Format instructions:
 ```
 """
 
-IMPACT_CLASSIFICATION_PARSER_DESCRIPTION_ES = """
+IMPACT_CLASSIFICATION_JSON_DESCRIPTION_ES = """
 Analiza el siguiente artículo relacionado con la sequía climática. Determina si esta noticia menciona un impacto de la sequía en {impact}.
 En tu respuesta, enfócate únicamente en el impacto de la sequía en {impact} tal como se menciona en el artículo.
 El impacto se define como sigue:
@@ -113,7 +113,19 @@ Instrucciones de formato:
 # Impact Extraction
 ################################################################################
 
-# TODO
+IMPACT_EXTRACTION_JSON_ES = """
+Analiza el siguiente artículo relacionado con la sequía climática. Determina si la noticia menciona impactos de la sequía en los siguientes aspectos: {impacts}.
+Para cada aspecto mencionado, proporciona la siguiente información:
+1. Si el artículo menciona la sequía.
+2. Si la sequía ha tenido un impacto en los aspectos mencionados.
+Cada uno de los impactos se define de la siguiente manera:
+{impact_descriptions}
+Si el artículo no menciona ningún impacto de la sequía en los aspectos mencionados, no incluyas información adicional.
+Texto:
+{text}
+Instrucciones de formato:
+{format_instructions}
+"""
 
 
 ################################################################################
@@ -175,7 +187,7 @@ Text:
 # Provinces Extraction
 ################################################################################
 
-PROVINCES_EXTRACTION_PARSER_EN = """
+PROVINCES_EXTRACTION_JSON_EN = """
 Given a news article describing drought impacts in Spanish regions, return the list of affected provinces.
 Identify provinces explicitly mentioned or infer them from the described locations.
 If you cannot identify specific provinces, return all provinces in the regions mentioned.
@@ -256,83 +268,88 @@ Text:
 class PromptTemplateManager:
     def __init__(self):
         self.templates = {
-            ("drought", "classification", "boolean", "es"): {
+            ("drought", "classification", "boolean", "es", "text"): {
                 "template": DROUGHT_CLASSIFICATION_BOOLEAN_ES,
                 "variables": ["text"],
             },
-            ("drought", "classification", "boolean", "en"): {
+            ("drought", "classification", "boolean", "en", "text"): {
                 "template": DROUGHT_CLASSIFICATION_BOOLEAN_EN,
                 "variables": ["text"],
             },
-            ("drought", "classification", "default", "es"): {
+            ("drought", "classification", "default", "es", "text"): {
                 "template": DROUGHT_CLASSIFICATION_ES,
                 "variables": ["text"],
             },
-            ("drought", "classification", "default", "en"): {
+            ("drought", "classification", "default", "en", "text"): {
                 "template": DROUGHT_CLASSIFICATION_EN,
                 "variables": ["text"],
             },
-            ("drought", "response_parser", "default", "en"): {
+            ("drought", "response_parser", "default", "en", "json"): {
                 "template": DROUGHT_RESPONSE_PARSER_EN,
                 "variables": ["text"],
                 "partial_variables": ["format_instructions"],
             },
-            ("impact", "classification", "boolean", "es"): {
+            ("impact", "classification", "boolean", "es", "text"): {
                 "template": IMPACT_CLASSIFICATION_BOOLEAN_ES,
                 "variables": ["text", "impact"],
             },
-            ("impact", "classification", "boolean", "en"): {
+            ("impact", "classification", "boolean", "en", "text"): {
                 "template": IMPACT_CLASSIFICATION_BOOLEAN_EN,
                 "variables": ["text", "impact"],
             },
-            ("impact", "classification", "default", "es"): {
+            ("impact", "classification", "default", "es", "text"): {
                 "template": IMPACT_CLASSIFICATION_ES,
                 "variables": ["text", "impact"],
             },
-            ("impact", "classification", "default", "en"): {
+            ("impact", "classification", "default", "en", "text"): {
                 "template": IMPACT_CLASSIFICATION_EN,
                 "variables": ["text", "impact"],
             },
-            ("impact", "classification", "description", "en"): {
+            ("impact", "classification", "description", "en", "text"): {
                 "template": IMPACT_CLASSIFICATION_DESCRIPTION_EN,
                 "variables": ["text", "impact", "impact_description"],
             },
-            ("impact", "classification", "parser_description", "en"): {
-                "template": IMPACT_CLASSIFICATION_PARSER_DESCRIPTION_EN,
+            ("impact", "classification", "parser_description", "en", "json"): {
+                "template": IMPACT_CLASSIFICATION_JSON_DESCRIPTION_EN,
                 "variables": ["text", "impact", "impact_description"],
             },
-            ("impact", "classification", "parser_description", "es"): {
-                "template": IMPACT_CLASSIFICATION_PARSER_DESCRIPTION_ES,
+            ("impact", "classification", "parser_description", "es", "json"): {
+                "template": IMPACT_CLASSIFICATION_JSON_DESCRIPTION_ES,
                 "variables": ["text", "impact", "impact_description"],
             },
-            ("impact", "response_parser", "default", "en"): {
+            ("impact", "extraction", "default", "es", "json"): {
+                "template": IMPACT_EXTRACTION_JSON_ES,
+                "variables": ["text", "impacts", "impact_descriptions"],
+                "partial_variables": ["format_instructions"],
+            },
+            ("impact", "response_parser", "default", "en", "json"): {
                 "template": IMPACT_RESPONSE_PARSER_EN,
                 "variables": ["text", "impact"],
                 "partial_variables": ["format_instructions"],
             },
-            ("location", "extraction", "default", "es"): {
+            ("location", "extraction", "default", "es", "text"): {
                 "template": LOCATION_EXTRACTION_ES,
                 "variables": ["text"],
             },
-            ("location", "extraction", "default", "en"): {
+            ("location", "extraction", "default", "en", "text"): {
                 "template": LOCATION_EXTRACTION_EN,
                 "variables": ["text"],
             },
-            ("location", "extraction", "provinces", "en"): {
+            ("location", "extraction", "provinces", "en", "text"): {
                 "template": LOCATION_PROVINCES_EXTRACTION_EN,
                 "variables": ["text"],
             },
-            ("location", "response_parser", "default", "en"): {
+            ("location", "response_parser", "default", "en", "json"): {
                 "template": LOCATION_RESPONSE_PARSER_EN,
                 "variables": ["text"],
                 "partial_variables": ["format_instructions"],
             },
-            ("province", "extraction", "parser", "en"): {
-                "template": PROVINCES_EXTRACTION_PARSER_EN,
+            ("province", "extraction", "parser", "en", "json"): {
+                "template": PROVINCES_EXTRACTION_JSON_EN,
                 "variables": ["text"],
                 "partial_variables": ["format_instructions"],
             },
-            ("default", "response_parser", "boolean", "en"): {
+            ("default", "response_parser", "boolean", "en", "json"): {
                 "template": BOOLEAN_RESPONSE_PARSER_EN,
                 "variables": ["text"],
                 "partial_variables": ["format_instructions"],
@@ -345,23 +362,25 @@ class PromptTemplateManager:
         step: str,
         category: str = "default",
         language: str = "en",
+        output: str = "text",
         **kwargs,
     ) -> PromptTemplate:
         """
-        Retrieves and returns a LangChain PromptTemplate for a given task, step, language, and category.
+        Retrieves and returns a LangChain PromptTemplate for a given task, step, language, category, and output type.
 
         :param task: The task type (e.g., "drought", "impact", "location").
         :param step: The step within the task (e.g., "classification", "extraction").
         :param category: The category within the step (default is "default").
         :param language: The language of the template (default is "en").
+        :param output: The output type of the template (default is "text").
         :param kwargs: Additional keyword arguments to format the template.
         :return: A LangChain PromptTemplate object.
         """
         try:
-            template_info = self.templates[(task, step, category, language)]
+            template_info = self.templates[(task, step, category, language, output)]
         except KeyError:
             raise ValueError(
-                f"Template for task '{task}', step '{step}', category '{category}', and language '{language}' not recognized."
+                f"Template for task '{task}', step '{step}', category '{category}', language '{language}', and output '{output}' not recognized."
             )
 
         template_str = template_info["template"]
