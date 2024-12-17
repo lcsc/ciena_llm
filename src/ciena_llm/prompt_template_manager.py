@@ -264,6 +264,23 @@ Text:
 {text}
 """
 
+################################################################################
+# Summarization
+################################################################################
+SUMMARIZATION_ES = """
+Resume el siguiente artículo, centrándote en los aspectos más relevantes relacionados con la sequía climática, los impactos de la sequía y sólo de la sequía y las localizaciones afectadas.
+Si el artículo no menciona la sequía climática, el resumen únicamente debe indicar explícitamente que no se menciona la sequía climática ni ningún impacto relacionado.
+Texto:
+{text}
+"""
+
+SUMMARIZATION_EN = """
+Summarize the following article, focusing on the most relevant aspects related to climate drought, the impacts of drought, and only drought, and the affected locations.
+If the article does not mention climate drought, the summary should explicitly state that climate drought or any related impact is not mentioned.
+Text:
+{text}
+"""
+
 
 class PromptTemplateManager:
     def __init__(self):
@@ -353,6 +370,14 @@ class PromptTemplateManager:
                 "template": BOOLEAN_RESPONSE_PARSER_EN,
                 "variables": ["text"],
                 "partial_variables": ["format_instructions"],
+            },
+            ("default", "summarization", "default", "es", "text"): {
+                "template": SUMMARIZATION_ES,
+                "variables": ["text"],
+            },
+            ("default", "summarization", "default", "en", "text"): {
+                "template": SUMMARIZATION_EN,
+                "variables": ["text"],
             },
         }
 
