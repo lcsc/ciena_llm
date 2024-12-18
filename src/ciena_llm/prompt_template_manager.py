@@ -1,6 +1,8 @@
 from langchain_core.prompts import PromptTemplate
 
 
+DEFAULT = None
+
 ################################################################################
 # Drough Classification
 ################################################################################
@@ -293,15 +295,15 @@ class PromptTemplateManager:
                 "template": DROUGHT_CLASSIFICATION_BOOLEAN_EN,
                 "variables": ["text"],
             },
-            ("drought", "classification", "default", "es", "text"): {
+            ("drought", "classification", DEFAULT, "es", "text"): {
                 "template": DROUGHT_CLASSIFICATION_ES,
                 "variables": ["text"],
             },
-            ("drought", "classification", "default", "en", "text"): {
+            ("drought", "classification", DEFAULT, "en", "text"): {
                 "template": DROUGHT_CLASSIFICATION_EN,
                 "variables": ["text"],
             },
-            ("drought", "response_parser", "default", "en", "json"): {
+            ("drought", "response_parser", DEFAULT, "en", "json"): {
                 "template": DROUGHT_RESPONSE_PARSER_EN,
                 "variables": ["text"],
                 "partial_variables": ["format_instructions"],
@@ -314,11 +316,11 @@ class PromptTemplateManager:
                 "template": IMPACT_CLASSIFICATION_BOOLEAN_EN,
                 "variables": ["text", "impact"],
             },
-            ("impact", "classification", "default", "es", "text"): {
+            ("impact", "classification", DEFAULT, "es", "text"): {
                 "template": IMPACT_CLASSIFICATION_ES,
                 "variables": ["text", "impact"],
             },
-            ("impact", "classification", "default", "en", "text"): {
+            ("impact", "classification", DEFAULT, "en", "text"): {
                 "template": IMPACT_CLASSIFICATION_EN,
                 "variables": ["text", "impact"],
             },
@@ -334,21 +336,21 @@ class PromptTemplateManager:
                 "template": IMPACT_CLASSIFICATION_JSON_DESCRIPTION_ES,
                 "variables": ["text", "impact", "impact_description"],
             },
-            ("impact", "extraction", "default", "es", "json"): {
+            ("impact", "extraction", DEFAULT, "es", "json"): {
                 "template": IMPACT_EXTRACTION_JSON_ES,
                 "variables": ["text", "impacts", "impact_descriptions"],
                 "partial_variables": ["format_instructions"],
             },
-            ("impact", "response_parser", "default", "en", "json"): {
+            ("impact", "response_parser", DEFAULT, "en", "json"): {
                 "template": IMPACT_RESPONSE_PARSER_EN,
                 "variables": ["text", "impact"],
                 "partial_variables": ["format_instructions"],
             },
-            ("location", "extraction", "default", "es", "text"): {
+            ("location", "extraction", DEFAULT, "es", "text"): {
                 "template": LOCATION_EXTRACTION_ES,
                 "variables": ["text"],
             },
-            ("location", "extraction", "default", "en", "text"): {
+            ("location", "extraction", DEFAULT, "en", "text"): {
                 "template": LOCATION_EXTRACTION_EN,
                 "variables": ["text"],
             },
@@ -356,7 +358,7 @@ class PromptTemplateManager:
                 "template": LOCATION_PROVINCES_EXTRACTION_EN,
                 "variables": ["text"],
             },
-            ("location", "response_parser", "default", "en", "json"): {
+            ("location", "response_parser", DEFAULT, "en", "json"): {
                 "template": LOCATION_RESPONSE_PARSER_EN,
                 "variables": ["text"],
                 "partial_variables": ["format_instructions"],
@@ -366,16 +368,16 @@ class PromptTemplateManager:
                 "variables": ["text"],
                 "partial_variables": ["format_instructions"],
             },
-            ("default", "response_parser", "boolean", "en", "json"): {
+            (DEFAULT, "response_parser", "boolean", "en", "json"): {
                 "template": BOOLEAN_RESPONSE_PARSER_EN,
                 "variables": ["text"],
                 "partial_variables": ["format_instructions"],
             },
-            ("default", "summarization", "default", "es", "text"): {
+            (DEFAULT, "summarization", DEFAULT, "es", "text"): {
                 "template": SUMMARIZATION_ES,
                 "variables": ["text"],
             },
-            ("default", "summarization", "default", "en", "text"): {
+            (DEFAULT, "summarization", DEFAULT, "en", "text"): {
                 "template": SUMMARIZATION_EN,
                 "variables": ["text"],
             },
@@ -383,9 +385,9 @@ class PromptTemplateManager:
 
     def get_prompt_template(
         self,
-        task: str,
-        step: str,
-        category: str = "default",
+        task: str = DEFAULT,
+        step: str = DEFAULT,
+        category: str = DEFAULT,
         language: str = "en",
         output: str = "text",
         **kwargs,
