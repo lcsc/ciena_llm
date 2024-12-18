@@ -6,7 +6,7 @@ from langchain_core.output_parsers import JsonOutputParser
 from seqia.article import Article
 
 from ciena_llm.llm import LLM
-from ciena_llm.prompt_template_manager import PromptTemplateManager
+from ciena_llm.prompt.prompt_template_manager import PromptTemplateManager
 from ciena_llm.response.boolean import BooleanLLMResponse
 
 
@@ -18,8 +18,6 @@ class ImpactClassifier:
         :param config: The configuration for the ImpactClassifier.
         """
         self.impacts = config["impacts"]
-
-        self.ptm = PromptTemplateManager()
 
         # Create response parser
         self.impact_response_parser = JsonOutputParser(
@@ -33,18 +31,23 @@ class ImpactClassifier:
         # Create prompt templates
         if self.impact_reponse_parser_enable:
             # - Impact classification
-            self.impact_classification_prompt_template = self.ptm.get_prompt_template(
-                **config["prompt"]["impact_classification"], step="classification",
+            self.impact_classification_prompt_template = (
+                PromptTemplateManager.get_prompt_template(
+                    **config["prompt"]["impact_classification"],
+                    step="classification",
+                )
             )
             # - Impact response parser
-            self.impact_response_parser_prompt_template = self.ptm.get_prompt_template(
-                **config["prompt"]["impact_response_parser"], step="response_parser",
+            self.impact_response_parser_prompt_template = PromptTemplateManager.get_prompt_template(
+                **config["prompt"]["impact_response_parser"],
+                step="response_parser",
                 format_instructions=self.impact_response_parser.get_format_instructions(),
             )
         else:
             # - Impact classification + response parser
-            self.impact_classification_prompt_template = self.ptm.get_prompt_template(
-                **config["prompt"]["impact_classification"], step="classification",
+            self.impact_classification_prompt_template = PromptTemplateManager.get_prompt_template(
+                **config["prompt"]["impact_classification"],
+                step="classification",
                 # format_instructions=self.impact_response_parser.get_format_instructions(),  # TODO how to do if there are not format instructions partial variable
             )
 

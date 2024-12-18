@@ -6,7 +6,7 @@ from langchain_core.output_parsers import JsonOutputParser
 from seqia.article import Article
 
 from ciena_llm.llm import LLM
-from ciena_llm.prompt_template_manager import PromptTemplateManager
+from ciena_llm.prompt.prompt_template_manager import PromptTemplateManager
 from ciena_llm.response.boolean import BooleanLLMResponse
 
 
@@ -17,17 +17,19 @@ class DroughtClassifier:
 
         :param config: The configuration for the DroughtClassifier.
         """
-        self.ptm = PromptTemplateManager()
 
         # Create prompt templates
-        self.drought_classification_prompt_template = self.ptm.get_prompt_template(
-            **config["prompt"]["drought_classification"], step="classification"
+        self.drought_classification_prompt_template = (
+            PromptTemplateManager.get_prompt_template(
+                **config["prompt"]["drought_classification"], step="classification"
+            )
         )
         self.drought_response_parser = JsonOutputParser(
             pydantic_object=BooleanLLMResponse
         )
-        self.drought_response_parser_prompt_template = self.ptm.get_prompt_template(
-            **config["prompt"]["drought_response_parser"], step="response_parser",
+        self.drought_response_parser_prompt_template = PromptTemplateManager.get_prompt_template(
+            **config["prompt"]["drought_response_parser"],
+            step="response_parser",
             format_instructions=self.drought_response_parser.get_format_instructions(),
         )
 

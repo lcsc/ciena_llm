@@ -7,7 +7,7 @@ from seqia.article import Article
 from seqia.location import Location
 
 from ciena_llm.llm import LLM
-from ciena_llm.prompt_template_manager import PromptTemplateManager
+from ciena_llm.prompt.prompt_template_manager import PromptTemplateManager
 from ciena_llm.response.location import LocationListLLMResponse
 
 
@@ -18,19 +18,21 @@ class LocationExtractor:
 
         :param config: The configuration for the LocationExtractor.
         """
-        self.ptm = PromptTemplateManager()
-
         # Create prompt templates
         # - Location extraction
-        self.location_extraction_prompt_template = self.ptm.get_prompt_template(
-            **config["prompt"]["location_extraction"], step="extraction",
+        self.location_extraction_prompt_template = (
+            PromptTemplateManager.get_prompt_template(
+                **config["prompt"]["location_extraction"],
+                step="extraction",
+            )
         )
         # - Location response parser
         self.location_response_parser = JsonOutputParser(
             pydantic_object=LocationListLLMResponse
         )
-        self.location_response_parser_prompt_template = self.ptm.get_prompt_template(
-            **config["prompt"]["location_response_parser"], step="response_parser",
+        self.location_response_parser_prompt_template = PromptTemplateManager.get_prompt_template(
+            **config["prompt"]["location_response_parser"],
+            step="response_parser",
             format_instructions=self.location_response_parser.get_format_instructions(),
         )
 

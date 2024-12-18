@@ -6,7 +6,7 @@ from langchain_core.output_parsers import JsonOutputParser
 from seqia.article import Article
 
 from ciena_llm.llm import LLM
-from ciena_llm.prompt_template_manager import PromptTemplateManager
+from ciena_llm.prompt.prompt_template_manager import PromptTemplateManager
 from ciena_llm.response.province import ProvinceLLMResponse
 
 
@@ -17,8 +17,6 @@ class ProvinceExtractor:
 
         :param config: The configuration for the ProvinceExtractor.
         """
-        self.ptm = PromptTemplateManager()
-
         # Create response parser
         self.province_response_parser = JsonOutputParser(
             pydantic_object=ProvinceLLMResponse
@@ -31,18 +29,23 @@ class ProvinceExtractor:
         # Create prompt templates
         if self.province_response_parser_enable:
             # - Province extraction
-            self.province_extraction_prompt_template = self.ptm.get_prompt_template(
-                **config["prompt"]["province_extraction"], step="extraction",
+            self.province_extraction_prompt_template = (
+                PromptTemplateManager.get_prompt_template(
+                    **config["prompt"]["province_extraction"],
+                    step="extraction",
+                )
             )
             # - Province response parser
-            self.province_response_parser_prompt_template = self.ptm.get_prompt_template(
-                **config["prompt"]["province_response_parser"], step="response_parser",
+            self.province_response_parser_prompt_template = PromptTemplateManager.get_prompt_template(
+                **config["prompt"]["province_response_parser"],
+                step="response_parser",
                 format_instructions=self.province_response_parser.get_format_instructions(),
             )
         else:
             # - Province extraction + response parser
-            self.province_extraction_prompt_template = self.ptm.get_prompt_template(
-                **config["prompt"]["province_extraction"], step="extraction",
+            self.province_extraction_prompt_template = PromptTemplateManager.get_prompt_template(
+                **config["prompt"]["province_extraction"],
+                step="extraction",
                 format_instructions=self.province_response_parser.get_format_instructions(),  # TODO how to do if there are not format instructions partial variable
             )
 
