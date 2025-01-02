@@ -51,6 +51,9 @@ class ClimateImpactExtractorTest:
         )
         extractor.write_config(os.path.join(self.results_dir, "config.yaml"))
         extractor.write_prompts_to_json(os.path.join(self.results_dir, "prompts.json"))
+        extractor.write_excluded_problematic_articles_to_csv(
+            os.path.join(self.results_dir, "excluded_problematic_articles.csv")
+        )
 
         end_time = time.time()
         execution_time = end_time - start_time

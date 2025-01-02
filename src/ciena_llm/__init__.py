@@ -2,6 +2,7 @@ import os
 import json
 from typing import List
 from tqdm import tqdm
+import logging
 
 import dotenv
 
@@ -14,7 +15,7 @@ from seqia.config.loader import ConfigLoader
 from seqia.utils.output import write_to_csv
 
 from ciena_llm.llm import LLM
-from ciena_llm.chain import ExtractionChain, SummarizationChain
+from ciena_llm.chain import ExtractionChain, SummarizationChain, ResponseParsingChain
 
 
 class ClimateImpactExtractor:
@@ -30,16 +31,21 @@ class ClimateImpactExtractor:
 
         # TODO organize better config
         self.summarization_enable = self.config["pipeline"]["summarization"]["enable"]
+        self.response_parsing_enable = self.config["pipeline"]["response_parsing"][
+            "enable"
+        ]
 
         self.summarization_chain = SummarizationChain(config=self.config)
-
         self.extraction_chain = ExtractionChain(config=self.config)
+        self.response_parsing_chain = ResponseParsingChain(config=self.config)
 
-        # Combine summarization and extraction into a single chain
+        self.chain = self.extraction_chain
+
         if self.summarization_enable:
-            self.chain = self.summarization_chain | self.extraction_chain
-        else:
-            self.chain = self.extraction_chain
+            self.chain = self.summarization_chain | self.chain
+
+        if self.response_parsing_enable:
+            self.chain = self.chain | self.response_parsing_chain
 
     def __call__(self, dataset_path: str) -> List[Article]:
         articles = self.article_loader(dataset_path)
@@ -57,6 +63,10 @@ class ClimateImpactExtractor:
             article.impacts_aggregated = [
                 i for i, v in output.model_dump().items() if v and i != "drought"
             ]
+
+            logging.info(
+                f"Article {article.filename}\nDrought: {article.drought}\nImpacts: {article.impacts_aggregated}"
+            )
 
         return articles
 

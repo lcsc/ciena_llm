@@ -106,6 +106,23 @@ Instrucciones de formato:
 ```
 """
 
+IMPACT_MULTI_CLASSIFICATION_DESCRIPTION_ES = """
+Analiza el siguiente artículo. Si el artículo esta relacionado con la sequía climática, determina si la noticia menciona impactos de la sequía en los siguientes aspectos: {impacts}.
+
+Para cada aspecto mencionado, proporciona la siguiente información:
+1. Si el artículo menciona la sequía.
+2. Si la sequía ha tenido un impacto en los aspectos mencionados.
+
+Cada uno de los impactos se define de la siguiente manera:
+{impact_descriptions}
+Las descripciones de los impactos son únicamente para referencia y no son exhaustivas.
+
+Si el artículo no menciona ningún impacto de la sequía en los aspectos mencionados, no incluyas información adicional.
+
+Texto:
+{text}
+"""
+
 IMPACT_MULTI_CLASSIFICATION_JSON_DESCRIPTION_ES = """
 Analiza el siguiente artículo. Si el artículo esta relacionado con la sequía climática, determina si la noticia menciona impactos de la sequía en los siguientes aspectos: {impacts}.
 
@@ -213,7 +230,7 @@ Text:
 # Boolean Response Parsers
 ################################################################################
 
-BOOLEAN_RESPONSE_PARSER_EN = """
+BOOLEAN_RESPONSE_PARSING_EN = """
 Extract whether the following text is affirmative or negative.
 Format instructions:
 {format_instructions}
@@ -227,7 +244,7 @@ Text:
 # Drought Response Parsers
 ################################################################################
 
-DROUGHT_RESPONSE_PARSER_EN = """
+DROUGHT_RESPONSE_PARSING_EN = """
 Extract whether the following text is related to climate drought.
 Format instructions:
 {format_instructions}
@@ -241,13 +258,25 @@ Text:
 # Impact Response Parsers
 ################################################################################
 
-IMPACT_RESPONSE_PARSER_EN = """
-Extract whether the following text mentions an impact of climate drought on {impact}.
-Focus solely on the impact of the drought on {impact} as mentioned in the text.
+IMPACT_RESPONSE_PARSING_EN = """
+Extract from the given text whether the article mentions an impact of climate drought on {impacts}.
+The impacts are defined as follows:
+{impact_descriptions}
 Format instructions:
 {format_instructions}
 Return only the JSON inside a markdown fenced code block (without syntax highlighting and no additional text around it).
 Text:
+{text}
+"""
+
+IMPACT_RESPONSE_PARSING_ES = """
+Extrae del texto dado si el artículo menciona un impacto de la sequía climática en {impacts}.
+Los impactos se definen de la siguiente manera:
+{impact_descriptions}
+Instrucciones de formato:
+{format_instructions}
+Proporciona únicamente el JSON dentro de un bloque de código de markdown (sin resaltado de sintaxis y sin texto adicional alrededor).
+Texto:
 {text}
 """
 
@@ -256,7 +285,7 @@ Text:
 # Location Response Parsers
 ################################################################################
 
-LOCATION_RESPONSE_PARSER_EN = """
+LOCATION_RESPONSE_PARSING_EN = """
 Extract the locations impacted by climate drought from the given text.
 The output must be a valid JSON object formatted according to the schema, including any optional fields where applicable.
 Format instructions:

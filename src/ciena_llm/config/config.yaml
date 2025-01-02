@@ -1,5 +1,9 @@
 version: 0.2.0
 pipeline:
+  response_parsing:
+    enable: True
+    prompt:
+      language: es
   summarization:
     enable: True
     prompt:

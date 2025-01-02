@@ -24,8 +24,8 @@ class PromptTemplateManager:
             "template": DROUGHT_CLASSIFICATION_EN,
             "variables": ["text"],
         },
-        ("drought", "response_parser", DEFAULT, "en", "json"): {
-            "template": DROUGHT_RESPONSE_PARSER_EN,
+        ("drought", "response_parsing", DEFAULT, "en", "json"): {
+            "template": DROUGHT_RESPONSE_PARSING_EN,
             "variables": ["text"],
             "partial_variables": ["format_instructions"],
         },
@@ -62,8 +62,22 @@ class PromptTemplateManager:
             "variables": ["text", "impacts", "impact_descriptions"],
             "partial_variables": ["format_instructions"],
         },
-        ("impact", "response_parser", DEFAULT, "en", "json"): {
-            "template": IMPACT_RESPONSE_PARSER_EN,
+        ("impact", "multi_classification", "description", "es", "text"): {
+            "template": IMPACT_MULTI_CLASSIFICATION_DESCRIPTION_ES,
+            "variables": ["text", "impacts", "impact_descriptions"],
+        },
+        ("impact", "response_parsing", DEFAULT, "en", "json"): {
+            "template": IMPACT_RESPONSE_PARSING_EN,
+            "variables": ["text", "impacts", "impact_descriptions"],
+            "partial_variables": ["format_instructions"],
+        },
+        ("impact", "response_parsing", DEFAULT, "es", "json"): {
+            "template": IMPACT_RESPONSE_PARSING_ES,
+            "variables": ["text", "impacts", "impact_descriptions"],
+            "partial_variables": ["format_instructions"],
+        },
+        ("impact", "response_parsing", DEFAULT, "es", "json"): {
+            "template": IMPACT_RESPONSE_PARSING_ES,
             "variables": ["text", "impact"],
             "partial_variables": ["format_instructions"],
         },
@@ -79,8 +93,8 @@ class PromptTemplateManager:
             "template": LOCATION_PROVINCES_EXTRACTION_EN,
             "variables": ["text"],
         },
-        ("location", "response_parser", DEFAULT, "en", "json"): {
-            "template": LOCATION_RESPONSE_PARSER_EN,
+        ("location", "response_parsing", DEFAULT, "en", "json"): {
+            "template": LOCATION_RESPONSE_PARSING_EN,
             "variables": ["text"],
             "partial_variables": ["format_instructions"],
         },
@@ -89,8 +103,8 @@ class PromptTemplateManager:
             "variables": ["text"],
             "partial_variables": ["format_instructions"],
         },
-        (DEFAULT, "response_parser", "boolean", "en", "json"): {
-            "template": BOOLEAN_RESPONSE_PARSER_EN,
+        (DEFAULT, "response_parsing", "boolean", "en", "json"): {
+            "template": BOOLEAN_RESPONSE_PARSING_EN,
             "variables": ["text"],
             "partial_variables": ["format_instructions"],
         },
