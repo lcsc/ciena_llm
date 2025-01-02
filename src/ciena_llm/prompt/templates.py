@@ -106,23 +106,31 @@ Instrucciones de formato:
 ```
 """
 
+IMPACT_MULTI_CLASSIFICATION_JSON_DESCRIPTION_ES = """
+Analiza el siguiente artículo. Si el artículo esta relacionado con la sequía climática, determina si la noticia menciona impactos de la sequía en los siguientes aspectos: {impacts}.
+
+Para cada aspecto mencionado, proporciona la siguiente información:
+1. Si el artículo menciona la sequía.
+2. Si la sequía ha tenido un impacto en los aspectos mencionados.
+
+Cada uno de los impactos se define de la siguiente manera:
+{impact_descriptions}
+Las descripciones de los impactos son únicamente para referencia y no son exhaustivas.
+
+Si el artículo no menciona ningún impacto de la sequía en los aspectos mencionados, no incluyas información adicional.
+
+Texto:
+{text}
+
+Instrucciones de formato:
+{format_instructions}
+"""
+
 ################################################################################
 # Impact Extraction
 ################################################################################
 
-IMPACT_EXTRACTION_JSON_ES = """
-Analiza el siguiente artículo relacionado con la sequía climática. Determina si la noticia menciona impactos de la sequía en los siguientes aspectos: {impacts}.
-Para cada aspecto mencionado, proporciona la siguiente información:
-1. Si el artículo menciona la sequía.
-2. Si la sequía ha tenido un impacto en los aspectos mencionados.
-Cada uno de los impactos se define de la siguiente manera:
-{impact_descriptions}
-Si el artículo no menciona ningún impacto de la sequía en los aspectos mencionados, no incluyas información adicional.
-Texto:
-{text}
-Instrucciones de formato:
-{format_instructions}
-"""
+# TODO
 
 
 ################################################################################

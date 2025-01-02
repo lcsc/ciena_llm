@@ -2,6 +2,7 @@ from langchain_core.prompts import PromptTemplate
 
 from ciena_llm.prompt.templates import *
 
+
 DEFAULT = None
 
 
@@ -56,8 +57,8 @@ class PromptTemplateManager:
             "template": IMPACT_CLASSIFICATION_JSON_DESCRIPTION_ES,
             "variables": ["text", "impact", "impact_description"],
         },
-        ("impact", "extraction", DEFAULT, "es", "json"): {
-            "template": IMPACT_EXTRACTION_JSON_ES,
+        ("impact", "multi_classification", "description", "es", "json"): {
+            "template": IMPACT_MULTI_CLASSIFICATION_JSON_DESCRIPTION_ES,
             "variables": ["text", "impacts", "impact_descriptions"],
             "partial_variables": ["format_instructions"],
         },
