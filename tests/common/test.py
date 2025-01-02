@@ -1,4 +1,5 @@
 import os
+import logging
 import tempfile
 import time
 from datetime import datetime
@@ -25,6 +26,7 @@ class ClimateImpactExtractorTest:
         setup_logging(os.path.join(self.results_dir, "execution.log"))
 
     def run(self):
+        logging.info("Running test %s", self.test_name)
         start_time = time.time()
 
         if self.override_config:
