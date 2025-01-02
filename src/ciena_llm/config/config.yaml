@@ -1,72 +1,19 @@
 version: 0.2.0
 pipeline:
-  drought:
-    enable: False
-    exclude: True
-    order: 100
-  impact:
-    enable: False
-    order: 200
-  location:
+  summarization:
     enable: True
-    order: 300
-  province:
+    prompt:
+      language: es
+  extraction:
     enable: True
-    order: 400
+    prompt:
+      language: es
 llm:
   default:
     name: "llama3.1"
     temperature: 0
-    # Max: 131072
     context_length: 32768
     num_predict_tokens: 2048
-# llm:
-#   default:
-#     name: "llama3"
-#     temperature: 0
-#     context_length: 8192
-#   impact_classification:
-#     name: ""
-#     temperature: 0.6
-#   location_extraction:
-#     name: ""
-#     temperature: 0.1
-#   location_response_parser:
-#     name: ""
-#     context_length: 1234
-prompt:
-  drought_classification: 
-    task: drought
-    # step: classification  # TODO already in the name of config
-    category: default
-    language: en
-  impact_classification: 
-    task: impact
-    # step: classification
-    category: parser_description
-    language: en
-  location_extraction: 
-    task: location
-    # step: extraction
-    category: default
-    language: en
-  province_extraction: 
-    task: province
-    # step: classification
-    category: parser
-    language: en
-  drought_response_parser:
-    task: drought
-    # step: response_parser
-    category: default
-    language: en
-  impact_response_parser: null
-  location_response_parser:
-    task: "location"
-    # step: response_parser
-    category: default
-    language: en
-  province_response_parser: null
 impacts:
   - tag: "agriculture"
     text_es: "agricultura"

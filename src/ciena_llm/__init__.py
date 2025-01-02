@@ -1,10 +1,9 @@
-import logging
 import os
+import json
 from typing import List
 from tqdm import tqdm
 
 import dotenv
-import json
 
 # pylint: disable=wrong-import-position
 dotenv.load_dotenv()
@@ -14,56 +13,50 @@ from seqia.article.loader import ArticleLoader
 from seqia.config.loader import ConfigLoader
 from seqia.utils.output import write_to_csv
 
-from ciena_llm.classifier.drought import DroughtClassifier
-from ciena_llm.classifier.impact import ImpactClassifier
-from ciena_llm.extractor.location import LocationExtractor
-from ciena_llm.extractor.province import ProvinceExtractor
+from ciena_llm.llm import LLM
+from ciena_llm.chain import ExtractionChain, SummarizationChain
 
 
 class ClimateImpactExtractor:
     def __init__(self, override_config_path=None):
+        self.article_loader = ArticleLoader()
+
         self.config_loader = ConfigLoader(
             config_path=os.path.join(os.path.dirname(__file__), "config/config.yaml"),
             override_config_path=override_config_path,
         )
+
         self.config = self.config_loader.config
-        self.pipeline = self.config_loader.get_ordered_pipeline()
-        self.pipeline_stages = [stage for stage, _ in self.pipeline]
 
-        logging.info(f"Pipeline: {self.pipeline_stages}")
+        # TODO organize better config
+        self.summarization_enable = self.config["pipeline"]["summarization"]["enable"]
 
-        self.article_loader = ArticleLoader()
+        self.summarization_chain = SummarizationChain(config=self.config)
 
-        # TODO pass only extractor specific config
-        if "drought" in self.pipeline_stages:
-            self.drought_classifier = DroughtClassifier(self.config)
-        if "impact" in self.pipeline_stages:
-            self.impact_classifier = ImpactClassifier(self.config)
-        if "location" in self.pipeline_stages:
-            self.location_extractor = LocationExtractor(self.config)
-        if "province" in self.pipeline_stages:
-            self.province_extractor = ProvinceExtractor(self.config)
+        self.extraction_chain = ExtractionChain(config=self.config)
+
+        # Combine summarization and extraction into a single chain
+        if self.summarization_enable:
+            self.chain = self.summarization_chain | self.extraction_chain
+        else:
+            self.chain = self.extraction_chain
 
     def __call__(self, dataset_path: str) -> List[Article]:
         articles = self.article_loader(dataset_path)
 
         for article in tqdm(
-            articles, desc="Extracting impacts and locations from articles"
+            articles,
+            desc="Summarizing and extracting impacts and locations from articles",
         ):
+            text = article.get_headline_and_body(separator=".")
 
-            for stage, stage_config in self.pipeline:
-                match stage:
-                    case "drought":
-                        article = self.drought_classifier.classify(article)
-                        if stage_config["exclude"]:
-                            if not article.drought:
-                                continue
-                    case "impact":
-                        article = self.impact_classifier.classify(article)
-                    case "location":
-                        article = self.location_extractor.extract_locations(article)
-                    case "province":
-                        article = self.province_extractor.extract_provinces(article)
+            # Run the combined summarization and extraction chain
+            output = self.chain.invoke(text)
+
+            article.drought = output.drought
+            article.impacts_aggregated = [
+                i for i, v in output.model_dump().items() if v and i != "drought"
+            ]
 
         return articles
 
@@ -91,15 +84,6 @@ class ClimateImpactExtractor:
         :param file: The file to write the prompts to.
         """
         prompts = {}
-
-        if "drought" in self.pipeline_stages:
-            prompts.update(self.drought_classifier.prompts)
-        if "impact" in self.pipeline_stages:
-            prompts.update(self.impact_classifier.prompts)
-        if "location" in self.pipeline_stages:
-            prompts.update(self.location_extractor.prompts)
-        if "province" in self.pipeline_stages:
-            prompts.update(self.province_extractor.prompts)
 
         with open(file, "w", encoding="utf-8") as f:
             json.dump(prompts, f, indent=4)
