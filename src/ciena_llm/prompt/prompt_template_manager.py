@@ -66,6 +66,15 @@ class PromptTemplateManager:
             "template": IMPACT_MULTI_CLASSIFICATION_DESCRIPTION_ES,
             "variables": ["text", "impacts", "impact_descriptions"],
         },
+        ("impact", "multi_classification", "description", "en", "json"): {
+            "template": IMPACT_MULTI_CLASSIFICATION_JSON_DESCRIPTION_EN,
+            "variables": ["text", "impacts", "impact_descriptions"],
+            "partial_variables": ["format_instructions"],
+        },
+        ("impact", "multi_classification", "description", "en", "text"): {
+            "template": IMPACT_MULTI_CLASSIFICATION_DESCRIPTION_EN,
+            "variables": ["text", "impacts", "impact_descriptions"],
+        },
         ("impact", "response_parsing", DEFAULT, "en", "json"): {
             "template": IMPACT_RESPONSE_PARSING_EN,
             "variables": ["text", "impacts", "impact_descriptions"],

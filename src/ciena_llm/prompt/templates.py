@@ -143,6 +143,45 @@ Instrucciones de formato:
 {format_instructions}
 """
 
+IMPACT_MULTI_CLASSIFICATION_DESCRIPTION_EN = """
+Analyze the following article. If the article is related to climate drought, determine whether the news article mentions impacts of drought on the following aspects: {impacts}.
+
+For each mentioned aspect, provide the following information:
+1. Whether the article mentions drought.
+2. Whether drought has had an impact on the mentioned aspects.
+
+Each of the impacts is defined as follows:
+{impact_descriptions}
+The impact descriptions are for reference only and are not exhaustive.
+
+If the article does not mention any impacts of drought on the mentioned aspects, do not include any additional information.
+
+Text:
+{text}
+"""
+
+# TODO parametrize or do something about this template being the same as the one above but with added format instructions
+IMPACT_MULTI_CLASSIFICATION_JSON_DESCRIPTION_EN = """
+Analyze the following article. If the article is related to climate drought, determine whether the news article mentions impacts of drought on the following aspects: {impacts}.
+
+For each mentioned aspect, provide the following information:
+1. Whether the article mentions drought.
+2. Whether drought has had an impact on the mentioned aspects.
+
+Each of the impacts is defined as follows:
+{impact_descriptions}
+The impact descriptions are for reference only and are not exhaustive.
+
+If the article does not mention any impacts of drought on the mentioned aspects, do not include any additional information.
+
+Text:
+{text}
+
+Format instructions:
+{format_instructions}
+"""
+
+
 ################################################################################
 # Impact Extraction
 ################################################################################
