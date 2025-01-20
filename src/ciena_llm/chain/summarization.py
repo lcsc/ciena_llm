@@ -9,6 +9,8 @@ class SummarizationChain(Runnable):
         self.step = "summarization"
         self.config = config
 
+        self.task = config["task"]
+
         self.pipeline_config = self.config["pipeline"][self.step]
 
         self.language = self.pipeline_config["prompt"]["language"]
@@ -16,12 +18,21 @@ class SummarizationChain(Runnable):
         self.llm = LLM(config=self.config["llm"], stage=self.step)
 
         # TODO parametrize prompt in chain
-        self.summarization_prompt_template = PromptTemplateManager.get_prompt_template(
+        self.prompt_template = PromptTemplateManager.get_prompt_template(
             step=self.step,
             language=self.language,
         )
 
-        self.chain = self.summarization_prompt_template | self.llm
+        self.chain = self.prompt_template | self.llm
+
+        self.prompts = {
+            "extraction_impact": {
+                "task": self.task,
+                "step": self.step,
+                "language": self.language,
+                "template": self.prompt_template.pretty_repr(),
+            },
+        }
 
     def invoke(self, text: str, *args, **kwargs):
         """

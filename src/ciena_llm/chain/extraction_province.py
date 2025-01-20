@@ -62,6 +62,16 @@ class ProvinceExtractionChain(Runnable):
 
             self.chain = self.prompt_template | self.llm
 
+        self.prompts = {
+            "extraction_province": {
+                "task": self.task,
+                "step": "extraction",
+                "language": self.language,
+                "output": "json" if self.response_parsing else "text",
+                "template": self.prompt_template.pretty_repr(),
+            },
+        }
+
     def invoke(self, input: str, *args, **kwargs):
 
         response = invoke_chain(

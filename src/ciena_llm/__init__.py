@@ -122,5 +122,13 @@ class ClimateImpactExtractor:
         """
         prompts = {}
 
+        prompts.update(self.extraction_chain.prompts)
+
+        if self.summarization_enable:
+            prompts.update(self.summarization_chain.prompts)
+
+        if self.response_parsing_enable:
+            prompts.update(self.response_parsing_chain.prompts)
+
         with open(file, "w", encoding="utf-8") as f:
             json.dump(prompts, f, indent=4)

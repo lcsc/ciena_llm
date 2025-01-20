@@ -63,7 +63,7 @@ class ImpactExtractionChain(Runnable):
                 step="multi_classification",
                 category="description",
                 language=self.language,
-                output="json",  # TODO from config
+                output="json",
                 format_instructions=format_instructions,
             )
 
@@ -79,6 +79,17 @@ class ImpactExtractionChain(Runnable):
             )
 
             self.chain = self.prompt_template | self.llm
+
+        self.prompts = {
+            "extraction_impact": {
+                "task": self.task,
+                "step": "multi_classification",
+                "category": "description",
+                "language": self.language,
+                "output": "json" if self.response_parsing else "text",
+                "template": self.prompt_template.pretty_repr(),
+            },
+        }
 
     def invoke(self, input: str, *args, **kwargs):
 

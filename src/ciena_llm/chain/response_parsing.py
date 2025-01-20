@@ -57,6 +57,16 @@ class ResponseParsingChain(Runnable):
 
         self.chain = self.prompt_template | self.llm | self.response_parser
 
+        self.prompts = {
+            "extraction_impact": {
+                "task": self.task,
+                "step": self.step,
+                "language": self.language,
+                "output": "json",
+                "template": self.prompt_template.pretty_repr(),
+            },
+        }
+
     def invoke(self, input: str, *args, **kwargs):
 
         match self.task:
