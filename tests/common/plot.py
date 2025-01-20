@@ -15,26 +15,27 @@ import seaborn as sns
 def compute_confusion_matrix_and_metrics(df, class_name):
     total_instances = len(df)
 
-    # Compute confusion matrix with labels
-    cm = confusion_matrix(
-        df[f"{class_name}_true"], df[f"{class_name}_predicted"], labels=[False, True]
-    )
-    accuracy = accuracy_score(df[f"{class_name}_true"], df[f"{class_name}_predicted"])
-    kappa = cohen_kappa_score(df[f"{class_name}_true"], df[f"{class_name}_predicted"])
-    precision = precision_score(
-        df[f"{class_name}_true"], df[f"{class_name}_predicted"], zero_division=0
-    )
-    recall = recall_score(
-        df[f"{class_name}_true"], df[f"{class_name}_predicted"], zero_division=0
-    )
-    f1 = f1_score(
-        df[f"{class_name}_true"], df[f"{class_name}_predicted"], zero_division=0
-    )
+    # Print the types and unique values of the true and predicted values
+    true_values = df[f"{class_name}_true"].apply(lambda x: 1 if x else 0)
+    predicted_values = df[f"{class_name}_predicted"].apply(lambda x: 1 if x else 0)
+
+    cm = confusion_matrix(true_values, predicted_values, labels=[0, 1])
+    accuracy = accuracy_score(true_values, predicted_values)
+
+    # Check if confusion matrix is valid for kappa calculation
+    if np.sum(cm) == 0 or np.sum(np.sum(cm, axis=0) * np.sum(cm, axis=1)) == 0:
+        kappa = float("nan")
+    else:
+        kappa = cohen_kappa_score(true_values, predicted_values)
+
+    precision = precision_score(true_values, predicted_values, zero_division=0)
+    recall = recall_score(true_values, predicted_values, zero_division=0)
+    f1 = f1_score(true_values, predicted_values, zero_division=0)
 
     metrics = {
         "total_instances": total_instances,
         "accuracy": round(accuracy, 3),
-        "kappa": round(kappa, 3),
+        "kappa": round(kappa, 3) if not np.isnan(kappa) else "nan",
         "precision": round(precision, 3),
         "recall": round(recall, 3),
         "f1": round(f1, 3),
@@ -90,7 +91,10 @@ def print_metrics(class_name, total_instances, accuracy, precision, recall, f1, 
 
     print(f"Total Instances: {total_instances}")
     print(f"Accuracy: {accuracy:.3f}")
-    print(f"Kappa: {kappa:.3f}")
+    if kappa == "nan":
+        print(f"Kappa: {kappa}")
+    else:
+        print(f"Kappa: {kappa:.3f}")
     print(f"Precision: {precision:.3f}")
     print(f"Recall: {recall:.3f}")
     print(f"F1 Score: {f1:.3f}")
