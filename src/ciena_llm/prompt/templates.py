@@ -372,8 +372,32 @@ Text:
 """
 
 ################################################################################
+# Province Response Parsers
+################################################################################
+
+PROVINCE_RESPONSE_PARSING_EN = """
+Extract the provinces impacted by drought from the given text.
+Format instructions:
+{format_instructions}
+Return only the JSON inside a markdown fenced code block (without syntax highlighting and no additional text around it).
+Text:
+{text}
+"""
+
+PROVINCE_RESPONSE_PARSING_ES = """
+Extrae las provincias afectadas por la sequía del texto dado.
+Instrucciones de formato:
+{format_instructions}
+Proporciona únicamente el JSON dentro de un bloque de código de markdown (sin resaltado de sintaxis y sin texto adicional alrededor).
+Texto:
+{text}
+"""
+
+
+################################################################################
 # Summarization
 ################################################################################
+
 SUMMARIZATION_ES = """
 Resume el siguiente artículo, centrándote en los aspectos más relevantes relacionados con la sequía, los impactos de la sequía y sólo de la sequía y las localizaciones afectadas.
 Si el artículo no menciona la sequía, el resumen únicamente debe indicar explícitamente que no se menciona la sequía ni ningún impacto relacionado.

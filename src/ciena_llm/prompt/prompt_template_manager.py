@@ -125,6 +125,16 @@ class PromptTemplateManager:
             "template": PROVINCE_EXTRACTION_TEXT_ES,
             "variables": ["text"],
         },
+        ("province", "response_parsing", DEFAULT, "en", "json"): {
+            "template": PROVINCE_RESPONSE_PARSING_EN,
+            "variables": ["text"],
+            "partial_variables": ["format_instructions"],
+        },
+        ("province", "response_parsing", DEFAULT, "es", "json"): {
+            "template": PROVINCE_RESPONSE_PARSING_ES,
+            "variables": ["text"],
+            "partial_variables": ["format_instructions"],
+        },
         (DEFAULT, "response_parsing", "boolean", "en", "json"): {
             "template": BOOLEAN_RESPONSE_PARSING_EN,
             "variables": ["text"],
