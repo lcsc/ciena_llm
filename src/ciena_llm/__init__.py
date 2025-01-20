@@ -87,6 +87,7 @@ class ClimateImpactExtractor:
                         f"Drought: {article.drought}\n"
                         f"Impacts: {', '.join(article.impacts_aggregated)}"
                     )
+
                 case "province":
                     article.provinces = output.response
                     logging.debug(

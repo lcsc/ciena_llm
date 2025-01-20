@@ -61,7 +61,7 @@ class ResponseParsingChain(Runnable):
 
         match self.task:
             case "impact":
-                response = invoke_chain(
+                return invoke_chain(
                     self.chain,
                     input,
                     ImpactLLMResponse,
@@ -70,11 +70,9 @@ class ResponseParsingChain(Runnable):
                     impact_descriptions=self.impact_descriptions_text,
                 )
             case "province":
-                response = invoke_chain(
+                return invoke_chain(
                     self.chain,
                     input,
                     ProvinceLLMResponse,
                     {"response": []},
                 )
-
-        return response
