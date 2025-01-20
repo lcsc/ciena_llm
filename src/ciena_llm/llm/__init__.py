@@ -1,6 +1,6 @@
 import logging
 
-from langchain_ollama import OllamaLLM
+from langchain_ollama import ChatOllama
 
 
 class LLM:
@@ -24,7 +24,7 @@ class LLM:
         # Initialize the appropriate backend LLM
         backend_name = merged_config.get("backend", "ollama")
         if backend_name == "ollama":
-            self.llm = OllamaLLM(
+            self.llm = ChatOllama(
                 model=self.llm_name,
                 temperature=self.llm_temperature,
                 num_ctx=self.llm_context_length,
@@ -50,6 +50,7 @@ class LLM:
         self.log(f"Input to LLM ({self.stage})", text)
         # Call the LLM with the input text using the `invoke` method
         response = self.llm.invoke(text)
+        response = response.content
         # Log output after LLM call
         self.log(f"Output from LLM ({self.stage})", response)
 
