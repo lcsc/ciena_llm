@@ -1,21 +1,18 @@
-import logging
-
-import pydantic
-from pydantic import ValidationError
-
 from langchain_core.runnables.base import Runnable
 from langchain_core.output_parsers import JsonOutputParser
-from langchain_core.exceptions import OutputParserException
 
 from ciena_llm.llm import LLM
 from ciena_llm.prompt.prompt_template_manager import PromptTemplateManager
 from ciena_llm.response.province import ProvinceLLMResponse
+from ciena_llm.chain.common import invoke_chain
 
 
 class ProvinceExtractionChain(Runnable):
     def __init__(self, config):
         self.step = "extraction"
         self.config = config
+
+        self.task = self.config["task"]  # "province"
 
         self.pipeline_config = self.config["pipeline"][self.step]
 
@@ -32,6 +29,7 @@ class ProvinceExtractionChain(Runnable):
         if self.response_parsing:
             self.response_parser = JsonOutputParser(pydantic_object=ProvinceLLMResponse)
 
+            # TODO maybe put this in the prompt template manager?
             # JSON format instructions for the model
             format_instructions = f"""
 ```json 
@@ -45,7 +43,7 @@ class ProvinceExtractionChain(Runnable):
 """
 
             self.prompt_template = PromptTemplateManager.get_prompt_template(
-                task="province",
+                task=self.task,
                 step="extraction",
                 language=self.language,
                 output="json",
@@ -56,7 +54,7 @@ class ProvinceExtractionChain(Runnable):
 
         else:
             self.prompt_template = PromptTemplateManager.get_prompt_template(
-                task="province",
+                task=self.task,
                 step="extraction",
                 language=self.language,
                 output="text",
@@ -66,29 +64,12 @@ class ProvinceExtractionChain(Runnable):
 
     def invoke(self, input: str, *args, **kwargs):
 
-        if self.response_parsing:
-            try:
-                # Invoke the chain
-                output = self.chain.invoke({"text": input})
+        response = invoke_chain(
+            self.chain,
+            input,
+            ProvinceLLMResponse,
+            {"response": []},
+            response_parsing=self.response_parsing,
+        )
 
-                # Parse the response
-                return ProvinceLLMResponse(**output)
-
-            except pydantic.ValidationError as e:
-                logging.error(
-                    "pydantic.ValidationError: Failed to parse response: %s", e
-                )
-                print(f"OUTPUT: {output}")
-                # TODO Handle this error
-                # raise e
-                return ProvinceLLMResponse(**{"response": []})
-
-            except OutputParserException as e:
-                logging.error("OutputParserException: Failed to parse response: %s", e)
-                # TODO Handle this error
-                # raise e
-                return ProvinceLLMResponse(**{"response": []})
-
-        else:
-            output = self.chain.invoke({"text": input})
-            return output
+        return response

@@ -1,21 +1,18 @@
-import logging
-
-import pydantic
-from pydantic import ValidationError
-
 from langchain_core.runnables.base import Runnable
 from langchain_core.output_parsers import JsonOutputParser
-from langchain_core.exceptions import OutputParserException
 
 from ciena_llm.llm import LLM
 from ciena_llm.prompt.prompt_template_manager import PromptTemplateManager
 from ciena_llm.response.impact import ImpactLLMResponse
+from ciena_llm.chain.common import invoke_chain
 
 
 class ImpactExtractionChain(Runnable):
     def __init__(self, config):
         self.step = "extraction"
         self.config = config
+
+        self.task = self.config["task"]  # "impact"
 
         # TODO parametrize impacts?
         # TODO for impacts only?
@@ -29,6 +26,7 @@ class ImpactExtractionChain(Runnable):
             self.config["pipeline"]["response_parsing"]["enable"]
         )
 
+        # TODO get this in prompt template manager?
         self.impact_names = [i[f"text_{self.language}"] for i in self.impact_config]
         self.impact_descriptions = [
             i[f"description_{self.language}"] for i in self.impact_config
@@ -49,6 +47,7 @@ class ImpactExtractionChain(Runnable):
         if self.response_parsing:
             self.response_parser = JsonOutputParser(pydantic_object=ImpactLLMResponse)
 
+            # TODO maybe put this in the prompt template manager?
             # JSON format instructions for the model
             format_instructions = f"""
 ```json 
@@ -60,7 +59,7 @@ class ImpactExtractionChain(Runnable):
 """
 
             self.prompt_template = PromptTemplateManager.get_prompt_template(
-                task="impact",
+                task=self.task,
                 step="multi_classification",
                 category="description",
                 language=self.language,
@@ -72,7 +71,7 @@ class ImpactExtractionChain(Runnable):
 
         else:
             self.prompt_template = PromptTemplateManager.get_prompt_template(
-                task="impact",
+                task=self.task,
                 step="multi_classification",
                 category="description",
                 language=self.language,
@@ -83,47 +82,14 @@ class ImpactExtractionChain(Runnable):
 
     def invoke(self, input: str, *args, **kwargs):
 
-        # TODO do better?
-        if self.response_parsing:
-            try:
-                # Invoke the chain
-                output = self.chain.invoke(
-                    {
-                        "text": input,
-                        "impacts": self.impact_names_text,
-                        "impact_descriptions": self.impact_descriptions_text,
-                    }
-                )
+        response = invoke_chain(
+            self.chain,
+            input,
+            ImpactLLMResponse,
+            {"drought": None, **{i["tag"]: None for i in self.impact_config}},
+            response_parsing=self.response_parsing,
+            impacts=self.impact_names_text,
+            impact_descriptions=self.impact_descriptions_text,
+        )
 
-                # Parse the response
-                return ImpactLLMResponse(**output)
-
-            except pydantic.ValidationError as e:
-                logging.error(
-                    "pydantic.ValidationError: Failed to parse response: %s", e
-                )
-                print(f"OUTPUT: {output}")
-                # TODO Handle this error
-                # raise e
-                return ImpactLLMResponse(
-                    **{"drought": None, **{i["tag"]: None for i in self.impact_config}}
-                )
-
-            except OutputParserException as e:
-                logging.error("OutputParserException: Failed to parse response: %s", e)
-                # TODO Handle this error
-                # raise e
-                return ImpactLLMResponse(
-                    **{"drought": None, **{i["tag"]: None for i in self.impact_config}}
-                )
-
-        else:
-            output = self.chain.invoke(
-                {
-                    "text": input,
-                    "impacts": self.impact_names_text,
-                    "impact_descriptions": self.impact_descriptions_text,
-                }
-            )
-
-            return output
+        return response

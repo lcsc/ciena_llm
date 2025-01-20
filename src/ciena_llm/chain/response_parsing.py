@@ -1,15 +1,11 @@
-import logging
-
-import pydantic
-from pydantic import ValidationError
-
 from langchain_core.runnables.base import Runnable
 from langchain_core.output_parsers import JsonOutputParser
-from langchain_core.exceptions import OutputParserException
 
 from ciena_llm.llm import LLM
 from ciena_llm.prompt.prompt_template_manager import PromptTemplateManager
 from ciena_llm.response.impact import ImpactLLMResponse
+from ciena_llm.response.province import ProvinceLLMResponse
+from ciena_llm.chain.common import invoke_chain
 
 
 class ResponseParsingChain(Runnable):
@@ -17,17 +13,13 @@ class ResponseParsingChain(Runnable):
         self.step = "response_parsing"
         self.config = config
 
-        # TODO parametrize impacts?
-        # TODO for impacts only?
+        self.task = self.config["task"]
+
+        # TODO get this in prompt template manager?
         self.impact_config = self.config["impacts"]
         self.pipeline_config = self.config["pipeline"][self.step]
 
         self.language = self.pipeline_config["prompt"]["language"]
-
-        # If the response parsing pipeline step is disabled in the config, the extraction chain will have to parse the response
-        self.response_parsing = not (
-            self.config["pipeline"]["response_parsing"]["enable"]
-        )
 
         self.impact_names = [i[f"text_{self.language}"] for i in self.impact_config]
         self.impact_descriptions = [
@@ -45,14 +37,20 @@ class ResponseParsingChain(Runnable):
 
         self.llm = LLM(config=self.config["llm"], stage=self.step)
 
-        # TODO parametrize which response object to use
-        self.response_parser = JsonOutputParser(pydantic_object=ImpactLLMResponse)
+        match self.task:
+            case "impact":
+                self.response_parser = JsonOutputParser(
+                    pydantic_object=ImpactLLMResponse
+                )
+            case "province":
+                self.response_parser = JsonOutputParser(
+                    pydantic_object=ProvinceLLMResponse
+                )
 
         self.prompt_template = PromptTemplateManager.get_prompt_template(
-            task="impact",  # TODO parametrize if impact
+            task=self.task,
             step=self.step,
             language=self.language,
-            # category="",
             output="json",
             format_instructions=self.response_parser.get_format_instructions(),
         )
@@ -61,32 +59,22 @@ class ResponseParsingChain(Runnable):
 
     def invoke(self, input: str, *args, **kwargs):
 
-        try:
-            # Invoke the chain
-            output = self.chain.invoke(
-                {
-                    "text": input,
-                    "impacts": self.impact_names_text,
-                    "impact_descriptions": self.impact_descriptions_text,
-                }
-            )
+        match self.task:
+            case "impact":
+                response = invoke_chain(
+                    self.chain,
+                    input,
+                    ImpactLLMResponse,
+                    {"drought": None, **{i["tag"]: None for i in self.impact_config}},
+                    impacts=self.impact_names_text,
+                    impact_descriptions=self.impact_descriptions_text,
+                )
+            case "province":
+                response = invoke_chain(
+                    self.chain,
+                    input,
+                    ProvinceLLMResponse,
+                    {"response": []},
+                )
 
-            # Parse the response
-            return ImpactLLMResponse(**output)
-
-        except pydantic.ValidationError as e:
-            logging.error("pydantic.ValidationError: Failed to parse response: %s", e)
-            print(f"OUTPUT: {output}")
-            # TODO Handle this error
-            # raise e
-            return ImpactLLMResponse(
-                **{"drought": None, **{i["tag"]: None for i in self.impact_config}}
-            )
-
-        except OutputParserException as e:
-            logging.error("OutputParserException: Failed to parse response: %s", e)
-            # TODO Handle this error
-            # raise e
-            return ImpactLLMResponse(
-                **{"drought": None, **{i["tag"]: None for i in self.impact_config}}
-            )
+        return response
