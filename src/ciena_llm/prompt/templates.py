@@ -212,7 +212,7 @@ Text:
 {text}
 """
 
-LOCATION_PROVINCES_EXTRACTION_EN = """
+LOCATION_PROVINCE_EXTRACTION_EN = """
 Analyze the following news article related to drought.
 Determine the named locations and geographical accidents impacted by the drought according to the text.
 If a location is not impacted by the drought, do not list it.
@@ -248,7 +248,7 @@ Text:
 # Provinces Extraction
 ################################################################################
 
-PROVINCES_EXTRACTION_JSON_EN = """
+PROVINCE_EXTRACTION_JSON_EN = """
 Given a news article describing drought impacts in Spanish regions, return the list of affected provinces.
 Identify provinces explicitly mentioned or infer them from the described locations.
 If you cannot identify specific provinces, return all provinces in the regions mentioned.
@@ -260,9 +260,43 @@ Return only the JSON inside a markdown fenced code block (without syntax highlig
 Text:
 {text}
 """
+
 # Output the list as parsable JSON with the following structure.
 # {"provinces":[]}
 # Do not output anything else but the list of provinces.
+
+PROVINCE_EXTRACTION_TEXT_EN = """
+Given a news article describing drought impacts in Spanish regions, return the list of affected provinces.
+Identify provinces explicitly mentioned or infer them from the described locations.
+If you cannot identify specific provinces, return all provinces in the regions mentioned.
+Note that the text may refer to autonomous communities or specific cities, towns, and municipalities, which are not the provinces being requested. Do not include these autonomous communities or municipalities in the output.
+Return the province names in Spanish.
+Text:
+{text}
+"""
+
+PROVINCE_EXTRACTION_JSON_ES = """
+Dado un artículo de noticias que describe los impactos de la sequía en regiones españolas, devuelve la lista de provincias afectadas.
+Identifica las provincias mencionadas explícitamente o infiérelas de las localizaciones descritas.
+Si no puedes identificar provincias específicas, devuelve todas las provincias en las regiones mencionadas.
+Ten en cuenta que el texto puede referirse a comunidades autónomas o ciudades, pueblos y municipios específicos, que no son las provincias solicitadas. No incluyas estas comunidades autónomas o municipios en la salida.
+Devuelve los nombres de las provincias en español.
+Instrucciones de formato:
+{format_instructions}
+Proporciona únicamente el JSON dentro de un bloque de código de markdown (sin resaltado de sintaxis y sin texto adicional alrededor).
+Texto:
+{text}
+"""
+
+PROVINCE_EXTRACTION_TEXT_ES = """
+Dado un artículo de noticias que describe los impactos de la sequía en regiones españolas, devuelve la lista de provincias afectadas.
+Identifica las provincias mencionadas explícitamente o infiérelas de las localizaciones descritas.
+Si no puedes identificar provincias específicas, devuelve todas las provincias en las regiones mencionadas.
+Ten en cuenta que el texto puede referirse a comunidades autónomas o ciudades, pueblos y municipios específicos, que no son las provincias solicitadas. No incluyas estas comunidades autónomas o municipios en la salida.
+Devuelve los nombres de las provincias en español.
+Texto:
+{text}
+"""
 
 
 ################################################################################

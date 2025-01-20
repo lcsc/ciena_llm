@@ -99,7 +99,7 @@ class PromptTemplateManager:
             "variables": ["text"],
         },
         ("location", "extraction", "provinces", "en", "text"): {
-            "template": LOCATION_PROVINCES_EXTRACTION_EN,
+            "template": LOCATION_PROVINCE_EXTRACTION_EN,
             "variables": ["text"],
         },
         ("location", "response_parsing", DEFAULT, "en", "json"): {
@@ -107,10 +107,23 @@ class PromptTemplateManager:
             "variables": ["text"],
             "partial_variables": ["format_instructions"],
         },
-        ("province", "extraction", "parser", "en", "json"): {
-            "template": PROVINCES_EXTRACTION_JSON_EN,
+        ("province", "extraction", DEFAULT, "en", "json"): {
+            "template": PROVINCE_EXTRACTION_JSON_EN,
             "variables": ["text"],
             "partial_variables": ["format_instructions"],
+        },
+        ("province", "extraction", DEFAULT, "en", "text"): {
+            "template": PROVINCE_EXTRACTION_TEXT_EN,
+            "variables": ["text"],
+        },
+        ("province", "extraction", DEFAULT, "es", "json"): {
+            "template": PROVINCE_EXTRACTION_JSON_ES,
+            "variables": ["text"],
+            "partial_variables": ["format_instructions"],
+        },
+        ("province", "extraction", DEFAULT, "es", "text"): {
+            "template": PROVINCE_EXTRACTION_TEXT_ES,
+            "variables": ["text"],
         },
         (DEFAULT, "response_parsing", "boolean", "en", "json"): {
             "template": BOOLEAN_RESPONSE_PARSING_EN,
