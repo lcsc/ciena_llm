@@ -1,3 +1,4 @@
-from ciena_llm.chain.extraction import ExtractionChain
+from ciena_llm.chain.extraction_impact import ImpactExtractionChain
 from ciena_llm.chain.summarization import SummarizationChain
 from ciena_llm.chain.response_parsing import ResponseParsingChain
+from ciena_llm.chain.extraction_province import ProvinceExtractionChain

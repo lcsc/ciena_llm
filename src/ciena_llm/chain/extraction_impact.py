@@ -12,7 +12,7 @@ from ciena_llm.prompt.prompt_template_manager import PromptTemplateManager
 from ciena_llm.response.impact import ImpactLLMResponse
 
 
-class ExtractionChain(Runnable):
+class ImpactExtractionChain(Runnable):
     def __init__(self, config):
         self.step = "extraction"
         self.config = config
@@ -56,14 +56,14 @@ class ExtractionChain(Runnable):
     "drought": <true or false>,
     {"\n".join([f"\"{i['tag']}\": <true or false>," for i in self.impact_config])}
 }}
-    ```
-            """
+```
+"""
 
             self.prompt_template = PromptTemplateManager.get_prompt_template(
                 task="impact",
                 step="multi_classification",
-                language=self.language,
                 category="description",
+                language=self.language,
                 output="json",  # TODO from config
                 format_instructions=format_instructions,
             )
@@ -74,8 +74,8 @@ class ExtractionChain(Runnable):
             self.prompt_template = PromptTemplateManager.get_prompt_template(
                 task="impact",
                 step="multi_classification",
-                language=self.language,
                 category="description",
+                language=self.language,
                 output="text",
             )
 

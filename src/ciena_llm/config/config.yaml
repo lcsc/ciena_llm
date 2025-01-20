@@ -1,4 +1,5 @@
 version: 0.2.0
+task: "impact"
 pipeline:
   response_parsing:
     enable: True

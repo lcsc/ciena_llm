@@ -15,7 +15,12 @@ from seqia.config.loader import ConfigLoader
 from seqia.utils.output import write_to_csv
 
 from ciena_llm.llm import LLM
-from ciena_llm.chain import ExtractionChain, SummarizationChain, ResponseParsingChain
+from ciena_llm.chain import (
+    ProvinceExtractionChain,
+    ImpactExtractionChain,
+    SummarizationChain,
+    ResponseParsingChain,
+)
 
 
 class ClimateImpactExtractor:
@@ -29,14 +34,23 @@ class ClimateImpactExtractor:
 
         self.config = self.config_loader.config
 
+        self.task = self.config["task"]
+
         # TODO organize better config
+        match self.task:
+            case "impact":
+                self.extraction_chain = ImpactExtractionChain(config=self.config)
+            case "province":
+                self.extraction_chain = ProvinceExtractionChain(config=self.config)
+            case _:
+                raise ValueError(f"Invalid task in configuration: {self.task}")
+
         self.summarization_enable = self.config["pipeline"]["summarization"]["enable"]
+        self.summarization_chain = SummarizationChain(config=self.config)
+
         self.response_parsing_enable = self.config["pipeline"]["response_parsing"][
             "enable"
         ]
-
-        self.summarization_chain = SummarizationChain(config=self.config)
-        self.extraction_chain = ExtractionChain(config=self.config)
         self.response_parsing_chain = ResponseParsingChain(config=self.config)
 
         self.chain = self.extraction_chain
@@ -59,14 +73,26 @@ class ClimateImpactExtractor:
             # Run the combined summarization and extraction chain
             output = self.chain.invoke(text)
 
-            article.drought = output.drought
-            article.impacts_aggregated = [
-                i for i, v in output.model_dump().items() if v and i != "drought"
-            ]
+            match self.task:
+                case "impact":
+                    article.drought = output.drought
+                    article.impacts_aggregated = [
+                        i
+                        for i, v in output.model_dump().items()
+                        if v and i != "drought"
+                    ]
 
-            logging.info(
-                f"Article {article.filename}\nDrought: {article.drought}\nImpacts: {article.impacts_aggregated}"
-            )
+                    logging.debug(
+                        f"Article: {article.filename}\n"
+                        f"Drought: {article.drought}\n"
+                        f"Impacts: {', '.join(article.impacts_aggregated)}"
+                    )
+                case "province":
+                    article.provinces = output.response
+                    logging.debug(
+                        f"Article: {article.filename}\n"
+                        f"Provinces: {', '.join(article.provinces)}"
+                    )
 
         return articles
 
