@@ -3,27 +3,27 @@
 ################################################################################
 
 DROUGHT_CLASSIFICATION_BOOLEAN_ES = """
-Analiza el siguiente artículo y determina si la noticia está relacionada con la sequía climática.
+Analiza el siguiente artículo y determina si la noticia está relacionada con la sequía.
 Texto:
 {text}
-Por ejemplo, si el artículo está relacionado con la sequía climática, responde únicamente la palabra "True" y si no lo está, responde "False". No añadas ningún signo de puntuación ni proporciones ninguna explicación adicional. Sólo True/False.
+Por ejemplo, si el artículo está relacionado con la sequía, responde únicamente la palabra "True" y si no lo está, responde "False". No añadas ningún signo de puntuación ni proporciones ninguna explicación adicional. Sólo True/False.
 """
 
 DROUGHT_CLASSIFICATION_BOOLEAN_EN = """
-Analyze the following article and determine if the news article is mentions the existance of climate drought.
+Analyze the following article and determine if the news article is mentions the existance of drought.
 In your response, provide only an affirmative or negative answer.
 Text:
 {text}
 """
 
 DROUGHT_CLASSIFICATION_ES = """
-Analiza el siguiente artículo y determina si la noticia está relacionada con la sequía climática.
+Analiza el siguiente artículo y determina si la noticia está relacionada con la sequía.
 Texto:
 {text}
 """
 
 DROUGHT_CLASSIFICATION_EN = """
-Analyze the following article and determine if the news article is mentions the existance of climate drought.
+Analyze the following article and determine if the news article is mentions the existance of drought.
 Text:
 {text}
 """
@@ -41,14 +41,14 @@ Text:
 ################################################################################
 
 IMPACT_CLASSIFICATION_BOOLEAN_ES = """
-Analiza el siguiente artículo relacionado con la sequía climática. Determina si esta noticia menciona un impacto de la sequía en {impact}.
+Analiza el siguiente artículo relacionado con la sequía. Determina si esta noticia menciona un impacto de la sequía en {impact}.
 Texto:
 {text}
 Por ejemplo, si el artículo menciona un impacto en {impact}, responde únicamente la palabra "True" y si no lo está, responde "False". No añadas ningún signo de puntuación ni proporciones ninguna explicación adicional. Sólo True/False.
 """
 
 IMPACT_CLASSIFICATION_BOOLEAN_EN = """
-Analyze the following article related to climate drought. Determine whether the news article mentions an impact of drought on {impact}.
+Analyze the following article related to drought. Determine whether the news article mentions an impact of drought on {impact}.
 In your response, focus solely on the impact of the drought on {impact} as mentioned in the article.
 In your response, provide only an affirmative or negative answer.
 Text:
@@ -56,20 +56,20 @@ Text:
 """
 
 IMPACT_CLASSIFICATION_ES = """
-Analiza el siguiente artículo relacionado con la sequía climática. Determina si esta noticia menciona un impacto de la sequía en {impact}.
+Analiza el siguiente artículo relacionado con la sequía. Determina si esta noticia menciona un impacto de la sequía en {impact}.
 Texto:
 {text}
 """
 
 IMPACT_CLASSIFICATION_EN = """
-Analyze the following article related to climate drought. Determine whether the news article mentions an impact of drought on {impact}.
+Analyze the following article related to drought. Determine whether the news article mentions an impact of drought on {impact}.
 In your response, focus solely on the impact of the drought on {impact} as mentioned in the article.
 Text:
 {text}
 """
 
 IMPACT_CLASSIFICATION_DESCRIPTION_EN = """
-Analyze the following article related to climate drought. Determine whether the news article mentions an impact of drought on {impact}.
+Analyze the following article related to drought. Determine whether the news article mentions an impact of drought on {impact}.
 In your response, focus solely on the impact of the drought on {impact} as mentioned in the article.
 The impact is defined as follows:
 {impact_description}
@@ -79,7 +79,7 @@ Reason your answer and be brief. At the end of your response, provide a clear af
 """
 
 IMPACT_CLASSIFICATION_JSON_DESCRIPTION_EN = """
-Analyze the following article related to climate drought. Determine whether the news article mentions an impact of drought on {impact}.
+Analyze the following article related to drought. Determine whether the news article mentions an impact of drought on {impact}.
 In your response, focus solely on the impact of the drought on {impact} as mentioned in the article.
 The impact is defined as follows:
 {impact_description}
@@ -93,7 +93,7 @@ Format instructions:
 """
 
 IMPACT_CLASSIFICATION_JSON_DESCRIPTION_ES = """
-Analiza el siguiente artículo relacionado con la sequía climática. Determina si esta noticia menciona un impacto de la sequía en {impact}.
+Analiza el siguiente artículo relacionado con la sequía. Determina si esta noticia menciona un impacto de la sequía en {impact}.
 En tu respuesta, enfócate únicamente en el impacto de la sequía en {impact} tal como se menciona en el artículo.
 El impacto se define como sigue:
 {impact_description}
@@ -107,7 +107,7 @@ Instrucciones de formato:
 """
 
 IMPACT_MULTI_CLASSIFICATION_DESCRIPTION_ES = """
-Analiza el siguiente artículo. Si el artículo esta relacionado con la sequía climática, determina si la noticia menciona impactos de la sequía en los siguientes aspectos: {impacts}.
+Analiza el siguiente artículo. Si el artículo esta relacionado con la sequía, determina si la noticia menciona impactos de la sequía en los siguientes aspectos: {impacts}.
 
 Para cada aspecto mencionado, proporciona la siguiente información:
 1. Si el artículo menciona la sequía.
@@ -124,7 +124,7 @@ Texto:
 """
 
 IMPACT_MULTI_CLASSIFICATION_JSON_DESCRIPTION_ES = """
-Analiza el siguiente artículo. Si el artículo esta relacionado con la sequía climática, determina si la noticia menciona impactos de la sequía en los siguientes aspectos: {impacts}.
+Analiza el siguiente artículo. Si el artículo esta relacionado con la sequía, determina si la noticia menciona impactos de la sequía en los siguientes aspectos: {impacts}.
 
 Para cada aspecto mencionado, proporciona la siguiente información:
 1. Si el artículo menciona la sequía.
@@ -144,7 +144,7 @@ Instrucciones de formato:
 """
 
 IMPACT_MULTI_CLASSIFICATION_DESCRIPTION_EN = """
-Analyze the following article. If the article is related to climate drought, determine whether the news article mentions impacts of drought on the following aspects: {impacts}.
+Analyze the following article. If the article is related to drought, determine whether the news article mentions impacts of drought on the following aspects: {impacts}.
 
 For each mentioned aspect, provide the following information:
 1. Whether the article mentions drought.
@@ -162,7 +162,7 @@ Text:
 
 # TODO parametrize or do something about this template being the same as the one above but with added format instructions
 IMPACT_MULTI_CLASSIFICATION_JSON_DESCRIPTION_EN = """
-Analyze the following article. If the article is related to climate drought, determine whether the news article mentions impacts of drought on the following aspects: {impacts}.
+Analyze the following article. If the article is related to drought, determine whether the news article mentions impacts of drought on the following aspects: {impacts}.
 
 For each mentioned aspect, provide the following information:
 1. Whether the article mentions drought.
@@ -194,13 +194,13 @@ Format instructions:
 ################################################################################
 
 LOCATION_EXTRACTION_ES = """
-Analiza el siguiente artículo relacionado con la sequía climática. Determina las localizaciones que aparecen en el texto que impactadas por la sequía. Además, indica a que tipo de localización se refiere (e.g. municipio, provincia, comunidad autonoma, río, presa, cuenca, etc.). Lista únicamente aquellas que estén directamente relacionadas con la sequía. Por localización, indica una pequeña descripción del impacto de la sequía en esa localización según la noticia. En el caso de que no haya ninguna localización impactada por la sequía, no menciones ninguna.
+Analiza el siguiente artículo relacionado con la sequía. Determina las localizaciones que aparecen en el texto que impactadas por la sequía. Además, indica a que tipo de localización se refiere (e.g. municipio, provincia, comunidad autonoma, río, presa, cuenca, etc.). Lista únicamente aquellas que estén directamente relacionadas con la sequía. Por localización, indica una pequeña descripción del impacto de la sequía en esa localización según la noticia. En el caso de que no haya ninguna localización impactada por la sequía, no menciones ninguna.
 Texto:
 {text}
 """
 
 LOCATION_EXTRACTION_EN = """
-Analyze the following article related to climate drought.
+Analyze the following article related to drought.
 Determine the named geographical locations mentioned in the text that are directly impacted by the drought.
 If no locations are impacted by the drought, do not return any output.
 For each impacted location, provide the following information:
@@ -213,7 +213,7 @@ Text:
 """
 
 LOCATION_PROVINCES_EXTRACTION_EN = """
-Analyze the following news article related to climate drought.
+Analyze the following news article related to drought.
 Determine the named locations and geographical accidents impacted by the drought according to the text.
 If a location is not impacted by the drought, do not list it.
 Return the names for the locations and the provinces in Spanish.
@@ -284,7 +284,7 @@ Text:
 ################################################################################
 
 DROUGHT_RESPONSE_PARSING_EN = """
-Extract whether the following text is related to climate drought.
+Extract whether the following text is related to drought.
 Format instructions:
 {format_instructions}
 Return only the JSON inside a markdown fenced code block (without syntax highlighting and no additional text around it).
@@ -298,7 +298,7 @@ Text:
 ################################################################################
 
 IMPACT_RESPONSE_PARSING_EN = """
-Extract from the given text whether the article mentions an impact of climate drought on {impacts}.
+Extract from the given text whether the article mentions an impact of drought on {impacts}.
 The impacts are defined as follows:
 {impact_descriptions}
 Format instructions:
@@ -309,7 +309,7 @@ Text:
 """
 
 IMPACT_RESPONSE_PARSING_ES = """
-Extrae del texto dado si el artículo menciona un impacto de la sequía climática en {impacts}.
+Extrae del texto dado si el artículo menciona un impacto de la sequía en {impacts}.
 Los impactos se definen de la siguiente manera:
 {impact_descriptions}
 Instrucciones de formato:
@@ -325,12 +325,12 @@ Texto:
 ################################################################################
 
 LOCATION_RESPONSE_PARSING_EN = """
-Extract the locations impacted by climate drought from the given text.
+Extract the locations impacted by drought from the given text.
 The output must be a valid JSON object formatted according to the schema, including any optional fields where applicable.
 Format instructions:
 {format_instructions}
 For each location, include all properties as specified in the schema, including optional ones, if they appear in the text.
-If there are no locations impacted by the climate drought, provide an empty JSON object.
+If there are no locations impacted by the drought, provide an empty JSON object.
 Return only the JSON inside a markdown fenced code block (without syntax highlighting and no additional text around it).
 Do not encode any special characters and do not use any Unicode escape sequences in the output.
 Text:
@@ -341,15 +341,15 @@ Text:
 # Summarization
 ################################################################################
 SUMMARIZATION_ES = """
-Resume el siguiente artículo, centrándote en los aspectos más relevantes relacionados con la sequía climática, los impactos de la sequía y sólo de la sequía y las localizaciones afectadas.
-Si el artículo no menciona la sequía climática, el resumen únicamente debe indicar explícitamente que no se menciona la sequía climática ni ningún impacto relacionado.
+Resume el siguiente artículo, centrándote en los aspectos más relevantes relacionados con la sequía, los impactos de la sequía y sólo de la sequía y las localizaciones afectadas.
+Si el artículo no menciona la sequía, el resumen únicamente debe indicar explícitamente que no se menciona la sequía ni ningún impacto relacionado.
 Texto:
 {text}
 """
 
 SUMMARIZATION_EN = """
-Summarize the following article, focusing on the most relevant aspects related to climate drought, the impacts of drought, and only drought, and the affected locations.
-If the article does not mention climate drought, the summary should explicitly state that climate drought or any related impact is not mentioned.
+Summarize the following article, focusing on the most relevant aspects related to drought, the impacts of drought, and only drought, and the affected locations.
+If the article does not mention drought, the summary should explicitly state that drought or any related impact is not mentioned.
 Text:
 {text}
 """
