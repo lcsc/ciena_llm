@@ -6,6 +6,11 @@ def setup_logging(logging_file: str):
     logger = logging.getLogger()
     logger.setLevel(logging.DEBUG)  # Set the root logger to the lowest level
 
+    # Remove all handlers associated with the logger object
+    for handler in logger.handlers[:]:
+        logger.removeHandler(handler)
+        handler.close()
+
     # Create handlers
     stream_handler = logging.StreamHandler()
     stream_handler.setLevel(logging.INFO)  # Set the stream handler to INFO level
