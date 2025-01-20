@@ -38,14 +38,19 @@ else:
 def run_test(test_name_suffix, summarization_enable, response_parsing_enable, language):
     TEST_NAME = f"{BASE_TEST_NAME}/{test_name_suffix}-{language}"
     OVERRIDE_CONFIG = {
+        "task": "impact",
         "pipeline": {
             "summarization": {
                 "enable": summarization_enable,
-                "language": language,
+                "prompt": {
+                    "language": language,
+                },
             },
             "response_parsing": {
                 "enable": response_parsing_enable,
-                "language": language,
+                "prompt": {
+                    "language": language,
+                },
             },
         },
         "llm": {
