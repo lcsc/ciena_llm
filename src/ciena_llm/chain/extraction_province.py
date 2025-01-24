@@ -31,14 +31,14 @@ class ProvinceExtractionChain(Runnable):
 
             # TODO maybe put this in the prompt template manager?
             # JSON format instructions for the model
-            format_instructions = f"""
+            format_instructions = """
 ```json 
-{{
+{
     "response": [
         "province name 1",
         "province name 2",
     ]
-}}
+}
 ```
 """
 
@@ -50,7 +50,20 @@ class ProvinceExtractionChain(Runnable):
                 format_instructions=format_instructions,
             )
 
-            self.chain = self.prompt_template | self.llm | self.response_parser
+            # Use a parser to convert the response to a dictionary if
+            #   it is a list. This is a common generation error in the
+            #    LLM when no provinces are found
+            def list_to_dict_parser(response):
+                if isinstance(response, list):
+                    return {"response": response}
+                return response
+
+            self.chain = (
+                self.prompt_template
+                | self.llm
+                | self.response_parser
+                | list_to_dict_parser
+            )
 
         else:
             self.prompt_template = PromptTemplateManager.get_prompt_template(
