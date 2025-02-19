@@ -47,24 +47,15 @@ class ImpactExtractionChain(Runnable):
         if self.response_parsing:
             self.response_parser = JsonOutputParser(pydantic_object=ImpactLLMResponse)
 
-            # TODO maybe put this in the prompt template manager?
-            # JSON format instructions for the model
-            format_instructions = f"""
-```json 
-{{
-    "drought": <true or false>,
-    {"\n".join([f"\"{i['tag']}\": <true or false>," for i in self.impact_config])}
-}}
-```
-"""
-
             self.prompt_template = PromptTemplateManager.get_prompt_template(
                 task=self.task,
                 step="multi_classification",
                 category="description",
                 language=self.language,
                 output="json",
-                format_instructions=format_instructions,
+                # TODO which one is better?
+                # format_instructions=self.response_parser.get_format_instructions(),
+                format_instructions=ImpactLLMResponse.get_format_instructions(),
             )
 
             self.chain = self.prompt_template | self.llm | self.response_parser
@@ -97,7 +88,7 @@ class ImpactExtractionChain(Runnable):
             self.chain,
             input,
             ImpactLLMResponse,
-            {"drought": None, **{i["tag"]: None for i in self.impact_config}},
+            ImpactLLMResponse.get_default_response(),
             response_parsing=self.response_parsing,
             impacts=self.impact_names_text,
             impact_descriptions=self.impact_descriptions_text,

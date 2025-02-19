@@ -29,45 +29,21 @@ class ProvinceExtractionChain(Runnable):
         if self.response_parsing:
             self.response_parser = JsonOutputParser(pydantic_object=ProvinceLLMResponse)
 
-            # TODO maybe put this in the prompt template manager?
-            # JSON format instructions for the model
-            format_instructions = """
-```json 
-{
-    "response": [
-        "province name 1",
-        "province name 2",
-    ]
-}
-```
-"""
-
             self.prompt_template = PromptTemplateManager.get_prompt_template(
                 task=self.task,
                 step="extraction",
                 language=self.language,
                 output="json",
-                format_instructions=format_instructions,
+                # TODO which one is better?
+                # format_instructions=self.response_parser.get_format_instructions(),
+                format_instructions=ProvinceLLMResponse.get_format_instructions(),
             )
-
-            def parse_response_to_dict(response):
-                """
-                Parser to ensure the response is always a dictionary
-
-                Convert the response to a dictionary if it is a list.
-                This handles common generation errors in the LLM when no provinces are found.
-                """
-                if isinstance(response, list):
-                    return {"response": response}
-                if not isinstance(response, dict):
-                    return {"response": []}
-                return response
 
             self.chain = (
                 self.prompt_template
                 | self.llm
                 | self.response_parser
-                | parse_response_to_dict
+                | ProvinceLLMResponse.parse_response_to_dict  # TODO ()
             )
 
         else:
@@ -96,7 +72,7 @@ class ProvinceExtractionChain(Runnable):
             self.chain,
             input,
             ProvinceLLMResponse,
-            {"response": []},
+            ProvinceLLMResponse.get_default_response(),
             response_parsing=self.response_parsing,
         )
 
