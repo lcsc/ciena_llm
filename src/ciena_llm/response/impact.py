@@ -47,3 +47,4 @@ def get_format_instructions(cls):
 
 
 ImpactLLMResponse.get_default_response = get_default_response
+ImpactLLMResponse.get_format_instructions = get_format_instructions

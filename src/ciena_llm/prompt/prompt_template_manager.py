@@ -1,3 +1,5 @@
+from typing import Dict
+
 from langchain_core.prompts import PromptTemplate
 
 from ciena_llm.prompt.templates import *
@@ -31,64 +33,89 @@ class PromptTemplateManager:
         },
         ("impact", "classification", "boolean", "es", "text"): {
             "template": IMPACT_CLASSIFICATION_BOOLEAN_ES,
-            "variables": ["text", "impact"],
+            "variables": ["text"],
+            "partial_variables": ["impact"],
         },
         ("impact", "classification", "boolean", "en", "text"): {
             "template": IMPACT_CLASSIFICATION_BOOLEAN_EN,
-            "variables": ["text", "impact"],
+            "variables": ["text"],
+            "partial_variables": ["impact"],
         },
         ("impact", "classification", DEFAULT, "es", "text"): {
             "template": IMPACT_CLASSIFICATION_ES,
-            "variables": ["text", "impact"],
+            "variables": ["text"],
+            "partial_variables": ["impact"],
         },
         ("impact", "classification", DEFAULT, "en", "text"): {
             "template": IMPACT_CLASSIFICATION_EN,
-            "variables": ["text", "impact"],
+            "variables": ["text"],
+            "partial_variables": ["impact"],
         },
         ("impact", "classification", "description", "en", "text"): {
             "template": IMPACT_CLASSIFICATION_DESCRIPTION_EN,
-            "variables": ["text", "impact", "impact_description"],
+            "variables": ["text"],
+            "partial_variables": ["impact", "impact_description"],
         },
         ("impact", "classification", "parser_description", "en", "json"): {
             "template": IMPACT_CLASSIFICATION_JSON_DESCRIPTION_EN,
-            "variables": ["text", "impact", "impact_description"],
+            "variables": ["text"],
+            "partial_variables": ["impact", "impact_description"],
         },
         ("impact", "classification", "parser_description", "es", "json"): {
             "template": IMPACT_CLASSIFICATION_JSON_DESCRIPTION_ES,
-            "variables": ["text", "impact", "impact_description"],
+            "variables": ["text"],
+            "partial_variables": ["impact", "impact_description"],
         },
         ("impact", "multi_classification", "description", "es", "json"): {
             "template": IMPACT_MULTI_CLASSIFICATION_JSON_DESCRIPTION_ES,
-            "variables": ["text", "impacts", "impact_descriptions"],
-            "partial_variables": ["format_instructions"],
+            "variables": ["text"],
+            "partial_variables": [
+                "format_instructions",
+                "impacts",
+                "impact_descriptions",
+            ],
         },
         ("impact", "multi_classification", "description", "es", "text"): {
             "template": IMPACT_MULTI_CLASSIFICATION_DESCRIPTION_ES,
-            "variables": ["text", "impacts", "impact_descriptions"],
+            "variables": ["text"],
+            "partial_variables": ["impacts", "impact_descriptions"],
         },
         ("impact", "multi_classification", "description", "en", "json"): {
             "template": IMPACT_MULTI_CLASSIFICATION_JSON_DESCRIPTION_EN,
-            "variables": ["text", "impacts", "impact_descriptions"],
-            "partial_variables": ["format_instructions"],
+            "variables": ["text"],
+            "partial_variables": [
+                "format_instructions",
+                "impacts",
+                "impact_descriptions",
+            ],
         },
         ("impact", "multi_classification", "description", "en", "text"): {
             "template": IMPACT_MULTI_CLASSIFICATION_DESCRIPTION_EN,
-            "variables": ["text", "impacts", "impact_descriptions"],
+            "variables": ["text"],
+            "partial_variables": ["impacts", "impact_descriptions"],
         },
         ("impact", "response_parsing", DEFAULT, "en", "json"): {
             "template": IMPACT_RESPONSE_PARSING_EN,
-            "variables": ["text", "impacts", "impact_descriptions"],
-            "partial_variables": ["format_instructions"],
+            "variables": ["text"],
+            "partial_variables": [
+                "format_instructions",
+                "impacts",
+                "impact_descriptions",
+            ],
         },
         ("impact", "response_parsing", DEFAULT, "es", "json"): {
             "template": IMPACT_RESPONSE_PARSING_ES,
-            "variables": ["text", "impacts", "impact_descriptions"],
-            "partial_variables": ["format_instructions"],
+            "variables": ["text"],
+            "partial_variables": [
+                "format_instructions",
+                "impacts",
+                "impact_descriptions",
+            ],
         },
         ("impact", "response_parsing", DEFAULT, "es", "json"): {
             "template": IMPACT_RESPONSE_PARSING_ES,
-            "variables": ["text", "impact"],
-            "partial_variables": ["format_instructions"],
+            "variables": ["text"],
+            "partial_variables": ["format_instructions", "impact"],
         },
         ("location", "extraction", DEFAULT, "es", "text"): {
             "template": LOCATION_EXTRACTION_ES,
@@ -154,29 +181,32 @@ class PromptTemplateManager:
     def get_prompt_template(
         cls,
         task: str = DEFAULT,
-        step: str = DEFAULT,
         category: str = DEFAULT,
+        subcategory: str = DEFAULT,
         language: str = "en",
         output: str = "text",
         **kwargs,
     ) -> PromptTemplate:
         """
-        Retrieves and returns a LangChain PromptTemplate for a given task, step, language, category, and output type.
+        Retrieves and returns a LangChain PromptTemplate for a given task, category, language, subcategory, and output type.
 
         :param task: The task type (e.g., "drought", "impact", "location").
-        :param step: The step within the task (e.g., "classification", "extraction").
-        :param category: The category within the step (default is "default").
+        :param category: The category within the task (e.g., "classification", "extraction").
+        :param subcategory: The category within the subcategory (default is "default").
         :param language: The language of the template (default is "en").
         :param output: The output type of the template (default is "text").
         :param kwargs: Additional keyword arguments to format the template.
         :return: A LangChain PromptTemplate object.
         """
         try:
-            template_info = cls.TEMPLATES[(task, step, category, language, output)]
+            template_info = cls.TEMPLATES[
+                (task, category, subcategory, language, output)
+            ]
         except KeyError:
             raise ValueError(
-                f"Template for task '{task}', step '{step}', category '{category}', language '{language}', and output '{output}' not recognized."
+                f"Template for task '{task}', category '{category}', subcategory '{subcategory}', language '{language}', and output '{output}' not recognized."
             )
+
 
         template_str = template_info["template"]
 
@@ -186,21 +216,44 @@ class PromptTemplateManager:
             for k, v in kwargs.items()
             if k in template_info.get("partial_variables", [])
         }
-        input_vars = {
-            k: v
-            for k, v in kwargs.items()
-            if k not in template_info.get("partial_variables", [])
-        }
-
-        # Format the template string if there are any keyword arguments
-        if input_vars:
-            try:
-                template_str = template_str.format(**input_vars)
-            except KeyError as e:
-                raise ValueError(f"Missing required argument for template: {e}") from e
 
         return PromptTemplate(
             template=template_str,
             input_variables=template_info["variables"],
             partial_variables=partial_vars,
         )
+
+    @classmethod
+    def get_impact_names_text(cls, impact_config: Dict, language: str) -> str:
+        """
+        Retrieves and returns a string of impact names from the given impacts configuration.
+
+        :param impact_config: A dictionary of impact names and descriptions.
+        :param language: The language of the impact names text.
+        :return: A string of impact names.
+        """
+        impact_names = [i[f"text_{language}"] for i in impact_config]
+        impact_names_text = ", ".join(impact_names)
+
+        return impact_names_text
+
+    @classmethod
+    def get_impact_descriptions_text(cls, impact_config: Dict, language: str) -> str:
+        """
+        Retrieves and returns a string of impact descriptions from the given impacts configuration.
+
+        :param impact_config: A dictionary of impact names and descriptions.
+        :param language: The language of the impact descriptions text.
+        :return: A string of impact descriptions.
+        """
+
+        impact_names = [i[f"text_{language}"] for i in impact_config]
+        impact_descriptions = [i[f"description_{language}"] for i in impact_config]
+        impact_descriptions_text = ", ".join(
+            [
+                f"{impact}: {description}"
+                for impact, description in zip(impact_names, impact_descriptions)
+            ]
+        )
+
+        return impact_descriptions_text

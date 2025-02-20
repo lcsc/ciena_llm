@@ -49,7 +49,7 @@ class ResponseParsingChain(Runnable):
 
         self.prompt_template = PromptTemplateManager.get_prompt_template(
             task=self.task,
-            step=self.step,
+            category=self.step,
             language=self.language,
             output="json",
             format_instructions=self.response_parser.get_format_instructions(),

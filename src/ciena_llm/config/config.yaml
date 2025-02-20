@@ -4,21 +4,32 @@ pipeline:
   response_parsing:
     enable: True
     prompt:
-      language: es
+      language: en
   summarization:
     enable: True
     prompt:
-      language: es
+      language: en
   extraction:
     enable: True
     prompt:
-      language: es
+      language: en
+      category: multi_classification
+      subcategory: description
+      # output: json # TODO here?
 llm:
   default:
     name: "llama3.1"
     temperature: 0
     context_length: 32768
     num_predict_tokens: 2048
+prompt:
+
+event:
+  - tag: "drought"
+    text_es: "sequía"
+    text_en: "drought"
+    description_es: "Noticias sobre sequías suelen hacer referencia a la falta de lluvias, a la disminución de los caudales de los ríos, a la disminución de los niveles de los embalses o a la disminución de las aguas subterráneas." # TODO check
+    description_en: "News about droughts usually refer to the lack of rain, the decrease in river flows, the decrease in reservoir levels, or the decrease in groundwater." # TODO check
 impacts:
   - tag: "agriculture"
     text_es: "agricultura"

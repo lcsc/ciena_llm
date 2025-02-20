@@ -19,7 +19,7 @@ class SummarizationChain(Runnable):
 
         # TODO parametrize prompt in chain
         self.prompt_template = PromptTemplateManager.get_prompt_template(
-            step=self.step,
+            category=self.step,
             language=self.language,
         )
 

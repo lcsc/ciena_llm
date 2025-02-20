@@ -16,11 +16,11 @@ from seqia.utils.output import write_to_csv
 
 from ciena_llm.llm import LLM
 from ciena_llm.chain import (
-    ProvinceExtractionChain,
-    ImpactExtractionChain,
+    ExtractionChain,
     SummarizationChain,
     ResponseParsingChain,
 )
+from ciena_llm.response import ProvinceLLMResponse, ImpactLLMResponse
 
 
 class ClimateImpactExtractor:
@@ -36,14 +36,17 @@ class ClimateImpactExtractor:
 
         self.task = self.config["task"]
 
-        # TODO organize better config
         match self.task:
             case "impact":
-                self.extraction_chain = ImpactExtractionChain(config=self.config)
+                self.extraction_chema = ImpactLLMResponse
             case "province":
-                self.extraction_chain = ProvinceExtractionChain(config=self.config)
+                self.extraction_chema = ProvinceLLMResponse
             case _:
                 raise ValueError(f"Invalid task in configuration: {self.task}")
+
+        self.extraction_chain = ExtractionChain(
+            config=self.config, extraction_schema=self.extraction_chema
+        )
 
         self.summarization_enable = self.config["pipeline"]["summarization"]["enable"]
         self.summarization_chain = SummarizationChain(config=self.config)
