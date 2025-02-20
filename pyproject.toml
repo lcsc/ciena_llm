@@ -10,10 +10,10 @@ packages = [{ include = "ciena_llm", from = "src" }]
 main = "ciena_llm.main:main"
 
 [tool.poetry.dependencies]
-python = "^3.12"
+python = "^3.12,<3.13"
 python-dotenv = "^1.0.1"
 langchain-ollama = "^0.2.0"
-seqia = {git = "https://github.com/lcsc/seqia/"}
+seqia = { git = "https://github.com/lcsc/seqia/" }
 pyyaml = "^6.0.2"
 
 [tool.poetry.group.dev.dependencies]
