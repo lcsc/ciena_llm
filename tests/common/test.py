@@ -69,3 +69,16 @@ class ClimateImpactExtractorTest:
         ):
             os.remove(self.latest_results_dir)
         os.symlink(self.results_dir, self.latest_results_dir)
+
+        logging.info(
+            """
+--------------------------------
+Test %s finished
+Results saved in %s
+Execution time: %s
+--------------------------------
+""",
+            self.test_name,
+            self.results_dir,
+            time_str,
+        )

@@ -39,15 +39,14 @@ OVERRIDE_CONFIG = {
     },
 }
 
-# OVERRIDE_CONFIG["task"] = "impact"
-# TEST_NAME = f"{BASE_TEST_NAME}/impact"
-
-# test = ClimateImpactExtractorTest(TEST_NAME, DATASET_PATH, OVERRIDE_CONFIG)
-# test.run()
-
-
-OVERRIDE_CONFIG["task"] = "province"
-TEST_NAME = f"{BASE_TEST_NAME}/province"
+OVERRIDE_CONFIG["task"] = "impact"
+TEST_NAME = f"{BASE_TEST_NAME}/impact"
 
 test = ClimateImpactExtractorTest(TEST_NAME, DATASET_PATH, OVERRIDE_CONFIG)
 test.run()
+
+# OVERRIDE_CONFIG["task"] = "province"
+# TEST_NAME = f"{BASE_TEST_NAME}/province"
+
+# test = ClimateImpactExtractorTest(TEST_NAME, DATASET_PATH, OVERRIDE_CONFIG)
+# test.run()
