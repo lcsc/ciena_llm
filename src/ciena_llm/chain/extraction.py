@@ -78,14 +78,18 @@ class ExtractionChain(Runnable):
             },
         }
 
+        self.parsing_errors = []
+
     def invoke(self, input_text: str, *args, **kwargs):
 
-        response = invoke_chain(
+        (response, parsing_error) = invoke_chain(
             self.chain,
             input_text,
             self.extraction_schema,
-            self.extraction_schema.get_default_response(),
             response_parsing=self.response_parsing,
         )
+
+        if parsing_error:
+            self.parsing_errors.append(parsing_error)
 
         return response

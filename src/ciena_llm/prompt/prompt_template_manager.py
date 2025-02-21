@@ -216,16 +216,6 @@ class PromptTemplateManager:
             if k in template_info.get("partial_variables", [])
         }
 
-        print(
-            f"Template for task '{task}', category '{category}', subcategory '{subcategory}', language '{language}', and output '{output}'"
-        )
-
-        print("template_info", template_info)
-        print("partial_variables", template_info.get("partial_variables", []))
-        print("partial_vars", partial_vars)
-        print("template_str", template_str)
-        print("kwargs", kwargs)
-
         return PromptTemplate(
             template=template_str,
             input_variables=template_info["variables"],

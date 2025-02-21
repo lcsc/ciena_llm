@@ -1,5 +1,6 @@
-import os
+import json
 import logging
+import os
 import tempfile
 import time
 from datetime import datetime
@@ -43,6 +44,10 @@ class ClimateImpactExtractorTest:
 
         extractor = ClimateImpactExtractor(override_config_path)
         articles = extractor(dataset_path=self.dataset_path)
+
+        end_time = time.time()
+        execution_time = end_time - start_time
+
         extractor.write_summary_to_csv(
             articles, os.path.join(self.results_dir, "summary.csv")
         )
@@ -54,9 +59,13 @@ class ClimateImpactExtractorTest:
         extractor.write_excluded_problematic_articles_to_csv(
             os.path.join(self.results_dir, "excluded_problematic_articles.csv")
         )
-
-        end_time = time.time()
-        execution_time = end_time - start_time
+        extractor.write_parsing_errors_to_json(
+            os.path.join(self.results_dir, "parsing_errors.json")
+        )
+        with open(
+            os.path.join(self.results_dir, "parsing_errors.json"), "r", encoding="utf-8"
+        ) as prompts_file:
+            errors = json.load(prompts_file)
 
         with open(
             os.path.join(self.results_dir, "execution_time.txt"), "w", encoding="utf-8"
@@ -76,9 +85,11 @@ class ClimateImpactExtractorTest:
 Test %s finished
 Results saved in %s
 Execution time: %s
+Errors: %s
 --------------------------------
 """,
             self.test_name,
             self.results_dir,
             time_str,
+            errors["total"],
         )

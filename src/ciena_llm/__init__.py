@@ -137,3 +137,37 @@ class ClimateImpactExtractor:
 
         with open(file, "w", encoding="utf-8") as f:
             json.dump(prompts, f, indent=4)
+
+    def write_parsing_errors_to_json(self, file: str):
+        """
+        Write the parsing errors encountered during the extraction process to the given JSON file.
+
+        :param file: The file to write the parsing errors to.
+        """
+        parsing_errors = {}
+
+        parsing_errors["extraction"] = {}
+        parsing_errors["extraction"][
+            "parsing_errors"
+        ] = self.extraction_chain.parsing_errors
+        parsing_errors["extraction"]["total"] = len(
+            self.extraction_chain.parsing_errors
+        )
+
+        total = len(self.extraction_chain.parsing_errors)
+
+        if self.response_parsing_enable:
+            parsing_errors["response_parsing"] = {}
+            parsing_errors["response_parsing"][
+                "parsing_errors"
+            ] = self.response_parsing_chain.parsing_errors
+            parsing_errors["response_parsing"]["total"] = len(
+                self.response_parsing_chain.parsing_errors
+            )
+
+            total += len(self.response_parsing_chain.parsing_errors)
+
+        parsing_errors["total"] = total
+
+        with open(file, "w", encoding="utf-8") as f:
+            json.dump(parsing_errors, f, indent=4)

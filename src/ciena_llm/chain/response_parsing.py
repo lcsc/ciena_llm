@@ -23,8 +23,6 @@ class ResponseParsingChain(Runnable):
 
         self.response_parser = JsonOutputParser(pydantic_object=self.extraction_schema)
 
-        print(":::::::::::::::::rersponse parser:::::::::::::::::")
-
         self.prompt_template = PromptTemplateManager.get_prompt_template(
             task=self.task,
             category=self.step,
@@ -51,13 +49,17 @@ class ResponseParsingChain(Runnable):
             },
         }
 
+        self.parsing_errors = []
+
     def invoke(self, input_text: str, *args, **kwargs):
 
-        response = invoke_chain(
+        (response, parsing_error) = invoke_chain(
             self.chain,
             input_text,
             self.extraction_schema,
-            self.extraction_schema.get_default_response(),
         )
+
+        if parsing_error:
+            self.parsing_errors.append(parsing_error)
 
         return response
