@@ -41,7 +41,6 @@ class ExtractionChain(Runnable):
                 # TODO which one is better?
                 # format_instructions=self.response_parser.get_format_instructions(),
                 format_instructions=self.extraction_schema.get_format_instructions(),
-                # TODO always pass as parameters?
                 impacts=PromptTemplateManager.get_impact_names_text(
                     self.impact_config, self.language
                 ),
@@ -79,11 +78,11 @@ class ExtractionChain(Runnable):
             },
         }
 
-    def invoke(self, input: str, *args, **kwargs):
+    def invoke(self, input_text: str, *args, **kwargs):
 
         response = invoke_chain(
             self.chain,
-            input,
+            input_text,
             self.extraction_schema,
             self.extraction_schema.get_default_response(),
             response_parsing=self.response_parsing,

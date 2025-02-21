@@ -38,14 +38,14 @@ class ClimateImpactExtractor:
 
         match self.task:
             case "impact":
-                self.extraction_chema = ImpactLLMResponse
+                self.extraction_schema = ImpactLLMResponse
             case "province":
-                self.extraction_chema = ProvinceLLMResponse
+                self.extraction_schema = ProvinceLLMResponse
             case _:
                 raise ValueError(f"Invalid task in configuration: {self.task}")
 
         self.extraction_chain = ExtractionChain(
-            config=self.config, extraction_schema=self.extraction_chema
+            config=self.config, extraction_schema=self.extraction_schema
         )
 
         self.summarization_enable = self.config["pipeline"]["summarization"]["enable"]
@@ -54,7 +54,9 @@ class ClimateImpactExtractor:
         self.response_parsing_enable = self.config["pipeline"]["response_parsing"][
             "enable"
         ]
-        self.response_parsing_chain = ResponseParsingChain(config=self.config)
+        self.response_parsing_chain = ResponseParsingChain(
+            config=self.config, extraction_schema=self.extraction_schema
+        )
 
         self.chain = self.extraction_chain
 

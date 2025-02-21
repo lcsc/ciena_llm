@@ -45,6 +45,15 @@ def get_format_instructions(cls):
 ```
 """
 
+#     return f"""
+# ```json 
+# {{
+#     "drought": <true or false>,
+#     {"\n    ".join([f"\"{i}\": <true or false>," for i in IMPACTS])}
+# }}
+# ```
+# """
+
 
 ImpactLLMResponse.get_default_response = get_default_response
 ImpactLLMResponse.get_format_instructions = get_format_instructions

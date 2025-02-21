@@ -3,56 +3,40 @@ from langchain_core.output_parsers import JsonOutputParser
 
 from ciena_llm.llm import LLM
 from ciena_llm.prompt.prompt_template_manager import PromptTemplateManager
-from ciena_llm.response.impact import ImpactLLMResponse
-from ciena_llm.response.province import ProvinceLLMResponse
 from ciena_llm.chain.common import invoke_chain
 
 
 class ResponseParsingChain(Runnable):
-    def __init__(self, config):
+    def __init__(self, config, extraction_schema):
         self.step = "response_parsing"
+        self.extraction_schema = extraction_schema
+
         self.config = config
 
         self.task = self.config["task"]
-
-        # TODO get this in prompt template manager?
         self.impact_config = self.config["impacts"]
         self.pipeline_config = self.config["pipeline"][self.step]
 
         self.language = self.pipeline_config["prompt"]["language"]
 
-        self.impact_names = [i[f"text_{self.language}"] for i in self.impact_config]
-        self.impact_descriptions = [
-            i[f"description_{self.language}"] for i in self.impact_config
-        ]
-        self.impact_names_text = ", ".join(self.impact_names)
-        self.impact_descriptions_text = ", ".join(
-            [
-                f"{impact}: {description}"
-                for impact, description in zip(
-                    self.impact_names, self.impact_descriptions
-                )
-            ]
-        )
-
         self.llm = LLM(config=self.config["llm"], stage=self.step)
 
-        match self.task:
-            case "impact":
-                self.response_parser = JsonOutputParser(
-                    pydantic_object=ImpactLLMResponse
-                )
-            case "province":
-                self.response_parser = JsonOutputParser(
-                    pydantic_object=ProvinceLLMResponse
-                )
+        self.response_parser = JsonOutputParser(pydantic_object=self.extraction_schema)
+
+        print(":::::::::::::::::rersponse parser:::::::::::::::::")
 
         self.prompt_template = PromptTemplateManager.get_prompt_template(
             task=self.task,
             category=self.step,
             language=self.language,
             output="json",
-            format_instructions=self.response_parser.get_format_instructions(),
+            format_instructions=self.extraction_schema.get_format_instructions(),
+            impacts=PromptTemplateManager.get_impact_names_text(
+                self.impact_config, self.language
+            ),
+            impact_descriptions=PromptTemplateManager.get_impact_descriptions_text(
+                self.impact_config, self.language
+            ),
         )
 
         self.chain = self.prompt_template | self.llm | self.response_parser
@@ -67,22 +51,13 @@ class ResponseParsingChain(Runnable):
             },
         }
 
-    def invoke(self, input: str, *args, **kwargs):
+    def invoke(self, input_text: str, *args, **kwargs):
 
-        match self.task:
-            case "impact":
-                return invoke_chain(
-                    self.chain,
-                    input,
-                    ImpactLLMResponse,
-                    {"drought": None, **{i["tag"]: None for i in self.impact_config}},
-                    impacts=self.impact_names_text,
-                    impact_descriptions=self.impact_descriptions_text,
-                )
-            case "province":
-                return invoke_chain(
-                    self.chain,
-                    input,
-                    ProvinceLLMResponse,
-                    {"response": []},
-                )
+        response = invoke_chain(
+            self.chain,
+            input_text,
+            self.extraction_schema,
+            self.extraction_schema.get_default_response(),
+        )
+
+        return response

@@ -112,11 +112,11 @@ class PromptTemplateManager:
                 "impact_descriptions",
             ],
         },
-        ("impact", "response_parsing", DEFAULT, "es", "json"): {
-            "template": IMPACT_RESPONSE_PARSING_ES,
-            "variables": ["text"],
-            "partial_variables": ["format_instructions", "impact"],
-        },
+        # ("impact", "response_parsing", DEFAULT, "es", "json"): {
+        #     "template": IMPACT_RESPONSE_PARSING_ES,
+        #     "variables": ["text"],
+        #     "partial_variables": ["format_instructions", "impact"],
+        # },
         ("location", "extraction", DEFAULT, "es", "text"): {
             "template": LOCATION_EXTRACTION_ES,
             "variables": ["text"],
@@ -207,7 +207,6 @@ class PromptTemplateManager:
                 f"Template for task '{task}', category '{category}', subcategory '{subcategory}', language '{language}', and output '{output}' not recognized."
             )
 
-
         template_str = template_info["template"]
 
         # Separate partial variables from input variables
@@ -216,6 +215,16 @@ class PromptTemplateManager:
             for k, v in kwargs.items()
             if k in template_info.get("partial_variables", [])
         }
+
+        print(
+            f"Template for task '{task}', category '{category}', subcategory '{subcategory}', language '{language}', and output '{output}'"
+        )
+
+        print("template_info", template_info)
+        print("partial_variables", template_info.get("partial_variables", []))
+        print("partial_vars", partial_vars)
+        print("template_str", template_str)
+        print("kwargs", kwargs)
 
         return PromptTemplate(
             template=template_str,

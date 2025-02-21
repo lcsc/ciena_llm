@@ -22,13 +22,13 @@ OVERRIDE_CONFIG = {
             },
         },
         "summarization": {
-            "enable": False,
+            "enable": True,
             "prompt": {
                 "language": LANGUAGE,
             },
         },
         "response_parsing": {
-            "enable": False,
+            "enable": True,
             "prompt": {
                 "language": LANGUAGE,
             },
