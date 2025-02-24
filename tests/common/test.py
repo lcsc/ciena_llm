@@ -28,7 +28,6 @@ class ClimateImpactExtractorTest:
 
     def run(self):
         logging.info("Running test %s", self.test_name)
-        start_time = time.time()
 
         if self.override_config:
             with tempfile.NamedTemporaryFile(
@@ -43,11 +42,14 @@ class ClimateImpactExtractorTest:
             override_config_path = None
 
         extractor = ClimateImpactExtractor(override_config_path)
+
+        start_time = time.time()
+
         articles = extractor(dataset_path=self.dataset_path)
 
-        end_time = time.time()
-        execution_time = end_time - start_time
+        execution_time = time.time() - start_time
 
+        # Save results
         extractor.write_summary_to_csv(
             articles, os.path.join(self.results_dir, "summary.csv")
         )
@@ -59,19 +61,15 @@ class ClimateImpactExtractorTest:
         extractor.write_excluded_problematic_articles_to_csv(
             os.path.join(self.results_dir, "excluded_problematic_articles.csv")
         )
-        extractor.write_parsing_errors_to_json(
+        parsing_errors = extractor.write_parsing_errors_to_json(
             os.path.join(self.results_dir, "parsing_errors.json")
         )
-        with open(
-            os.path.join(self.results_dir, "parsing_errors.json"), "r", encoding="utf-8"
-        ) as prompts_file:
-            errors = json.load(prompts_file)
+        total_parsing_errors = parsing_errors["total"]
 
-        with open(
-            os.path.join(self.results_dir, "execution_time.txt"), "w", encoding="utf-8"
-        ) as time_file:
-            time_str = format_execution_time(execution_time)
-            time_file.write(time_str)
+        execution_times = extractor.write_execution_times_to_json(
+            os.path.join(self.results_dir, "execution_times.json")
+        )
+        total_execution_time = format_execution_time(execution_times["total"])
 
         if os.path.islink(self.latest_results_dir) or os.path.exists(
             self.latest_results_dir
@@ -90,6 +88,6 @@ Errors: %s
 """,
             self.test_name,
             self.results_dir,
-            time_str,
-            errors["total"],
+            total_execution_time,
+            total_parsing_errors,
         )

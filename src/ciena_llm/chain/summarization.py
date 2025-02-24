@@ -1,3 +1,6 @@
+import time
+from typing import Dict
+
 from langchain_core.runnables.base import Runnable
 
 from ciena_llm.prompt.prompt_template_manager import PromptTemplateManager
@@ -32,16 +35,29 @@ class SummarizationChain(Runnable):
             },
         }
 
-    def invoke(self, input_text: str, *args, **kwargs):
+        self.execution_times = {}
+
+    def invoke(self, input_data: Dict, *args, **kwargs):
         """
         Summarize the provided text using the LLM and summarization prompt template.
 
-        :param text: The input text (article).
+        :param input_data: The input data for the summarization chain.
         :return: Summarized text.
         """
 
+        input_text = input_data.get("text")
+        article_id = input_data.get("article_id")
+
+        start_time = time.time()
+
         # Invoke summarization chain
         summarized_text = self.chain.invoke({"text": input_text})
-        summarized_text = summarized_text.strip()
 
-        return summarized_text
+        execution_time = time.time() - start_time
+
+        self.execution_times[article_id] = execution_time
+
+        return {
+            "article_id": article_id,
+            "output": summarized_text.strip(),
+        }

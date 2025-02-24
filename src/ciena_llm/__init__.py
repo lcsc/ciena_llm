@@ -1,6 +1,6 @@
 import os
 import json
-from typing import List
+from typing import List, Dict
 from tqdm import tqdm
 import logging
 
@@ -58,14 +58,6 @@ class ClimateImpactExtractor:
             config=self.config, extraction_schema=self.extraction_schema
         )
 
-        self.chain = self.extraction_chain
-
-        if self.summarization_enable:
-            self.chain = self.summarization_chain | self.chain
-
-        if self.response_parsing_enable:
-            self.chain = self.chain | self.response_parsing_chain
-
     def __call__(self, dataset_path: str) -> List[Article]:
         articles = self.article_loader(dataset_path)
 
@@ -73,17 +65,35 @@ class ClimateImpactExtractor:
             articles,
             desc="Summarizing and extracting impacts and locations from articles",
         ):
+            article_id = article.filename  # Or use a unique ID if available
             text = article.get_headline_and_body(separator=".")
 
-            # Run the combined summarization and extraction chain
-            output = self.chain.invoke(text)
+            input_data = {
+                "article_id": article_id,
+                "text": text,
+            }
+
+            # Run summarization
+            if self.summarization_enable:
+                result = self.summarization_chain.invoke(input_data)
+                input_data["text"] = result["output"]
+
+            # Run extraction
+            result = self.extraction_chain.invoke(input_data)
+            input_data["text"] = result["output"]
+            extracted_data = result["output"]
+
+            # Run response parsing if enabled
+            if self.response_parsing_enable:
+                result = self.response_parsing_chain.invoke(input_data)
+                extracted_data = result["output"]
 
             match self.task:
                 case "impact":
-                    article.drought = output.drought
+                    article.drought = extracted_data.drought
                     article.impacts_aggregated = [
                         i
-                        for i, v in output.model_dump().items()
+                        for i, v in extracted_data.model_dump().items()
                         if v and i != "drought"
                     ]
 
@@ -94,7 +104,8 @@ class ClimateImpactExtractor:
                     )
 
                 case "province":
-                    article.provinces = output.response
+                    article.provinces = extracted_data.response
+
                     logging.debug(
                         f"Article: {article.filename}\n"
                         f"Provinces: {', '.join(article.provinces)}"
@@ -144,30 +155,96 @@ class ClimateImpactExtractor:
 
         :param file: The file to write the parsing errors to.
         """
-        parsing_errors = {}
 
-        parsing_errors["extraction"] = {}
+        parsing_errors = {
+            "total": 0,
+            "extraction": {
+                "parsing_errors": {},
+                "total": 0,
+            },
+            "response_parsing": {
+                "parsing_errors": {},
+                "total": 0,
+            },
+        }
+
+        # Parsing errors from extraction chain
         parsing_errors["extraction"][
             "parsing_errors"
         ] = self.extraction_chain.parsing_errors
         parsing_errors["extraction"]["total"] = len(
             self.extraction_chain.parsing_errors
         )
+        parsing_errors["total"] += len(self.extraction_chain.parsing_errors)
 
-        total = len(self.extraction_chain.parsing_errors)
-
+        # Parsing errors from response parsing chain
         if self.response_parsing_enable:
-            parsing_errors["response_parsing"] = {}
             parsing_errors["response_parsing"][
                 "parsing_errors"
             ] = self.response_parsing_chain.parsing_errors
             parsing_errors["response_parsing"]["total"] = len(
                 self.response_parsing_chain.parsing_errors
             )
-
-            total += len(self.response_parsing_chain.parsing_errors)
-
-        parsing_errors["total"] = total
+            parsing_errors["total"] += len(self.response_parsing_chain.parsing_errors)
 
         with open(file, "w", encoding="utf-8") as f:
             json.dump(parsing_errors, f, indent=4)
+
+        return parsing_errors
+
+    def write_execution_times_to_json(self, file: str) -> Dict:
+        """
+        Write the execution times for the extraction process to the given JSON file.
+
+        :param file: The file to write the execution times to.
+        """
+
+        execution_times = {
+            "total": 0,
+            "summarization": {
+                "total": 0,
+                "individual": {},
+            },
+            "extraction": {
+                "total": 0,
+                "individual": {},
+            },
+            "response_parsing": {
+                "total": 0,
+                "individual": {},
+            },
+        }
+
+        # Execution times from summarization chain
+        if self.summarization_enable:
+            execution_times["summarization"][
+                "individual"
+            ] = self.summarization_chain.execution_times
+            execution_times["summarization"]["total"] = sum(
+                self.summarization_chain.execution_times.values()
+            )
+            execution_times["total"] += execution_times["summarization"]["total"]
+
+        # Execution times from extraction chain
+        execution_times["extraction"][
+            "individual"
+        ] = self.extraction_chain.execution_times
+        execution_times["extraction"]["total"] = sum(
+            self.extraction_chain.execution_times.values()
+        )
+        execution_times["total"] += execution_times["extraction"]["total"]
+
+        # Execution times from response parsing chain
+        if self.response_parsing_enable:
+            execution_times["response_parsing"][
+                "individual"
+            ] = self.response_parsing_chain.execution_times
+            execution_times["response_parsing"]["total"] = sum(
+                self.response_parsing_chain.execution_times.values()
+            )
+            execution_times["total"] += execution_times["response_parsing"]["total"]
+
+        with open(file, "w", encoding="utf-8") as f:
+            json.dump(execution_times, f, indent=4)
+
+        return execution_times

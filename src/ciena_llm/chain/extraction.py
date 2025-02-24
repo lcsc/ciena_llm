@@ -1,3 +1,6 @@
+import time
+from typing import Dict
+
 from langchain_core.runnables.base import Runnable
 from langchain_core.output_parsers import JsonOutputParser
 
@@ -78,10 +81,23 @@ class ExtractionChain(Runnable):
             },
         }
 
-        self.parsing_errors = []
+        self.parsing_errors = {}
+        self.execution_times = {}
 
-    def invoke(self, input_text: str, *args, **kwargs):
+    def invoke(self, input_data: Dict, *args, **kwargs):
+        """
+        Extract the information needed from the provided text using the LLM and extraction prompt template.
 
+        :param input_data: The input data for the extraction chain.
+        :return: Extracted information.
+        """
+
+        input_text = input_data.get("text")
+        article_id = input_data.get("article_id")
+
+        start_time = time.time()
+
+        # Invoke extraction chain
         (response, parsing_error) = invoke_chain(
             self.chain,
             input_text,
@@ -89,7 +105,14 @@ class ExtractionChain(Runnable):
             response_parsing=self.response_parsing,
         )
 
-        if parsing_error:
-            self.parsing_errors.append(parsing_error)
+        execution_time = time.time() - start_time
 
-        return response
+        if parsing_error:
+            self.parsing_errors[article_id] = parsing_error
+
+        self.execution_times[article_id] = execution_time
+
+        return {
+            "article_id": article_id,
+            "output": response,
+        }
