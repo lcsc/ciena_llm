@@ -34,25 +34,15 @@ def get_default_response(cls):
 
 @classmethod
 def get_format_instructions(cls):
-    # TODO maybe put this in the prompt template manager?
     # JSON format instructions for the model
     return f"""
 ```json 
 {{
     "drought": <true or false>,
-    {"\n\t".join([f"\"{i}\": <true or false>," for i in IMPACTS])}
+    {",\n    ".join([f"\"{i}\": <true or false>" for i in IMPACTS])}
 }}
 ```
 """
-
-#     return f"""
-# ```json 
-# {{
-#     "drought": <true or false>,
-#     {"\n    ".join([f"\"{i}\": <true or false>," for i in IMPACTS])}
-# }}
-# ```
-# """
 
 
 ImpactLLMResponse.get_default_response = get_default_response
