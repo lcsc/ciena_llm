@@ -4,10 +4,12 @@ pipeline:
   response_parsing:
     enable: True
     prompt:
+      category: response_parsing
       language: en
   summarization:
     enable: True
     prompt:
+      category: summarization
       language: en
   extraction:
     enable: True

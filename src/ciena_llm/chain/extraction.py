@@ -71,11 +71,9 @@ class ExtractionChain(Runnable):
             self.chain = self.prompt_template | self.llm
 
         self.prompts = {
-            "extraction_impact": {
+            f"extraction_{self.task}": {
                 "task": self.task,
-                "step": "multi_classification",
-                "category": "description",
-                "language": self.language,
+                **self.step_prompt_config,
                 "output": "json" if self.response_parsing else "text",
                 "template": self.prompt_template.pretty_repr(),
             },

@@ -13,24 +13,22 @@ class SummarizationChain(Runnable):
         self.config = config
 
         self.task = config["task"]
-
-        self.pipeline_config = self.config["pipeline"][self.step]
-        self.language = self.pipeline_config["prompt"]["language"]
+        self.pipeline_step_config = self.config["pipeline"][self.step]
+        self.step_prompt_config = self.pipeline_step_config["prompt"]
+        self.language = self.pipeline_step_config["prompt"]["language"]
 
         self.llm = LLM(config=self.config["llm"], stage=self.step)
 
         self.prompt_template = PromptTemplateManager.get_prompt_template(
-            category=self.step,
-            language=self.language,
+            **self.step_prompt_config,
         )
 
         self.chain = self.prompt_template | self.llm
 
         self.prompts = {
-            "extraction_impact": {
+            "summarization": {
                 "task": self.task,
-                "step": self.step,
-                "language": self.language,
+                **self.step_prompt_config,
                 "template": self.prompt_template.pretty_repr(),
             },
         }

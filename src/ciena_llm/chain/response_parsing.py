@@ -17,19 +17,19 @@ class ResponseParsingChain(Runnable):
         self.config = config
 
         self.task = self.config["task"]
+        self.event_config = self.config["event"]
         self.impact_config = self.config["impacts"]
-        self.pipeline_config = self.config["pipeline"][self.step]
-
-        self.language = self.pipeline_config["prompt"]["language"]
-
-        self.llm = LLM(config=self.config["llm"], stage=self.step)
+        self.pipeline_step_config = self.config["pipeline"][self.step]
+        self.step_prompt_config = self.pipeline_step_config["prompt"]
+        self.language = self.pipeline_step_config["prompt"]["language"]
 
         self.response_parser = JsonOutputParser(pydantic_object=self.extraction_schema)
 
+        self.llm = LLM(config=self.config["llm"], stage=self.step)
+
         self.prompt_template = PromptTemplateManager.get_prompt_template(
             task=self.task,
-            category=self.step,
-            language=self.language,
+            **self.step_prompt_config,
             output="json",
             format_instructions=self.extraction_schema.get_format_instructions(),
             impacts=PromptTemplateManager.get_impact_names_text(
@@ -43,10 +43,9 @@ class ResponseParsingChain(Runnable):
         self.chain = self.prompt_template | self.llm | self.response_parser
 
         self.prompts = {
-            "extraction_impact": {
+            f"response_parsing_{self.task}": {
                 "task": self.task,
-                "step": self.step,
-                "language": self.language,
+                **self.step_prompt_config,
                 "output": "json",
                 "template": self.prompt_template.pretty_repr(),
             },
