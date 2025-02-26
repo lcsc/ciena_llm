@@ -47,26 +47,31 @@ class ClimateImpactExtractorTest:
 
         articles = extractor(dataset_path=self.dataset_path)
 
-        execution_time = time.time() - start_time
+        test_execution_time = time.time() - start_time
+        test_execution_time = format_execution_time(test_execution_time)
 
         # Save results
-        extractor.write_summary_to_csv(
+        extractor.output_manager.write_summary_to_csv(
             articles, os.path.join(self.results_dir, "summary.csv")
         )
-        extractor.write_location_to_csv(
+        extractor.output_manager.write_location_to_csv(
             articles, os.path.join(self.results_dir, "locations.csv")
         )
-        extractor.write_config(os.path.join(self.results_dir, "config.yaml"))
-        extractor.write_prompts_to_json(os.path.join(self.results_dir, "prompts.json"))
-        extractor.write_excluded_problematic_articles_to_csv(
+        extractor.output_manager.write_config(
+            os.path.join(self.results_dir, "config.yaml")
+        )
+        extractor.output_manager.write_prompts_to_json(
+            os.path.join(self.results_dir, "prompts.json")
+        )
+        extractor.output_manager.write_excluded_problematic_articles_to_csv(
             os.path.join(self.results_dir, "excluded_problematic_articles.csv")
         )
-        parsing_errors = extractor.write_parsing_errors_to_json(
+        parsing_errors = extractor.output_manager.write_parsing_errors_to_json(
             os.path.join(self.results_dir, "parsing_errors.json")
         )
         total_parsing_errors = parsing_errors["total"]
 
-        execution_times = extractor.write_execution_times_to_json(
+        execution_times = extractor.output_manager.write_execution_times_to_json(
             os.path.join(self.results_dir, "execution_times.json")
         )
         total_execution_time = format_execution_time(execution_times["total"])
@@ -82,12 +87,13 @@ class ClimateImpactExtractorTest:
 --------------------------------
 Test %s finished
 Results saved in %s
-Execution time: %s
+Execution time: %s (Test: %s)
 Errors: %s
 --------------------------------
 """,
             self.test_name,
             self.results_dir,
             total_execution_time,
+            test_execution_time,
             total_parsing_errors,
         )

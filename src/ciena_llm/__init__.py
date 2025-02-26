@@ -1,6 +1,5 @@
 import os
-import json
-from typing import List, Dict
+from typing import List
 from tqdm import tqdm
 import logging
 
@@ -12,15 +11,14 @@ dotenv.load_dotenv()
 from seqia.article import Article
 from seqia.article.loader import ArticleLoader
 from seqia.config.loader import ConfigLoader
-from seqia.utils.output import write_to_csv
 
-from ciena_llm.llm import LLM
 from ciena_llm.chain import (
     ExtractionChain,
     SummarizationChain,
     ResponseParsingChain,
 )
 from ciena_llm.response import ProvinceLLMResponse, ImpactLLMResponse
+from ciena_llm.output import OutputManager
 
 
 class ClimateImpactExtractor:
@@ -58,6 +56,8 @@ class ClimateImpactExtractor:
             config=self.config, extraction_schema=self.extraction_schema
         )
 
+        self.output_manager = OutputManager(extractor=self)
+
     def __call__(self, dataset_path: str) -> List[Article]:
         articles = self.article_loader(dataset_path)
 
@@ -88,6 +88,7 @@ class ClimateImpactExtractor:
                 result = self.response_parsing_chain.invoke(input_data)
                 extracted_data = result["output"]
 
+            # TODO maybe get the article from the chain or make a separate chain component to extract into article
             match self.task:
                 case "impact":
                     article.drought = extracted_data.drought
@@ -112,139 +113,3 @@ class ClimateImpactExtractor:
                     )
 
         return articles
-
-    def write_excluded_problematic_articles_to_csv(self, file: str):
-        self.article_loader.write_excluded_problematic_articles_to_csv(file)
-
-    def write_summary_to_csv(self, articles: List[Article], file: str):
-        write_to_csv(articles, file, self.config["output"]["summary"], "article")
-
-    def write_location_to_csv(self, articles: List[Article], file: str):
-        write_to_csv(
-            articles,
-            file,
-            self.config["output"]["location_article"],
-            "location_article",
-        )
-
-    def write_config(self, file: str):
-        self.config_loader.save_config(file)
-
-    def write_prompts_to_json(self, file: str):
-        """
-        Write the prompts used by the extractors to the given JSON file.
-
-        :param file: The file to write the prompts to.
-        """
-        prompts = {}
-
-        prompts.update(self.extraction_chain.prompts)
-
-        if self.summarization_enable:
-            prompts.update(self.summarization_chain.prompts)
-
-        if self.response_parsing_enable:
-            prompts.update(self.response_parsing_chain.prompts)
-
-        with open(file, "w", encoding="utf-8") as f:
-            json.dump(prompts, f, indent=4)
-
-    def write_parsing_errors_to_json(self, file: str):
-        """
-        Write the parsing errors encountered during the extraction process to the given JSON file.
-
-        :param file: The file to write the parsing errors to.
-        """
-
-        parsing_errors = {
-            "total": 0,
-            "extraction": {
-                "parsing_errors": {},
-                "total": 0,
-            },
-            "response_parsing": {
-                "parsing_errors": {},
-                "total": 0,
-            },
-        }
-
-        # Parsing errors from extraction chain
-        parsing_errors["extraction"][
-            "parsing_errors"
-        ] = self.extraction_chain.parsing_errors
-        parsing_errors["extraction"]["total"] = len(
-            self.extraction_chain.parsing_errors
-        )
-        parsing_errors["total"] += len(self.extraction_chain.parsing_errors)
-
-        # Parsing errors from response parsing chain
-        if self.response_parsing_enable:
-            parsing_errors["response_parsing"][
-                "parsing_errors"
-            ] = self.response_parsing_chain.parsing_errors
-            parsing_errors["response_parsing"]["total"] = len(
-                self.response_parsing_chain.parsing_errors
-            )
-            parsing_errors["total"] += len(self.response_parsing_chain.parsing_errors)
-
-        with open(file, "w", encoding="utf-8") as f:
-            json.dump(parsing_errors, f, indent=4)
-
-        return parsing_errors
-
-    def write_execution_times_to_json(self, file: str) -> Dict:
-        """
-        Write the execution times for the extraction process to the given JSON file.
-
-        :param file: The file to write the execution times to.
-        """
-
-        execution_times = {
-            "total": 0,
-            "summarization": {
-                "total": 0,
-                "individual": {},
-            },
-            "extraction": {
-                "total": 0,
-                "individual": {},
-            },
-            "response_parsing": {
-                "total": 0,
-                "individual": {},
-            },
-        }
-
-        # Execution times from summarization chain
-        if self.summarization_enable:
-            execution_times["summarization"][
-                "individual"
-            ] = self.summarization_chain.execution_times
-            execution_times["summarization"]["total"] = sum(
-                self.summarization_chain.execution_times.values()
-            )
-            execution_times["total"] += execution_times["summarization"]["total"]
-
-        # Execution times from extraction chain
-        execution_times["extraction"][
-            "individual"
-        ] = self.extraction_chain.execution_times
-        execution_times["extraction"]["total"] = sum(
-            self.extraction_chain.execution_times.values()
-        )
-        execution_times["total"] += execution_times["extraction"]["total"]
-
-        # Execution times from response parsing chain
-        if self.response_parsing_enable:
-            execution_times["response_parsing"][
-                "individual"
-            ] = self.response_parsing_chain.execution_times
-            execution_times["response_parsing"]["total"] = sum(
-                self.response_parsing_chain.execution_times.values()
-            )
-            execution_times["total"] += execution_times["response_parsing"]["total"]
-
-        with open(file, "w", encoding="utf-8") as f:
-            json.dump(execution_times, f, indent=4)
-
-        return execution_times
