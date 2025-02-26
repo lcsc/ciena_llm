@@ -41,10 +41,9 @@ class ClimateImpactExtractorTest:
         else:
             override_config_path = None
 
-        extractor = ClimateImpactExtractor(override_config_path)
-
         start_time = time.time()
 
+        extractor = ClimateImpactExtractor(override_config_path)
         articles = extractor(dataset_path=self.dataset_path)
 
         test_execution_time = time.time() - start_time
@@ -84,6 +83,7 @@ class ClimateImpactExtractorTest:
 
         logging.info(
             """
+
 --------------------------------
 Test %s finished
 Results saved in %s

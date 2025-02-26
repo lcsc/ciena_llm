@@ -50,4 +50,4 @@ def format_execution_time(execution_time):
     if minutes > 0 or hours > 0 or days > 0:
         time_str_parts.append(f"{int(minutes)} minutes")
     time_str_parts.append(f"{seconds:.2f} seconds")
-    return "Execution time: " + " ".join(time_str_parts)
+    return " ".join(time_str_parts)
