@@ -65,6 +65,8 @@ class ClimateImpactExtractor:
             articles,
             desc="Summarizing and extracting impacts and locations from articles",
         ):
+            logging.debug(f"START - Processing article: {article.filename}")
+
             article_id = article.filename  # Or use a unique ID if available
             text = article.get_headline_and_body(separator=".")
 
@@ -98,18 +100,19 @@ class ClimateImpactExtractor:
                         if v and i != "drought"
                     ]
 
-                    logging.debug(
-                        f"Article: {article.filename}\n"
-                        f"Drought: {article.drought}\n"
-                        f"Impacts: {', '.join(article.impacts_aggregated)}"
-                    )
-
                 case "province":
                     article.provinces = extracted_data.response
 
-                    logging.debug(
-                        f"Article: {article.filename}\n"
-                        f"Provinces: {', '.join(article.provinces)}"
+            log_message = f"END - Processing article: {article.filename}\n"
+            match self.task:
+                case "impact":
+                    log_message += (
+                        f"Drought: {article.drought}\n"
+                        f"Impacts: {', '.join(article.impacts_aggregated)}"
                     )
+                case "province":
+                    log_message += f"Provinces: {', '.join(article.provinces)}"
+
+            logging.debug(log_message)
 
         return articles
