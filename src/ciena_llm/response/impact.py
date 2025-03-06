@@ -35,11 +35,13 @@ def get_default_response(cls):
 @classmethod
 def get_format_instructions(cls):
     # JSON format instructions for the model
+    impacts_json = ",\n    ".join([f'"{i}": <true or false>' for i in IMPACTS])
+
     return f"""
-```json 
+```json
 {{
     "drought": <true or false>,
-    {",\n    ".join([f"\"{i}\": <true or false>" for i in IMPACTS])}
+    {impacts_json}
 }}
 ```
 """
