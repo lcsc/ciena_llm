@@ -1,6 +1,6 @@
-import json
 import logging
 import os
+import subprocess
 import tempfile
 import time
 from datetime import datetime
@@ -29,6 +29,7 @@ class ClimateImpactExtractorTest:
     def run(self):
         logging.info("Running test %s", self.test_name)
 
+        # If there is an override config, create a temporary file to store it
         if self.override_config:
             with tempfile.NamedTemporaryFile(
                 suffix=".yaml", delete=False
@@ -43,47 +44,65 @@ class ClimateImpactExtractorTest:
 
         start_time = time.time()
 
+        # Run the extractor
         extractor = ClimateImpactExtractor(override_config_path)
         articles = extractor(dataset_path=self.dataset_path)
 
         test_execution_time = time.time() - start_time
         test_execution_time = format_execution_time(test_execution_time)
 
-        # Save results
+        # Save results:
+        # - Summary of the results
         extractor.output_manager.write_summary_to_csv(
             articles, os.path.join(self.results_dir, "summary.csv")
         )
+        # - Locations extracted
         extractor.output_manager.write_location_to_csv(
             articles, os.path.join(self.results_dir, "locations.csv")
         )
+        # - Configurations used
         extractor.output_manager.write_config(
             os.path.join(self.results_dir, "config.yaml")
         )
+        # - Prompts used
         extractor.output_manager.write_prompts_to_json(
             os.path.join(self.results_dir, "prompts.json")
         )
+        # - Excluded problematic articles
         extractor.output_manager.write_excluded_problematic_articles_to_csv(
             os.path.join(self.results_dir, "excluded_problematic_articles.csv")
         )
+        # - Parsing errors
         parsing_errors = extractor.output_manager.write_parsing_errors_to_json(
             os.path.join(self.results_dir, "parsing_errors.json")
         )
         total_parsing_errors = parsing_errors["total"]
-
+        # - Execution times
         execution_times = extractor.output_manager.write_execution_times_to_json(
             os.path.join(self.results_dir, "execution_times.json")
         )
         total_execution_time = format_execution_time(execution_times["total"])
+        # - Git commit used
+        with open(
+            os.path.join(self.results_dir, "git_commit.txt"), "w", encoding="utf-8"
+        ) as f:
+            commit_hash = (
+                subprocess.check_output(["git", "rev-parse", "HEAD"])
+                .strip()
+                .decode("utf-8")
+            )
+            f.write(commit_hash)
 
+        # Create a symlink to the latest results
         if os.path.islink(self.latest_results_dir) or os.path.exists(
             self.latest_results_dir
         ):
             os.remove(self.latest_results_dir)
         os.symlink(self.results_dir, self.latest_results_dir)
 
+        # Log execution details
         logging.info(
             """
-
 --------------------------------
 Test %s finished
 Results saved in %s

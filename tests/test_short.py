@@ -28,7 +28,7 @@ OVERRIDE_CONFIG = {
             },
         },
         "response_parsing": {
-            "enable": True,
+            "enable": False,
             "prompt": {
                 "language": LANGUAGE,
             },
@@ -56,7 +56,7 @@ test.run()
 province_override_config = OVERRIDE_CONFIG.copy()
 province_override_config["task"] = "province"
 province_override_config["pipeline"]["extraction"]["prompt"]["category"] = "extraction"
-impact_override_config["pipeline"]["extraction"]["prompt"]["subcategory"] = None
+province_override_config["pipeline"]["extraction"]["prompt"]["subcategory"] = None
 TEST_NAME = f"{BASE_TEST_NAME}/province"
 
 test = ClimateImpactExtractorTest(TEST_NAME, DATASET_PATH, province_override_config)
