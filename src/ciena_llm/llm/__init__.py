@@ -10,19 +10,16 @@ class LLM:
         :param config: Configuration dictionary containing default and stage-specific settings.
         :param stage: The stage name (e.g., "impact", "drought", etc.).
         """
-        # Retrieve default and stage-specific configuration and merge them
-        default_config = config.get("default", {})
-        stage_config = config.get(stage, {})
-        merged_config = {**default_config, **stage_config}
 
+        self.config = config
         self.stage = stage
-        self.llm_name = merged_config["name"]
-        self.llm_temperature = merged_config["temperature"]
-        self.llm_context_length = merged_config["context_length"]
-        self.llm_num_predict_tokens = merged_config["num_predict_tokens"]
+        self.llm_name = self.config["name"]
+        self.llm_temperature = self.config["temperature"]
+        self.llm_context_length = self.config["context_length"]
+        self.llm_num_predict_tokens = self.config["num_predict_tokens"]
 
         # Initialize the appropriate backend LLM
-        backend_name = merged_config.get("backend", "ollama")
+        backend_name = self.config.get("backend", "ollama")
         if backend_name == "ollama":
             self.llm = ChatOllama(
                 model=self.llm_name,

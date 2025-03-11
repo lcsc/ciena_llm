@@ -1,5 +1,10 @@
-version: 0.2.0
+version: 0.3.0
 task: "impact"
+llm:
+  name: "llama3.1"
+  temperature: 0
+  context_length: 32768
+  num_predict_tokens: 2048
 pipeline:
   response_parsing:
     enable: True
@@ -18,13 +23,6 @@ pipeline:
       category: multi_classification
       subcategory: description
       # output: json # TODO here?
-llm:
-  default:
-    name: "llama3.1"
-    temperature: 0
-    context_length: 32768
-    num_predict_tokens: 2048
-prompt:
 
 event:
   - tag: "drought"
