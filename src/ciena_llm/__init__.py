@@ -1,5 +1,5 @@
 import os
-from typing import List
+from typing import List, Dict
 from tqdm import tqdm
 import logging
 
@@ -17,102 +17,186 @@ from ciena_llm.chain import (
     SummarizationChain,
     ResponseParsingChain,
 )
-from ciena_llm.response import ProvinceLLMResponse, ImpactLLMResponse
+from ciena_llm.response import (
+    ProvinceLLMResponse,
+    ImpactLLMResponse,
+)
 from ciena_llm.output import OutputManager
 
 
 class ClimateImpactExtractor:
     def __init__(self, override_config_path=None):
+        # Create loaders
         self.article_loader = ArticleLoader()
-
+        self.articles = []  # Empty until __call__
         self.config_loader = ConfigLoader(
             config_path=os.path.join(os.path.dirname(__file__), "config/config.yaml"),
             override_config_path=override_config_path,
         )
 
-        self.config = self.config_loader.config
-
-        self.task = self.config["task"]
-
-        match self.task:
-            case "impact":
-                self.extraction_schema = ImpactLLMResponse
-            case "province":
-                self.extraction_schema = ProvinceLLMResponse
-            case _:
-                raise ValueError(f"Invalid task in configuration: {self.task}")
-
-        self.extraction_chain = ExtractionChain(
-            config=self.config, extraction_schema=self.extraction_schema
-        )
-
-        self.summarization_enable = self.config["pipeline"]["summarization"]["enable"]
-        self.summarization_chain = SummarizationChain(config=self.config)
-
-        self.response_parsing_enable = self.config["pipeline"]["response_parsing"][
-            "enable"
-        ]
-        self.response_parsing_chain = ResponseParsingChain(
-            config=self.config, extraction_schema=self.extraction_schema
-        )
-
+        # Create output manager
         self.output_manager = OutputManager(extractor=self)
 
+        # Load configuration
+        self.config = self.config_loader.config
+        self.stages = self.config.get("stages", {})
+
+        # Define available schemas for extraction stages
+        self.stage_schemas = {
+            # "event_identification": EventLLMResponse, # TODO not implemented
+            "impact_extraction": ImpactLLMResponse,
+            "location_extraction": ProvinceLLMResponse,
+        }
+
+        # Dynamically initialize (enabled) pipeline steps for each stage
+        # TODO change name?
+        self.pipeline_steps = {}
+
+        # TODO make dynamic for every step of a stage
+        # TODO include summarization in here?
+        for stage, settings in self.stages.items():
+            if settings.get("enable", False):
+                schema = self.stage_schemas.get(stage)
+                steps = settings.get("steps", {})
+                self.pipeline_steps[stage] = {
+                    "extraction": (
+                        ExtractionChain(
+                            stage=stage,
+                            config=steps.get("extraction", {}),
+                            llm_config=self.config.get("llm"),
+                            extraction_schema=schema,
+                            event_config=self.config.get("event"),
+                            impact_config=self.config.get("impacts"),
+                            response_parsing_enable=(
+                                steps.get("response_parsing", {}).get("enable", False)
+                            ),
+                        )
+                        if steps.get("extraction", {}).get("enable", False)
+                        else None
+                    ),
+                    "response_parsing": (
+                        ResponseParsingChain(
+                            stage=stage,
+                            config=steps.get("response_parsing", {}),
+                            llm_config=self.config.get("llm"),
+                            extraction_schema=schema,
+                            event_config=self.config.get("event"),
+                            impact_config=self.config.get("impacts"),
+                        )
+                        if steps.get("response_parsing", {}).get("enable", False)
+                        else None
+                    ),
+                    "summarization": (
+                        SummarizationChain(
+                            stage=stage,
+                            config=steps.get("summarization", {}),
+                            llm_config=self.config.get("llm"),
+                        )
+                        if steps.get("summarization", {}).get("enable", False)
+                        else None
+                    ),
+                }
+
     def __call__(self, dataset_path: str) -> List[Article]:
-        articles = self.article_loader(dataset_path)
+        # Load articles
+        self.articles = self.article_loader(dataset_path)
 
-        for article in tqdm(
-            articles,
-            desc="Summarizing and extracting impacts and locations from articles",
-        ):
-            logging.debug(f"START - Processing article: {article.filename}")
+        # Process each article
+        for article in tqdm(self.articles, desc="Processing articles"):
+            logging.debug("START - Processing article: %s", article.filename)
 
-            article_id = article.filename  # Or use a unique ID if available
-            text = article.get_headline_and_body(separator=".")
+            # Extract article ID and text
+            article_id = article.filename  # TODO Or use a unique ID if available
+            article_text = article.get_headline_and_body(separator=".")
 
-            input_data = {
-                "article_id": article_id,
-                "text": text,
-            }
+            # Structure to store extracted data
+            extracted_data: Dict[str, dict] = {}
 
-            # Run summarization
-            if self.summarization_enable:
-                result = self.summarization_chain.invoke(input_data)
-                input_data["text"] = result["output"]
+            # Iterate through each stage
+            for stage, steps in self.pipeline_steps.items():
+                # Initialize input data for the current stage
+                input_data = {
+                    "article_id": article_id,
+                    "text": article_text,
+                }
 
-            # Run extraction
-            result = self.extraction_chain.invoke(input_data)
-            input_data["text"] = result["output"]
-            extracted_data = result["output"]
+                # For the current stage, get the pipeline steps
+                summarization_chain = steps.get("summarization")
+                extraction_chain = steps.get("extraction")
+                response_parsing_chain = steps.get("response_parsing")
 
-            # Run response parsing if enabled
-            if self.response_parsing_enable:
-                result = self.response_parsing_chain.invoke(input_data)
-                extracted_data = result["output"]
+                # Summarization step (if enabled, will only execute in the first stage)
+                if summarization_chain:
+                    result = summarization_chain.invoke(input_data)
+                    article_text = result["output"]
 
-            # TODO maybe get the article from the chain or make a separate chain component to extract into article
-            match self.task:
-                case "impact":
-                    article.drought = extracted_data.drought
-                    article.impacts_aggregated = [
-                        i
-                        for i, v in extracted_data.model_dump().items()
-                        if v and i != "drought"
-                    ]
+                # Extraction step (if enabled)
+                if extraction_chain:
+                    result = extraction_chain.invoke(input_data)
+                    input_data["text"] = result["output"]
+                    extracted_data[stage] = result["output"]
 
-                case "province":
-                    article.provinces = extracted_data.response
+                # Response Parsing step (if enabled)
+                if response_parsing_chain:
+                    result = response_parsing_chain.invoke(input_data)
+                    extracted_data[stage] = result["output"]
 
-            log_message = f"END - Processing article: {article.filename}\n"
-            match self.task:
-                case "impact":
-                    log_message += (
-                        f"Drought: {article.drought}\n"
-                        f"Impacts: {', '.join(article.impacts_aggregated)}"
+                # Store extracted data in the article
+                self._store_extracted_data(
+                    article, stage, extracted_data.get(stage, {})
+                )
+
+                # If no event is detected, skip dependent stages
+                if stage == "event_identification" and not article.drought:
+                    logging.debug(
+                        "No drought detected in %s, skipping further processing.",
+                        article.filename,
                     )
-                case "province":
-                    log_message += f"Provinces: {', '.join(article.provinces)}"
+                    break
 
-            logging.debug(log_message)
+                # If no impacts are detected, skip dependent stages
+                if stage == "impact_extraction" and not article.impacts_aggregated:
+                    logging.debug(
+                        "No impacts detected in %s, skipping further processing.",
+                        article.filename,
+                    )
+                    break
 
-        return articles
+            # Logging results
+            self._log_results(article, extracted_data)
+
+        return self.articles
+
+    def _store_extracted_data(self, article: Article, stage: str, data: dict):
+        """Stores extracted data in the article object based on the processing stage."""
+        if stage == "event_identification":
+            # TODO not implemented
+            # article.identified_events = data
+            pass
+        elif stage == "impact_extraction":
+            # TODO would this be in "event_identification"?
+            article.drought = data.drought
+            # TODO make this extraction better
+            article.impacts_aggregated = [
+                i for i, v in data.model_dump().items() if v and i != "drought"
+            ]
+        elif stage == "location_extraction":
+            article.provinces = data.response
+
+    def _log_results(self, article: Article, extracted_data: Dict[str, dict]):
+        """Logs extracted information for debugging."""
+        log_message = f"END - Processed article: {article.filename}\n"
+
+        if "event_identification" in extracted_data:
+            # TODO not implemented
+            # log_message += (
+            #     f"Identified Events: {', '.join(article.identified_events)}\n"
+            # )
+            pass
+        if "impact_extraction" in extracted_data:
+            # TODO parametrize for event, now only "drought"
+            log_message += f"Drought: {article.drought}\nImpacts: {', '.join(article.impacts_aggregated)}\n"
+        if "location_extraction" in extracted_data:
+            log_message += f"Provinces: {', '.join(article.provinces)}"
+
+        logging.debug(log_message)

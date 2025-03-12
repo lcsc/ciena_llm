@@ -8,29 +8,31 @@ from ciena_llm.llm import LLM
 
 
 class SummarizationChain(Runnable):
-    def __init__(self, config):
-        self.step = "summarization"
+    def __init__(self, stage, config, llm_config):
+        self.pipeline_step = "summarization"
+        self.stage = stage
+
+        self.llm_config = llm_config
+
         self.config = config
+        self.prompt_config = self.config["prompt"]
+        self.language = self.config["prompt"]["language"]
 
-        self.task = config["task"]
-        self.pipeline_step_config = self.config["pipeline"][self.step]
-        self.step_prompt_config = self.pipeline_step_config["prompt"]
-        self.language = self.pipeline_step_config["prompt"]["language"]
-
-        self.llm = LLM(config=self.config["llm"], stage=self.step)
+        # TODO change stage naming
+        self.llm = LLM(config=self.llm_config, stage=self.pipeline_step)
 
         self.prompt_template = PromptTemplateManager.get_prompt_template(
-            **self.step_prompt_config,
+            **self.prompt_config,
         )
 
         self.chain = self.prompt_template | self.llm
 
+        # TODO change task/stage naming
         self.prompts = {
-            "summarization": {
-                "task": self.task,
-                **self.step_prompt_config,
-                "template": self.prompt_template.pretty_repr(),
-            },
+            "stage": self.stage,
+            "pipeline_step": self.pipeline_step,
+            **self.prompt_config,
+            "template": self.prompt_template.pretty_repr(),
         }
 
         self.execution_times = {}

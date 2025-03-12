@@ -10,36 +10,43 @@ from ciena_llm.chain.common import invoke_chain
 
 
 class ExtractionChain(Runnable):
-    def __init__(self, config, extraction_schema):
-        self.step = "extraction"
+    def __init__(
+        self,
+        stage,
+        config,
+        extraction_schema,
+        llm_config,
+        event_config=None,
+        impact_config=None,
+        response_parsing_enable=False,
+    ):
+        self.stage = stage
+        self.pipeline_step = "extraction"
+
+        self.llm_config = llm_config
         self.extraction_schema = extraction_schema
+        self.event_config = event_config
+        self.impact_config = impact_config
 
         self.config = config
+        self.prompt_config = self.config["prompt"]
+        self.language = self.config["prompt"]["language"]
+        # If the response parsing pipeline step is disabled in the config, the extraction chain will have to parse the response
+        self.response_parsing_enable = not response_parsing_enable
 
-        self.task = self.config["task"]
-        self.event_config = self.config["event"]
-        self.impact_config = self.config["impacts"]
-        self.pipeline_step_config = self.config["pipeline"][self.step]
-        self.step_prompt_config = self.pipeline_step_config["prompt"]
-        self.language = self.pipeline_step_config["prompt"]["language"]
-
-        # If the response parsing pipeline step is disabled in the config,
-        # the extraction chain will have to parse the response
-        self.response_parsing = not (
-            self.config["pipeline"]["response_parsing"]["enable"]
-        )
-
-        self.llm = LLM(config=self.config["llm"], stage=self.step)
+        # TODO change stage naming
+        self.llm = LLM(config=self.llm_config, stage=self.pipeline_step)
 
         # TODO do better?
-        if self.response_parsing:
+        if self.response_parsing_enable:
             self.response_parser = JsonOutputParser(
                 pydantic_object=self.extraction_schema
             )
 
+            # TODO change task/stage naming
             self.prompt_template = PromptTemplateManager.get_prompt_template(
-                task=self.task,
-                **self.step_prompt_config,
+                task=self.stage,
+                **self.prompt_config,
                 output="json",
                 # TODO which one is better?
                 # format_instructions=self.response_parser.get_format_instructions(),
@@ -55,9 +62,10 @@ class ExtractionChain(Runnable):
             self.chain = self.prompt_template | self.llm | self.response_parser
 
         else:
+            # TODO change task/stage naming
             self.prompt_template = PromptTemplateManager.get_prompt_template(
-                task=self.task,
-                **self.step_prompt_config,
+                task=self.stage,
+                **self.prompt_config,
                 output="text",
                 # TODO always pass as parameters?
                 impacts=PromptTemplateManager.get_impact_names_text(
@@ -71,12 +79,11 @@ class ExtractionChain(Runnable):
             self.chain = self.prompt_template | self.llm
 
         self.prompts = {
-            f"extraction_{self.task}": {
-                "task": self.task,
-                **self.step_prompt_config,
-                "output": "json" if self.response_parsing else "text",
-                "template": self.prompt_template.pretty_repr(),
-            },
+            "stage": self.stage,
+            "pipeline_step": self.pipeline_step,
+            **self.prompt_config,
+            "output": "json" if self.response_parsing_enable else "text",
+            "template": self.prompt_template.pretty_repr(),
         }
 
         self.parsing_errors = {}
@@ -100,7 +107,7 @@ class ExtractionChain(Runnable):
             self.chain,
             input_text,
             self.extraction_schema,
-            response_parsing=self.response_parsing,
+            response_parsing=self.response_parsing_enable,
         )
 
         execution_time = time.time() - start_time

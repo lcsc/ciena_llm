@@ -31,42 +31,42 @@ class PromptTemplateManager:
             "variables": ["text"],
             "partial_variables": ["format_instructions"],
         },
-        ("impact", "classification", "boolean", "es", "text"): {
+        ("impact_extraction", "classification", "boolean", "es", "text"): {
             "template": IMPACT_CLASSIFICATION_BOOLEAN_ES,
             "variables": ["text"],
             "partial_variables": ["impact"],
         },
-        ("impact", "classification", "boolean", "en", "text"): {
+        ("impact_extraction", "classification", "boolean", "en", "text"): {
             "template": IMPACT_CLASSIFICATION_BOOLEAN_EN,
             "variables": ["text"],
             "partial_variables": ["impact"],
         },
-        ("impact", "classification", DEFAULT, "es", "text"): {
+        ("impact_extraction", "classification", DEFAULT, "es", "text"): {
             "template": IMPACT_CLASSIFICATION_ES,
             "variables": ["text"],
             "partial_variables": ["impact"],
         },
-        ("impact", "classification", DEFAULT, "en", "text"): {
+        ("impact_extraction", "classification", DEFAULT, "en", "text"): {
             "template": IMPACT_CLASSIFICATION_EN,
             "variables": ["text"],
             "partial_variables": ["impact"],
         },
-        ("impact", "classification", "description", "en", "text"): {
+        ("impact_extraction", "classification", "description", "en", "text"): {
             "template": IMPACT_CLASSIFICATION_DESCRIPTION_EN,
             "variables": ["text"],
             "partial_variables": ["impact", "impact_description"],
         },
-        ("impact", "classification", "parser_description", "en", "json"): {
+        ("impact_extraction", "classification", "parser_description", "en", "json"): {
             "template": IMPACT_CLASSIFICATION_JSON_DESCRIPTION_EN,
             "variables": ["text"],
             "partial_variables": ["impact", "impact_description"],
         },
-        ("impact", "classification", "parser_description", "es", "json"): {
+        ("impact_extraction", "classification", "parser_description", "es", "json"): {
             "template": IMPACT_CLASSIFICATION_JSON_DESCRIPTION_ES,
             "variables": ["text"],
             "partial_variables": ["impact", "impact_description"],
         },
-        ("impact", "multi_classification", "description", "es", "json"): {
+        ("impact_extraction", "multi_classification", "description", "es", "json"): {
             "template": IMPACT_MULTI_CLASSIFICATION_JSON_DESCRIPTION_ES,
             "variables": ["text"],
             "partial_variables": [
@@ -75,12 +75,12 @@ class PromptTemplateManager:
                 "impact_descriptions",
             ],
         },
-        ("impact", "multi_classification", "description", "es", "text"): {
+        ("impact_extraction", "multi_classification", "description", "es", "text"): {
             "template": IMPACT_MULTI_CLASSIFICATION_DESCRIPTION_ES,
             "variables": ["text"],
             "partial_variables": ["impacts", "impact_descriptions"],
         },
-        ("impact", "multi_classification", "description", "en", "json"): {
+        ("impact_extraction", "multi_classification", "description", "en", "json"): {
             "template": IMPACT_MULTI_CLASSIFICATION_JSON_DESCRIPTION_EN,
             "variables": ["text"],
             "partial_variables": [
@@ -89,12 +89,12 @@ class PromptTemplateManager:
                 "impact_descriptions",
             ],
         },
-        ("impact", "multi_classification", "description", "en", "text"): {
+        ("impact_extraction", "multi_classification", "description", "en", "text"): {
             "template": IMPACT_MULTI_CLASSIFICATION_DESCRIPTION_EN,
             "variables": ["text"],
             "partial_variables": ["impacts", "impact_descriptions"],
         },
-        ("impact", "response_parsing", DEFAULT, "en", "json"): {
+        ("impact_extraction", "response_parsing", DEFAULT, "en", "json"): {
             "template": IMPACT_RESPONSE_PARSING_EN,
             "variables": ["text"],
             "partial_variables": [
@@ -103,7 +103,7 @@ class PromptTemplateManager:
                 "impact_descriptions",
             ],
         },
-        ("impact", "response_parsing", DEFAULT, "es", "json"): {
+        ("impact_extraction", "response_parsing", DEFAULT, "es", "json"): {
             "template": IMPACT_RESPONSE_PARSING_ES,
             "variables": ["text"],
             "partial_variables": [
@@ -112,7 +112,7 @@ class PromptTemplateManager:
                 "impact_descriptions",
             ],
         },
-        # ("impact", "response_parsing", DEFAULT, "es", "json"): {
+        # ("impact_extraction", "response_parsing", DEFAULT, "es", "json"): {
         #     "template": IMPACT_RESPONSE_PARSING_ES,
         #     "variables": ["text"],
         #     "partial_variables": ["format_instructions", "impact"],
@@ -134,30 +134,30 @@ class PromptTemplateManager:
             "variables": ["text"],
             "partial_variables": ["format_instructions"],
         },
-        ("province", "extraction", DEFAULT, "en", "json"): {
+        ("location_extraction", "extraction", DEFAULT, "en", "json"): {
             "template": PROVINCE_EXTRACTION_JSON_EN,
             "variables": ["text"],
             "partial_variables": ["format_instructions"],
         },
-        ("province", "extraction", DEFAULT, "en", "text"): {
+        ("location_extraction", "extraction", DEFAULT, "en", "text"): {
             "template": PROVINCE_EXTRACTION_TEXT_EN,
             "variables": ["text"],
         },
-        ("province", "extraction", DEFAULT, "es", "json"): {
+        ("location_extraction", "extraction", DEFAULT, "es", "json"): {
             "template": PROVINCE_EXTRACTION_JSON_ES,
             "variables": ["text"],
             "partial_variables": ["format_instructions"],
         },
-        ("province", "extraction", DEFAULT, "es", "text"): {
+        ("location_extraction", "extraction", DEFAULT, "es", "text"): {
             "template": PROVINCE_EXTRACTION_TEXT_ES,
             "variables": ["text"],
         },
-        ("province", "response_parsing", DEFAULT, "en", "json"): {
+        ("location_extraction", "response_parsing", DEFAULT, "en", "json"): {
             "template": PROVINCE_RESPONSE_PARSING_EN,
             "variables": ["text"],
             "partial_variables": ["format_instructions"],
         },
-        ("province", "response_parsing", DEFAULT, "es", "json"): {
+        ("location_extraction", "response_parsing", DEFAULT, "es", "json"): {
             "template": PROVINCE_RESPONSE_PARSING_ES,
             "variables": ["text"],
             "partial_variables": ["format_instructions"],

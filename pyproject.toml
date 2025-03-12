@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "ciena_llm"
-version = "0.2.0"
+version = "0.3.0"
 description = ""
 authors = ["Javier Vela <javier.vela00@gmail.com>"]
 readme = "README.md"

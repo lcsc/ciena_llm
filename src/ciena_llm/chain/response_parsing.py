@@ -10,26 +10,36 @@ from ciena_llm.chain.common import invoke_chain
 
 
 class ResponseParsingChain(Runnable):
-    def __init__(self, config, extraction_schema):
-        self.step = "response_parsing"
+    def __init__(
+        self,
+        stage,
+        config,
+        llm_config,
+        extraction_schema,
+        event_config=None,
+        impact_config=None,
+    ):
+        self.stage = stage
+        self.pipeline_step = "response_parsing"
+
+        self.llm_config = llm_config
         self.extraction_schema = extraction_schema
+        self.event_config = event_config
+        self.impact_config = impact_config
 
         self.config = config
-
-        self.task = self.config["task"]
-        self.event_config = self.config["event"]
-        self.impact_config = self.config["impacts"]
-        self.pipeline_step_config = self.config["pipeline"][self.step]
-        self.step_prompt_config = self.pipeline_step_config["prompt"]
-        self.language = self.pipeline_step_config["prompt"]["language"]
+        self.prompt_config = self.config["prompt"]
+        self.language = self.config["prompt"]["language"]
 
         self.response_parser = JsonOutputParser(pydantic_object=self.extraction_schema)
 
-        self.llm = LLM(config=self.config["llm"], stage=self.step)
+        # TODO change stage naming
+        self.llm = LLM(config=self.llm_config, stage=self.pipeline_step)
 
+        # TODO change task/stage naming
         self.prompt_template = PromptTemplateManager.get_prompt_template(
-            task=self.task,
-            **self.step_prompt_config,
+            task=self.stage,
+            **self.prompt_config,
             output="json",
             format_instructions=self.extraction_schema.get_format_instructions(),
             impacts=PromptTemplateManager.get_impact_names_text(
@@ -43,12 +53,11 @@ class ResponseParsingChain(Runnable):
         self.chain = self.prompt_template | self.llm | self.response_parser
 
         self.prompts = {
-            f"response_parsing_{self.task}": {
-                "task": self.task,
-                **self.step_prompt_config,
-                "output": "json",
-                "template": self.prompt_template.pretty_repr(),
-            },
+            "stage": self.stage,
+            "pipeline_step": self.pipeline_step,
+            **self.prompt_config,
+            "output": "json",
+            "template": self.prompt_template.pretty_repr(),
         }
 
         self.parsing_errors = {}

@@ -1,28 +1,48 @@
 version: 0.3.0
-task: "impact"
 llm:
   name: "llama3.1"
   temperature: 0
   context_length: 32768
   num_predict_tokens: 2048
-pipeline:
-  response_parsing:
-    enable: True
-    prompt:
-      category: response_parsing
-      language: en
+
+stages:
   summarization:
     enable: True
-    prompt:
-      category: summarization
-      language: en
-  extraction:
+    steps:
+      summarization:
+        prompt:
+          category: summarization
+          language: en
+  event_identification: # TODO not implemented. do in impact_extraction?
+    enable: False 
+  impact_extraction:
     enable: True
-    prompt:
-      language: en
-      category: multi_classification
-      subcategory: description
-      # output: json # TODO here?
+    steps:
+      extraction:
+        enable: True
+        prompt:
+          language: en
+          category: multi_classification
+          subcategory: description
+          # output: json # TODO here?  
+      response_parsing:
+        enable: True
+        prompt:
+          category: response_parsing
+          language: en
+  location_extraction: # TODO location or provinces 
+    enable: True
+    steps:
+      extraction:
+        enable: True
+        prompt:
+          language: en
+          category: extraction
+      response_parsing:
+        enable: True
+        prompt:
+          category: response_parsing
+          language: en
 
 event:
   - tag: "drought"

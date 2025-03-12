@@ -21,19 +21,14 @@ class OutputManager:
     # Properties to access the extractor's properties dynamically after initialization
 
     @property
-    def articles(self):
-        """Get the articles extracted by the extractor."""
-        return self.extractor.articles
-
-    @property
     def article_loader(self):
         """Get the article loader used by the extractor."""
         return self.extractor.article_loader
 
     @property
-    def config(self):
-        """Get the configuration used by the extractor."""
-        return self.extractor.config
+    def articles(self):
+        """Get the articles extracted by the extractor."""
+        return self.extractor.articles
 
     @property
     def config_loader(self):
@@ -41,29 +36,24 @@ class OutputManager:
         return self.extractor.config_loader
 
     @property
-    def extraction_chain(self):
-        """Get the extraction chain used by the extractor."""
-        return self.extractor.extraction_chain
+    def config(self):
+        """Get the configuration used by the extractor."""
+        return self.extractor.config
 
     @property
-    def summarization_chain(self):
-        """Get the summarization chain used by the extractor."""
-        return self.extractor.summarization_chain
+    def stages(self):
+        """Get the stages used by the extractor."""
+        return self.extractor.stages
 
     @property
-    def response_parsing_chain(self):
-        """Get the response parsing chain used by the extractor."""
-        return self.extractor.response_parsing_chain
+    def pipeline(self):
+        """Get the pipeline used by the extractor."""
+        return self.extractor.pipeline
 
     @property
-    def summarization_enable(self):
-        """Check if summarization is enabled in the extractor."""
-        return self.extractor.summarization_enable
-
-    @property
-    def response_parsing_enable(self):
-        """Check if response parsing is enabled in the extractor."""
-        return self.extractor.response_parsing_enable
+    def pipeline_steps(self):
+        """Get the pipeline steps used by the extractor."""
+        return self.extractor.pipeline_steps
 
     # Methods to write the extracted data to files
 
@@ -114,13 +104,11 @@ class OutputManager:
         """
         prompts = {}
 
-        prompts.update(self.extraction_chain.prompts)
-
-        if self.summarization_enable:
-            prompts.update(self.summarization_chain.prompts)
-
-        if self.response_parsing_enable:
-            prompts.update(self.response_parsing_chain.prompts)
+        for stage, steps in self.pipeline_steps.items():
+            prompts[stage] = {}
+            for step, step_chain in steps.items():
+                if step_chain:
+                    prompts[stage][step] = step_chain.prompts
 
         with open(file, "w", encoding="utf-8") as f:
             json.dump(prompts, f, indent=4)
@@ -134,34 +122,19 @@ class OutputManager:
         """
         parsing_errors = {
             "total": 0,
-            "extraction": {
-                "parsing_errors": {},
-                "total": 0,
-            },
-            "response_parsing": {
-                "parsing_errors": {},
-                "total": 0,
-            },
         }
 
-        # Parsing errors from extraction chain
-        parsing_errors["extraction"][
-            "parsing_errors"
-        ] = self.extraction_chain.parsing_errors
-        parsing_errors["extraction"]["total"] = len(
-            self.extraction_chain.parsing_errors
-        )
-        parsing_errors["total"] += len(self.extraction_chain.parsing_errors)
-
-        # Parsing errors from response parsing chain
-        if self.response_parsing_enable:
-            parsing_errors["response_parsing"][
-                "parsing_errors"
-            ] = self.response_parsing_chain.parsing_errors
-            parsing_errors["response_parsing"]["total"] = len(
-                self.response_parsing_chain.parsing_errors
-            )
-            parsing_errors["total"] += len(self.response_parsing_chain.parsing_errors)
+        # Parsing errors from pipeline steps
+        for stage, steps in self.pipeline_steps.items():
+            parsing_errors[stage] = {}
+            for step, step_chain in steps.items():
+                if step_chain and hasattr(step_chain, "parsing_errors"):
+                    step_errors = step_chain.parsing_errors
+                    parsing_errors[stage][step] = {
+                        "parsing_errors": step_errors,
+                        "total": len(step_errors),
+                    }
+                    parsing_errors["total"] += len(step_errors)
 
         with open(file, "w", encoding="utf-8") as f:
             json.dump(parsing_errors, f, indent=4)
@@ -177,48 +150,27 @@ class OutputManager:
         """
         execution_times = {
             "total": 0,
-            "summarization": {
-                "total": 0,
-                "individual": {},
-            },
-            "extraction": {
-                "total": 0,
-                "individual": {},
-            },
-            "response_parsing": {
-                "total": 0,
-                "individual": {},
-            },
         }
 
-        # Execution times from summarization chain
-        if self.summarization_enable:
-            execution_times["summarization"][
-                "individual"
-            ] = self.summarization_chain.execution_times
-            execution_times["summarization"]["total"] = sum(
-                self.summarization_chain.execution_times.values()
-            )
-            execution_times["total"] += execution_times["summarization"]["total"]
+        # Execution times from pipeline steps
+        for stage, steps in self.pipeline_steps.items():
+            stage_total = 0
+            execution_times[stage] = {"total": 0}
 
-        # Execution times from extraction chain
-        execution_times["extraction"][
-            "individual"
-        ] = self.extraction_chain.execution_times
-        execution_times["extraction"]["total"] = sum(
-            self.extraction_chain.execution_times.values()
-        )
-        execution_times["total"] += execution_times["extraction"]["total"]
+            for step, step_chain in steps.items():
+                if step_chain:
+                    step_times = step_chain.execution_times
+                    step_total = sum(step_times.values())
 
-        # Execution times from response parsing chain
-        if self.response_parsing_enable:
-            execution_times["response_parsing"][
-                "individual"
-            ] = self.response_parsing_chain.execution_times
-            execution_times["response_parsing"]["total"] = sum(
-                self.response_parsing_chain.execution_times.values()
-            )
-            execution_times["total"] += execution_times["response_parsing"]["total"]
+                    execution_times[stage][step] = {
+                        "total": step_total,
+                        "execution_times": step_times,
+                    }
+
+            stage_total += step_total
+
+            execution_times[stage]["total"] = stage_total
+            execution_times["total"] += stage_total
 
         with open(file, "w", encoding="utf-8") as f:
             json.dump(execution_times, f, indent=4)
