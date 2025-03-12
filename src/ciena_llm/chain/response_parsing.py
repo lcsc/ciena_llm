@@ -33,12 +33,12 @@ class ResponseParsingChain(Runnable):
 
         self.response_parser = JsonOutputParser(pydantic_object=self.extraction_schema)
 
-        # TODO change stage naming
-        self.llm = LLM(config=self.llm_config, stage=self.pipeline_step)
+        self.llm = LLM(
+            config=self.llm_config, stage=f"{self.stage}-{self.pipeline_step}"
+        )
 
-        # TODO change task/stage naming
         self.prompt_template = PromptTemplateManager.get_prompt_template(
-            task=self.stage,
+            stage=self.stage,
             **self.prompt_config,
             output="json",
             format_instructions=self.extraction_schema.get_format_instructions(),

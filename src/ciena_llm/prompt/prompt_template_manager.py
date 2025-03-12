@@ -66,7 +66,7 @@ class PromptTemplateManager:
             "variables": ["text"],
             "partial_variables": ["impact", "impact_description"],
         },
-        ("impact_extraction", "multi_classification", "description", "es", "json"): {
+        ("impact_extraction", "extraction", "description", "es", "json"): {
             "template": IMPACT_MULTI_CLASSIFICATION_JSON_DESCRIPTION_ES,
             "variables": ["text"],
             "partial_variables": [
@@ -75,12 +75,12 @@ class PromptTemplateManager:
                 "impact_descriptions",
             ],
         },
-        ("impact_extraction", "multi_classification", "description", "es", "text"): {
+        ("impact_extraction", "extraction", "description", "es", "text"): {
             "template": IMPACT_MULTI_CLASSIFICATION_DESCRIPTION_ES,
             "variables": ["text"],
             "partial_variables": ["impacts", "impact_descriptions"],
         },
-        ("impact_extraction", "multi_classification", "description", "en", "json"): {
+        ("impact_extraction", "extraction", "description", "en", "json"): {
             "template": IMPACT_MULTI_CLASSIFICATION_JSON_DESCRIPTION_EN,
             "variables": ["text"],
             "partial_variables": [
@@ -89,7 +89,7 @@ class PromptTemplateManager:
                 "impact_descriptions",
             ],
         },
-        ("impact_extraction", "multi_classification", "description", "en", "text"): {
+        ("impact_extraction", "extraction", "description", "en", "text"): {
             "template": IMPACT_MULTI_CLASSIFICATION_DESCRIPTION_EN,
             "variables": ["text"],
             "partial_variables": ["impacts", "impact_descriptions"],
@@ -117,47 +117,48 @@ class PromptTemplateManager:
         #     "variables": ["text"],
         #     "partial_variables": ["format_instructions", "impact"],
         # },
-        ("location", "extraction", DEFAULT, "es", "text"): {
+        ("location_extraction", "extraction", "location", "es", "text"): {
             "template": LOCATION_EXTRACTION_ES,
             "variables": ["text"],
         },
-        ("location", "extraction", DEFAULT, "en", "text"): {
+        ("location_extraction", "extraction", "location", "en", "text"): {
             "template": LOCATION_EXTRACTION_EN,
             "variables": ["text"],
         },
-        ("location", "extraction", "provinces", "en", "text"): {
+        ("location_extraction", "extraction", "location", "en", "text"): {
+            # TODO category = location or province?
             "template": LOCATION_PROVINCE_EXTRACTION_EN,
             "variables": ["text"],
         },
-        ("location", "response_parsing", DEFAULT, "en", "json"): {
+        ("location_extraction", "response_parsing", "location", "en", "json"): {
             "template": LOCATION_RESPONSE_PARSING_EN,
             "variables": ["text"],
             "partial_variables": ["format_instructions"],
         },
-        ("location_extraction", "extraction", DEFAULT, "en", "json"): {
+        ("location_extraction", "extraction", "province", "en", "json"): {
             "template": PROVINCE_EXTRACTION_JSON_EN,
             "variables": ["text"],
             "partial_variables": ["format_instructions"],
         },
-        ("location_extraction", "extraction", DEFAULT, "en", "text"): {
+        ("location_extraction", "extraction", "province", "en", "text"): {
             "template": PROVINCE_EXTRACTION_TEXT_EN,
             "variables": ["text"],
         },
-        ("location_extraction", "extraction", DEFAULT, "es", "json"): {
+        ("location_extraction", "extraction", "province", "es", "json"): {
             "template": PROVINCE_EXTRACTION_JSON_ES,
             "variables": ["text"],
             "partial_variables": ["format_instructions"],
         },
-        ("location_extraction", "extraction", DEFAULT, "es", "text"): {
+        ("location_extraction", "extraction", "province", "es", "text"): {
             "template": PROVINCE_EXTRACTION_TEXT_ES,
             "variables": ["text"],
         },
-        ("location_extraction", "response_parsing", DEFAULT, "en", "json"): {
+        ("location_extraction", "response_parsing", "province", "en", "json"): {
             "template": PROVINCE_RESPONSE_PARSING_EN,
             "variables": ["text"],
             "partial_variables": ["format_instructions"],
         },
-        ("location_extraction", "response_parsing", DEFAULT, "es", "json"): {
+        ("location_extraction", "response_parsing", "province", "es", "json"): {
             "template": PROVINCE_RESPONSE_PARSING_ES,
             "variables": ["text"],
             "partial_variables": ["format_instructions"],
@@ -167,11 +168,11 @@ class PromptTemplateManager:
             "variables": ["text"],
             "partial_variables": ["format_instructions"],
         },
-        (DEFAULT, "summarization", DEFAULT, "es", "text"): {
+        ("summarization", "summarization", DEFAULT, "es", "text"): {
             "template": SUMMARIZATION_ES,
             "variables": ["text"],
         },
-        (DEFAULT, "summarization", DEFAULT, "en", "text"): {
+        ("summarization", "summarization", DEFAULT, "en", "text"): {
             "template": SUMMARIZATION_EN,
             "variables": ["text"],
         },
@@ -180,31 +181,29 @@ class PromptTemplateManager:
     @classmethod
     def get_prompt_template(
         cls,
-        task: str = DEFAULT,
+        stage: str = DEFAULT,
+        step: str = DEFAULT,
         category: str = DEFAULT,
-        subcategory: str = DEFAULT,
         language: str = "en",
         output: str = "text",
         **kwargs,
     ) -> PromptTemplate:
         """
-        Retrieves and returns a LangChain PromptTemplate for a given task, category, language, subcategory, and output type.
+        Retrieves and returns a LangChain PromptTemplate for a given stage, step, language, category, and output type.
 
-        :param task: The task type (e.g., "drought", "impact", "location").
-        :param category: The category within the task (e.g., "classification", "extraction").
-        :param subcategory: The category within the subcategory (default is "default").
+        :param stage: The stage type (e.g., "drought", "impact", "location").
+        :param step: The step within the stage (e.g., "classification", "extraction").
+        :param category: The step within the category (default is "default").
         :param language: The language of the template (default is "en").
         :param output: The output type of the template (default is "text").
         :param kwargs: Additional keyword arguments to format the template.
         :return: A LangChain PromptTemplate object.
         """
         try:
-            template_info = cls.TEMPLATES[
-                (task, category, subcategory, language, output)
-            ]
+            template_info = cls.TEMPLATES[(stage, step, category, language, output)]
         except KeyError:
             raise ValueError(
-                f"Template for task '{task}', category '{category}', subcategory '{subcategory}', language '{language}', and output '{output}' not recognized."
+                f"Template for stage '{stage}', step '{step}', category '{category}', language '{language}', and output '{output}' not recognized."
             )
 
         template_str = template_info["template"]

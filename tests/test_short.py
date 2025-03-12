@@ -35,8 +35,8 @@ OVERRIDE_CONFIG = {
                     "enable": True,
                     "prompt": {
                         "language": LANGUAGE,
-                        "category": "multi_classification",
-                        "subcategory": "description",
+                        "step": "extraction",
+                        "category": "description",
                     },
                 },
                 "response_parsing": {
@@ -54,13 +54,15 @@ OVERRIDE_CONFIG = {
                     "enable": True,
                     "prompt": {
                         "language": LANGUAGE,
-                        "category": "extraction",
+                        "step": "extraction",
+                        "category": "province",
                     },
                 },
                 "response_parsing": {
                     "enable": True,
                     "prompt": {
                         "language": LANGUAGE,
+                        "category": "province",
                     },
                 },
             },

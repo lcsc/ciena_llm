@@ -6,13 +6,13 @@ from langchain_ollama import ChatOllama
 class LLM:
     def __init__(self, config: dict, stage: str):
         """
-        Initialize the LLM with the merged default and stage-specific configuration.
-        :param config: Configuration dictionary containing default and stage-specific settings.
+        Initialize the LLM with the specific configuration.
+        :param config: Configuration dictionary containing settings.
         :param stage: The stage name (e.g., "impact", "drought", etc.).
         """
 
-        self.config = config
         self.stage = stage
+        self.config = config
         self.llm_name = self.config["name"]
         self.llm_temperature = self.config["temperature"]
         self.llm_context_length = self.config["context_length"]

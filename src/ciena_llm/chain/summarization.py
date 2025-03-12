@@ -18,16 +18,17 @@ class SummarizationChain(Runnable):
         self.prompt_config = self.config["prompt"]
         self.language = self.config["prompt"]["language"]
 
-        # TODO change stage naming
-        self.llm = LLM(config=self.llm_config, stage=self.pipeline_step)
+        self.llm = LLM(
+            config=self.llm_config, stage=f"{self.stage}-{self.pipeline_step}"
+        )
 
         self.prompt_template = PromptTemplateManager.get_prompt_template(
+            stage=self.stage,
             **self.prompt_config,
         )
 
         self.chain = self.prompt_template | self.llm
 
-        # TODO change task/stage naming
         self.prompts = {
             "stage": self.stage,
             "pipeline_step": self.pipeline_step,

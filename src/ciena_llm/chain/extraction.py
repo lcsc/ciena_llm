@@ -34,8 +34,9 @@ class ExtractionChain(Runnable):
         # If the response parsing pipeline step is disabled in the config, the extraction chain will have to parse the response
         self.response_parsing_enable = not response_parsing_enable
 
-        # TODO change stage naming
-        self.llm = LLM(config=self.llm_config, stage=self.pipeline_step)
+        self.llm = LLM(
+            config=self.llm_config, stage=f"{self.stage}-{self.pipeline_step}"
+        )
 
         # TODO do better?
         if self.response_parsing_enable:
@@ -43,9 +44,8 @@ class ExtractionChain(Runnable):
                 pydantic_object=self.extraction_schema
             )
 
-            # TODO change task/stage naming
             self.prompt_template = PromptTemplateManager.get_prompt_template(
-                task=self.stage,
+                stage=self.stage,
                 **self.prompt_config,
                 output="json",
                 # TODO which one is better?
@@ -62,9 +62,8 @@ class ExtractionChain(Runnable):
             self.chain = self.prompt_template | self.llm | self.response_parser
 
         else:
-            # TODO change task/stage naming
             self.prompt_template = PromptTemplateManager.get_prompt_template(
-                task=self.stage,
+                stage=self.stage,
                 **self.prompt_config,
                 output="text",
                 # TODO always pass as parameters?

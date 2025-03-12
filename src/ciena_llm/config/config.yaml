@@ -11,7 +11,7 @@ stages:
     steps:
       summarization:
         prompt:
-          category: summarization
+          step: summarization
           language: en
   event_identification: # TODO not implemented. do in impact_extraction?
     enable: False 
@@ -22,13 +22,13 @@ stages:
         enable: True
         prompt:
           language: en
-          category: multi_classification
-          subcategory: description
+          step: extraction
+          category: description
           # output: json # TODO here?  
       response_parsing:
         enable: True
         prompt:
-          category: response_parsing
+          step: response_parsing
           language: en
   location_extraction: # TODO location or provinces 
     enable: True
@@ -37,11 +37,12 @@ stages:
         enable: True
         prompt:
           language: en
-          category: extraction
+          step: extraction
+          category: province
       response_parsing:
         enable: True
         prompt:
-          category: response_parsing
+          step: response_parsing
           language: en
 
 event:
