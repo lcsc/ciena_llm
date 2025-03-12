@@ -7,172 +7,163 @@ from ciena_llm.prompt.templates import *
 
 DEFAULT = None
 
+FORMAT_INSTRUCTIONS_STR = {
+    "es": """
+Instrucciones de formato:
+{format_instructions}
+""",
+    "en": """
+Format instructions:
+{format_instructions}
+""",
+}
+
+# Format instructions:
+# {format_instructions}
+# Return only the JSON inside a markdown fenced code block (without syntax highlighting and no additional text around it).
+
+# Instrucciones de formato:
+# {format_instructions}
+# Proporciona únicamente el JSON dentro de un bloque de código de markdown (sin resaltado de sintaxis y sin texto adicional alrededor).
+
+# Format instructions:
+# {format_instructions} # TODO
+# For each location, include all properties as specified in the schema, including optional ones, if they appear in the text.
+# If there are no locations impacted by the drought, provide an empty JSON object.
+# Return only the JSON inside a markdown fenced code block (without syntax highlighting and no additional text around it).
+# Do not encode any special characters and do not use any Unicode escape sequences in the output.
+
+# Provide the only response in the following format:
+# Format instructions:
+# ```json
+# {{"response": true or false}}
+# ```
+
+# Proporciona la única respuesta en el siguiente formato:
+# Instrucciones de formato:
+# ```json
+# {{"response": true or false}}
+# ```
+
+# Output the list as parsable JSON with the following structure.
+# {"provinces":[]}
+# Do not output anything else but the list of provinces.
+
 
 class PromptTemplateManager:
     TEMPLATES = {
-        ("drought", "classification", "boolean", "es", "text"): {
+        ("drought", "classification", "boolean", "es"): {
             "template": DROUGHT_CLASSIFICATION_BOOLEAN_ES,
             "variables": ["text"],
         },
-        ("drought", "classification", "boolean", "en", "text"): {
+        ("drought", "classification", "boolean", "en"): {
             "template": DROUGHT_CLASSIFICATION_BOOLEAN_EN,
             "variables": ["text"],
         },
-        ("drought", "classification", DEFAULT, "es", "text"): {
+        ("drought", "classification", DEFAULT, "es"): {
             "template": DROUGHT_CLASSIFICATION_ES,
             "variables": ["text"],
         },
-        ("drought", "classification", DEFAULT, "en", "text"): {
+        ("drought", "classification", DEFAULT, "en"): {
             "template": DROUGHT_CLASSIFICATION_EN,
             "variables": ["text"],
         },
-        ("drought", "response_parsing", DEFAULT, "en", "json"): {
+        ("drought", "response_parsing", DEFAULT, "en"): {
             "template": DROUGHT_RESPONSE_PARSING_EN,
             "variables": ["text"],
-            "partial_variables": ["format_instructions"],
         },
-        ("impact_extraction", "classification", "boolean", "es", "text"): {
+        ("impact_extraction", "classification", "boolean", "es"): {
             "template": IMPACT_CLASSIFICATION_BOOLEAN_ES,
             "variables": ["text"],
             "partial_variables": ["impact"],
         },
-        ("impact_extraction", "classification", "boolean", "en", "text"): {
+        ("impact_extraction", "classification", "boolean", "en"): {
             "template": IMPACT_CLASSIFICATION_BOOLEAN_EN,
             "variables": ["text"],
             "partial_variables": ["impact"],
         },
-        ("impact_extraction", "classification", DEFAULT, "es", "text"): {
+        ("impact_extraction", "classification", DEFAULT, "es"): {
             "template": IMPACT_CLASSIFICATION_ES,
             "variables": ["text"],
             "partial_variables": ["impact"],
         },
-        ("impact_extraction", "classification", DEFAULT, "en", "text"): {
+        ("impact_extraction", "classification", DEFAULT, "en"): {
             "template": IMPACT_CLASSIFICATION_EN,
             "variables": ["text"],
             "partial_variables": ["impact"],
         },
-        ("impact_extraction", "classification", "description", "en", "text"): {
+        ("impact_extraction", "classification", "description", "en"): {
             "template": IMPACT_CLASSIFICATION_DESCRIPTION_EN,
             "variables": ["text"],
             "partial_variables": ["impact", "impact_description"],
         },
-        ("impact_extraction", "classification", "parser_description", "en", "json"): {
-            "template": IMPACT_CLASSIFICATION_JSON_DESCRIPTION_EN,
-            "variables": ["text"],
-            "partial_variables": ["impact", "impact_description"],
-        },
-        ("impact_extraction", "classification", "parser_description", "es", "json"): {
-            "template": IMPACT_CLASSIFICATION_JSON_DESCRIPTION_ES,
-            "variables": ["text"],
-            "partial_variables": ["impact", "impact_description"],
-        },
-        ("impact_extraction", "extraction", "description", "es", "json"): {
-            "template": IMPACT_EXTRACTION_JSON_DESCRIPTION_ES,
-            "variables": ["text"],
-            "partial_variables": [
-                "format_instructions",
-                "impacts",
-                "impact_descriptions",
-            ],
-        },
-        ("impact_extraction", "extraction", "description", "es", "text"): {
+        ("impact_extraction", "extraction", "description", "es"): {
             "template": IMPACT_EXTRACTION_DESCRIPTION_ES,
             "variables": ["text"],
             "partial_variables": ["impacts", "impact_descriptions"],
         },
-        ("impact_extraction", "extraction", "description", "en", "json"): {
-            "template": IMPACT_EXTRACTION_JSON_DESCRIPTION_EN,
-            "variables": ["text"],
-            "partial_variables": [
-                "format_instructions",
-                "impacts",
-                "impact_descriptions",
-            ],
-        },
-        ("impact_extraction", "extraction", "description", "en", "text"): {
+        ("impact_extraction", "extraction", "description", "en"): {
             "template": IMPACT_EXTRACTION_DESCRIPTION_EN,
             "variables": ["text"],
             "partial_variables": ["impacts", "impact_descriptions"],
         },
-        ("impact_extraction", "response_parsing", DEFAULT, "en", "json"): {
+        ("impact_extraction", "response_parsing", DEFAULT, "en"): {
             "template": IMPACT_RESPONSE_PARSING_EN,
             "variables": ["text"],
-            "partial_variables": [
-                "format_instructions",
-                "impacts",
-                "impact_descriptions",
-            ],
+            "partial_variables": ["impacts", "impact_descriptions"],
         },
-        ("impact_extraction", "response_parsing", DEFAULT, "es", "json"): {
+        ("impact_extraction", "response_parsing", DEFAULT, "es"): {
             "template": IMPACT_RESPONSE_PARSING_ES,
             "variables": ["text"],
-            "partial_variables": [
-                "format_instructions",
-                "impacts",
-                "impact_descriptions",
-            ],
+            "partial_variables": ["impacts", "impact_descriptions"],
         },
-        # ("impact_extraction", "response_parsing", DEFAULT, "es", "json"): {
+        # ("impact_extraction", "response_parsing", DEFAULT, "es"): { # TODO
         #     "template": IMPACT_RESPONSE_PARSING_ES,
         #     "variables": ["text"],
-        #     "partial_variables": ["format_instructions", "impact"],
+        #     "partial_variables": ["impact"],
         # },
-        ("location_extraction", "extraction", "location", "es", "text"): {
+        ("location_extraction", "extraction", "location", "es"): {
             "template": LOCATION_EXTRACTION_ES,
             "variables": ["text"],
         },
-        ("location_extraction", "extraction", "location", "en", "text"): {
-            "template": LOCATION_EXTRACTION_EN,
-            "variables": ["text"],
-        },
-        ("location_extraction", "extraction", "location", "en", "text"): {
+        # ("location_extraction", "extraction", "location", "en"): {
+        #     "template": LOCATION_EXTRACTION_EN,
+        #     "variables": ["text"],
+        # },
+        ("location_extraction", "extraction", "location", "en"): {
             # TODO category = location or province?
             "template": LOCATION_PROVINCE_EXTRACTION_EN,
             "variables": ["text"],
         },
-        ("location_extraction", "response_parsing", "location", "en", "json"): {
+        ("location_extraction", "response_parsing", "location", "en"): {
             "template": LOCATION_RESPONSE_PARSING_EN,
             "variables": ["text"],
-            "partial_variables": ["format_instructions"],
         },
-        ("location_extraction", "extraction", "province", "en", "json"): {
-            "template": PROVINCE_EXTRACTION_JSON_EN,
-            "variables": ["text"],
-            "partial_variables": ["format_instructions"],
-        },
-        ("location_extraction", "extraction", "province", "en", "text"): {
-            "template": PROVINCE_EXTRACTION_TEXT_EN,
+        ("location_extraction", "extraction", "province", "en"): {
+            "template": PROVINCE_EXTRACTION_EN,
             "variables": ["text"],
         },
-        ("location_extraction", "extraction", "province", "es", "json"): {
-            "template": PROVINCE_EXTRACTION_JSON_ES,
-            "variables": ["text"],
-            "partial_variables": ["format_instructions"],
-        },
-        ("location_extraction", "extraction", "province", "es", "text"): {
-            "template": PROVINCE_EXTRACTION_TEXT_ES,
+        ("location_extraction", "extraction", "province", "es"): {
+            "template": PROVINCE_EXTRACTION_ES,
             "variables": ["text"],
         },
-        ("location_extraction", "response_parsing", "province", "en", "json"): {
+        ("location_extraction", "response_parsing", "province", "en"): {
             "template": PROVINCE_RESPONSE_PARSING_EN,
             "variables": ["text"],
-            "partial_variables": ["format_instructions"],
         },
-        ("location_extraction", "response_parsing", "province", "es", "json"): {
+        ("location_extraction", "response_parsing", "province", "es"): {
             "template": PROVINCE_RESPONSE_PARSING_ES,
             "variables": ["text"],
-            "partial_variables": ["format_instructions"],
         },
-        (DEFAULT, "response_parsing", "boolean", "en", "json"): {
+        (DEFAULT, "response_parsing", "boolean", "en"): {
             "template": BOOLEAN_RESPONSE_PARSING_EN,
             "variables": ["text"],
-            "partial_variables": ["format_instructions"],
         },
-        ("summarization", "summarization", DEFAULT, "es", "text"): {
+        ("summarization", "summarization", DEFAULT, "es"): {
             "template": SUMMARIZATION_ES,
             "variables": ["text"],
         },
-        ("summarization", "summarization", DEFAULT, "en", "text"): {
+        ("summarization", "summarization", DEFAULT, "en"): {
             "template": SUMMARIZATION_EN,
             "variables": ["text"],
         },
@@ -195,18 +186,25 @@ class PromptTemplateManager:
         :param step: The step within the stage (e.g., "classification", "extraction").
         :param category: The step within the category (default is "default").
         :param language: The language of the template (default is "en").
-        :param output: The output type of the template (default is "text").
+        :param output: The output type of the template (default is "text"). Options are "text" and "json". If "json", the format instructions will be appended to the template.
         :param kwargs: Additional keyword arguments to format the template.
         :return: A LangChain PromptTemplate object.
         """
         try:
-            template_info = cls.TEMPLATES[(stage, step, category, language, output)]
+            template_info = cls.TEMPLATES[(stage, step, category, language)]
         except KeyError as exc:
             raise ValueError(
-                f"Template for stage '{stage}', step '{step}', category '{category}', language '{language}', and output '{output}' not recognized."
+                f"Template for stage '{stage}', step '{step}', category '{category}', and language '{language}' not recognized."
             ) from exc
 
         template_str = template_info["template"]
+
+        # If output is JSON, append the format instructions to the template
+        if output == "json":
+            template_str += FORMAT_INSTRUCTIONS_STR[language]
+            if "partial_variables" not in template_info:
+                template_info["partial_variables"] = []
+            template_info["partial_variables"].append("format_instructions")
 
         # Separate partial variables from input variables
         partial_vars = {
