@@ -106,12 +106,12 @@ Instrucciones de formato:
 ```
 """
 
-IMPACT_MULTI_CLASSIFICATION_DESCRIPTION_ES = """
+IMPACT_EXTRACTION_DESCRIPTION_ES = """
 Analiza el siguiente artículo. Si el artículo esta relacionado con la sequía, determina si la noticia menciona impactos de la sequía en los siguientes aspectos: {impacts}.
 
-Para cada aspecto mencionado, proporciona la siguiente información:
-1. Si el artículo menciona la sequía.
-2. Si la sequía ha tenido un impacto en los aspectos mencionados.
+Proporciona la siguiente información:
+1. Si el artículo menciona impactos de la sequía.
+2. Para cada aspecto mencionado, si la sequía ha tenido un impacto en ese aspecto.
 
 Cada uno de los impactos se define de la siguiente manera:
 {impact_descriptions}
@@ -123,12 +123,12 @@ Texto:
 {text}
 """
 
-IMPACT_MULTI_CLASSIFICATION_JSON_DESCRIPTION_ES = """
+IMPACT_EXTRACTION_JSON_DESCRIPTION_ES = """
 Analiza el siguiente artículo. Si el artículo esta relacionado con la sequía, determina si la noticia menciona impactos de la sequía en los siguientes aspectos: {impacts}.
 
-Para cada aspecto mencionado, proporciona la siguiente información:
-1. Si el artículo menciona la sequía.
-2. Si la sequía ha tenido un impacto en los aspectos mencionados.
+Proporciona la siguiente información:
+1. Si el artículo menciona impactos de la sequía.
+2. Para cada aspecto mencionado, si la sequía ha tenido un impacto en ese aspecto.
 
 Cada uno de los impactos se define de la siguiente manera:
 {impact_descriptions}
@@ -143,12 +143,12 @@ Instrucciones de formato:
 {format_instructions}
 """
 
-IMPACT_MULTI_CLASSIFICATION_DESCRIPTION_EN = """
+IMPACT_EXTRACTION_DESCRIPTION_EN = """
 Analyze the following article. If the article is related to drought, determine whether the news article mentions impacts of drought on the following aspects: {impacts}.
 
-For each mentioned aspect, provide the following information:
+Provide the following information:
 1. Whether the article mentions drought.
-2. Whether drought has had an impact on the mentioned aspects.
+2. For each mentioned aspect, whether drought has had an impact on that aspect.
 
 Each of the impacts is defined as follows:
 {impact_descriptions}
@@ -161,12 +161,12 @@ Text:
 """
 
 # TODO parametrize or do something about this template being the same as the one above but with added format instructions
-IMPACT_MULTI_CLASSIFICATION_JSON_DESCRIPTION_EN = """
+IMPACT_EXTRACTION_JSON_DESCRIPTION_EN = """
 Analyze the following article. If the article is related to drought, determine whether the news article mentions impacts of drought on the following aspects: {impacts}.
 
-For each mentioned aspect, provide the following information:
+Provide the following information:
 1. Whether the article mentions drought.
-2. Whether drought has had an impact on the mentioned aspects.
+2. For each mentioned aspect, whether drought has had an impact on that aspect.
 
 Each of the impacts is defined as follows:
 {impact_descriptions}
@@ -399,13 +399,25 @@ Texto:
 ################################################################################
 
 SUMMARIZATION_ES = """
+Resume el siguiente artículo.
+Texto:
+{text}
+"""
+
+SUMMARIZATION_EN = """
+Summarize the following article.
+Text:
+{text}
+"""
+
+SUMMARIZATION_SPECIFIC_ES = """
 Resume el siguiente artículo, centrándote en los aspectos más relevantes relacionados con la sequía, los impactos de la sequía y sólo de la sequía y las localizaciones afectadas.
 Si el artículo no menciona la sequía, el resumen únicamente debe indicar explícitamente que no se menciona la sequía ni ningún impacto relacionado.
 Texto:
 {text}
 """
 
-SUMMARIZATION_EN = """
+SUMMARIZATION_SPECIFIC_EN = """
 Summarize the following article, focusing on the most relevant aspects related to drought, the impacts of drought, and only drought, and the affected locations.
 If the article does not mention drought, the summary should explicitly state that drought or any related impact is not mentioned.
 Text:

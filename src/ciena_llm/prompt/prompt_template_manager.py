@@ -67,7 +67,7 @@ class PromptTemplateManager:
             "partial_variables": ["impact", "impact_description"],
         },
         ("impact_extraction", "extraction", "description", "es", "json"): {
-            "template": IMPACT_MULTI_CLASSIFICATION_JSON_DESCRIPTION_ES,
+            "template": IMPACT_EXTRACTION_JSON_DESCRIPTION_ES,
             "variables": ["text"],
             "partial_variables": [
                 "format_instructions",
@@ -76,12 +76,12 @@ class PromptTemplateManager:
             ],
         },
         ("impact_extraction", "extraction", "description", "es", "text"): {
-            "template": IMPACT_MULTI_CLASSIFICATION_DESCRIPTION_ES,
+            "template": IMPACT_EXTRACTION_DESCRIPTION_ES,
             "variables": ["text"],
             "partial_variables": ["impacts", "impact_descriptions"],
         },
         ("impact_extraction", "extraction", "description", "en", "json"): {
-            "template": IMPACT_MULTI_CLASSIFICATION_JSON_DESCRIPTION_EN,
+            "template": IMPACT_EXTRACTION_JSON_DESCRIPTION_EN,
             "variables": ["text"],
             "partial_variables": [
                 "format_instructions",
@@ -90,7 +90,7 @@ class PromptTemplateManager:
             ],
         },
         ("impact_extraction", "extraction", "description", "en", "text"): {
-            "template": IMPACT_MULTI_CLASSIFICATION_DESCRIPTION_EN,
+            "template": IMPACT_EXTRACTION_DESCRIPTION_EN,
             "variables": ["text"],
             "partial_variables": ["impacts", "impact_descriptions"],
         },
@@ -201,10 +201,10 @@ class PromptTemplateManager:
         """
         try:
             template_info = cls.TEMPLATES[(stage, step, category, language, output)]
-        except KeyError:
+        except KeyError as exc:
             raise ValueError(
                 f"Template for stage '{stage}', step '{step}', category '{category}', language '{language}', and output '{output}' not recognized."
-            )
+            ) from exc
 
         template_str = template_info["template"]
 
