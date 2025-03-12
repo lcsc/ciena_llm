@@ -18,37 +18,6 @@ Format instructions:
 """,
 }
 
-# Format instructions:
-# {format_instructions}
-# Return only the JSON inside a markdown fenced code block (without syntax highlighting and no additional text around it).
-
-# Instrucciones de formato:
-# {format_instructions}
-# Proporciona únicamente el JSON dentro de un bloque de código de markdown (sin resaltado de sintaxis y sin texto adicional alrededor).
-
-# Format instructions:
-# {format_instructions} # TODO
-# For each location, include all properties as specified in the schema, including optional ones, if they appear in the text.
-# If there are no locations impacted by the drought, provide an empty JSON object.
-# Return only the JSON inside a markdown fenced code block (without syntax highlighting and no additional text around it).
-# Do not encode any special characters and do not use any Unicode escape sequences in the output.
-
-# Provide the only response in the following format:
-# Format instructions:
-# ```json
-# {{"response": true or false}}
-# ```
-
-# Proporciona la única respuesta en el siguiente formato:
-# Instrucciones de formato:
-# ```json
-# {{"response": true or false}}
-# ```
-
-# Output the list as parsable JSON with the following structure.
-# {"provinces":[]}
-# Do not output anything else but the list of provinces.
-
 
 class PromptTemplateManager:
     TEMPLATES = {
@@ -117,19 +86,10 @@ class PromptTemplateManager:
             "variables": ["text"],
             "partial_variables": ["impacts", "impact_descriptions"],
         },
-        # ("impact_extraction", "response_parsing", DEFAULT, "es"): { # TODO
-        #     "template": IMPACT_RESPONSE_PARSING_ES,
-        #     "variables": ["text"],
-        #     "partial_variables": ["impact"],
-        # },
         ("location_extraction", "extraction", "location", "es"): {
             "template": LOCATION_EXTRACTION_ES,
             "variables": ["text"],
         },
-        # ("location_extraction", "extraction", "location", "en"): {
-        #     "template": LOCATION_EXTRACTION_EN,
-        #     "variables": ["text"],
-        # },
         ("location_extraction", "extraction", "location", "en"): {
             # TODO category = location or province?
             "template": LOCATION_PROVINCE_EXTRACTION_EN,

@@ -232,7 +232,7 @@ Texto:
 ################################################################################
 
 BOOLEAN_RESPONSE_PARSING_EN = """
-Extract whether the following text is affirmative or negative.
+Extract whether the following LLM response is affirmative or negative.
 
 Text:
 {text}
@@ -244,7 +244,7 @@ Text:
 ################################################################################
 
 DROUGHT_RESPONSE_PARSING_EN = """
-Extract whether the following text is related to drought.
+Extract whether the following LLM response says the article is related to drought.
 
 Text:
 {text}
@@ -256,7 +256,8 @@ Text:
 ################################################################################
 
 IMPACT_RESPONSE_PARSING_EN = """
-Extract from the given text whether the article mentions an impact of drought on {impacts}.
+Extract whether the following LLM response says the article mentions an impact of drought on {impacts}.
+
 The impacts are defined as follows:
 {impact_descriptions}
 
@@ -265,23 +266,21 @@ Text:
 """
 
 IMPACT_RESPONSE_PARSING_ES = """
-Extrae del texto dado si el artículo menciona un impacto de la sequía en {impacts}.
+Extrae si la siguiente respuesta de un LLM indica que el artículo menciona un impacto de la sequía en {impacts}.
+
 Los impactos se definen de la siguiente manera:
 {impact_descriptions}
-Instrucciones de formato:
 
 Texto:
 {text}
 """
-
 
 ################################################################################
 # Location Response Parsers
 ################################################################################
 
 LOCATION_RESPONSE_PARSING_EN = """
-Extract the locations impacted by drought from the given text.
-The output must be a valid JSON object formatted according to the schema, including any optional fields where applicable.
+Extract from the following LLM response the locations.
 
 Text:
 {text}
@@ -292,14 +291,18 @@ Text:
 ################################################################################
 
 PROVINCE_RESPONSE_PARSING_EN = """
-Extract the provinces impacted by drought from the given text.
+Extract from the following LLM response the provinces.
+
+If other locations are mentioned, infer the provinces.
 
 Text:
 {text}
 """
 
 PROVINCE_RESPONSE_PARSING_ES = """
-Extrae las provincias afectadas por la sequía del texto dado.
+Extrae de la siguiente respuesta de un LLM las provincias.
+
+Si se mencionan otras localizaciones, infiere las provincias.
 
 Texto:
 {text}
@@ -339,3 +342,35 @@ If the article does not mention drought, the summary should explicitly state tha
 Text:
 {text}
 """
+
+
+# Format instructions:
+# {format_instructions}
+# Return only the JSON inside a markdown fenced code block (without syntax highlighting and no additional text around it).
+
+# Instrucciones de formato:
+# {format_instructions}
+# Proporciona únicamente el JSON dentro de un bloque de código de markdown (sin resaltado de sintaxis y sin texto adicional alrededor).
+
+# Format instructions:
+# {format_instructions}
+# For each location, include all properties as specified in the schema, including optional ones, if they appear in the text.
+# If there are no locations impacted by the drought, provide an empty JSON object.
+# Return only the JSON inside a markdown fenced code block (without syntax highlighting and no additional text around it).
+# Do not encode any special characters and do not use any Unicode escape sequences in the output.
+
+# Provide the only response in the following format:
+# Format instructions:
+# ```json
+# {{"response": true or false}}
+# ```
+
+# Proporciona la única respuesta en el siguiente formato:
+# Instrucciones de formato:
+# ```json
+# {{"response": true or false}}
+# ```
+
+# Output the list as parsable JSON with the following structure.
+# {"provinces":[]}
+# Do not output anything else but the list of provinces.
