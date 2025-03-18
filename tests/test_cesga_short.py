@@ -1,7 +1,7 @@
 from common import ClimateImpactExtractorTest
 
 
-BASE_TEST_NAME = "test_short"
+TEST_NAME = "test_cesga_short"
 DATASET_BASE_PATH = (
     "/home/csic/hia/jvt/CienaLLM/data/test-datasets-small/news-elpais-binary-2T-1F/"
 )
@@ -68,8 +68,6 @@ OVERRIDE_CONFIG = {
         },
     },
 }
-
-TEST_NAME = f"{BASE_TEST_NAME}"
 
 test = ClimateImpactExtractorTest(TEST_NAME, DATASET_PATH, OVERRIDE_CONFIG)
 test.run()
