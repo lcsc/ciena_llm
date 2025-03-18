@@ -167,7 +167,7 @@ class OutputManager:
                         "execution_times": step_times,
                     }
 
-            stage_total += step_total
+                    stage_total += step_total
 
             execution_times[stage]["total"] = stage_total
             execution_times["total"] += stage_total
