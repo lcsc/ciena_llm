@@ -11,5 +11,11 @@ export CIENA_LLM_LANGUAGE="en"
 
 mkdir -p $RESULTS_DIR
 
+module load cesga/2020 python/3.10.8
+cd $CIENA_LLM_DIR/ciena_llm
+git pull
+poetry lock
+poetry install
+
 # TODO rename file to ciena_sbatch_test_short.sh
-sbatch $DIR/ciena_sbatch_test_short.sh -o $RESULTS_DIR/slurm.out -e $RESULTS_DIR/slurm.err
+sbatch $DIR/ciena_sbatch.sh -o $RESULTS_DIR/slurm.out -e $RESULTS_DIR/slurm.err

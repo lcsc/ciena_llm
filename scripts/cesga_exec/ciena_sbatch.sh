@@ -7,20 +7,26 @@
 #SBATCH -t 00:05:00                  # Run time (hh:mm:ss)
 #SBATCH --mem-per-cpu=3G             # Memory per core demandes # TODO adjust
 #SBATCH --gres=gpu:a100:1            # Number of GPUs
+#SBATCH --mail-type=BEGIN,END,FAIL
+#SBATCH --mail-user=jvela@ipe.csic.es
 
 # TODO rename file to ciena_sbatch_test_short.sh
+# TODO add timers to the script
 
 # Load Ollama and Python modules
 module load cesga/2020 ollama/0.5.13 python/3.10.8
 
 cd $CIENA_LLM_DIR/ciena_llm
 
+# TODO remove
 # Restore the poetry.lock file with the correct version
-cp poetry.lock.ft3 poetry.lock
+# cp poetry.lock.ft3 poetry.lock
 
+# TODO remove
 # Load Python and Poetry
 # pip install poetry
 
+# TODO remove
 # poetry lock # For this specific poetry version
 # poetry install
 
