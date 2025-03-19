@@ -2,30 +2,27 @@
 #----------------------------------------------------
 # CienaLLM (test)
 #----------------------------------------------------
-#SBATCH -J ciena_llm_test       # Job name
-#SBATCH -o ciena_llm_test_%j.o  # Name of stdout output file
-#SBATCH -e ciena_llm_test_%j.e  # Name of stderr output file
-#SBATCH -c 32                   # Cores per task requested
-#SBATCH -t 00:10:00             # Run time (hh:mm:ss)
-#SBATCH --mem-per-cpu=3G        # Memory per core demandes
-#SBATCH --gres=gpu:a100:1       # Number of GPUs
+#SBATCH -J ciena_llm_test            # Job name
+#SBATCH -c 32                        # Cores per task requested
+#SBATCH -t 00:05:00                  # Run time (hh:mm:ss)
+#SBATCH --mem-per-cpu=3G             # Memory per core demandes # TODO adjust
+#SBATCH --gres=gpu:a100:1            # Number of GPUs
+
+# TODO rename file to ciena_sbatch_test_short.sh
 
 # Load Ollama and Python modules
 module load cesga/2020 ollama/0.5.13 python/3.10.8
 
-cd $HOME/CienaLLM/ciena_llm
-
-# REMOVE
-nvidia-smi > gpu_info.log
+cd $CIENA_LLM_DIR/ciena_llm
 
 # Restore the poetry.lock file with the correct version
 cp poetry.lock.ft3 poetry.lock
 
 # Load Python and Poetry
-pip install poetry
+# pip install poetry
 
 # poetry lock # For this specific poetry version
-poetry install
+# poetry install
 
 # Maximum number of retries (for port and server check)
 MAX_RETRIES=5
@@ -57,7 +54,7 @@ echo "OLLAMA_HOST: $OLLAMA_HOST"
 echo "OLLAMA_TMPDIR: $OLLAMA_TMPDIR"
 
 # Start the Ollama server
-ollama serve > ollama_server.log 2>&1 &
+ollama serve >ollama_server.log 2>&1 &
 
 # Check if the Ollama server is running
 RETRY_COUNT=0
@@ -71,6 +68,11 @@ while ! curl -s $OLLAMA_HOST | grep -q "Ollama is running"; do
     sleep 1
 done
 
+# Pull the model if it does not exist
+ollama pull $CIENA_LLM_MODEL
+
+# Warm-up the model
+ollma run $CIENA_LLM_MODEL ""
+
 # Run the test
 poetry run python tests/test_cesga_short.py
-

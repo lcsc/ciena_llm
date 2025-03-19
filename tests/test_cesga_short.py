@@ -1,14 +1,29 @@
 from common import ClimateImpactExtractorTest
 
+import os
+import sys
+from datetime import datetime
 
-TEST_NAME = "test_cesga_short"
-DATASET_BASE_PATH = (
-    "/home/csic/hia/jvt/CienaLLM/data/test-datasets-small/news-elpais-binary-2T-1F/"
+
+HOME = os.getenv("HOME")
+CIENA_LLM_DIR = os.getenv("CIENA_LLM_DIR", f"{HOME}/CienaLLM")
+TEST_NAME = os.getenv("TEST_NAME", "test_cesga_short")
+
+results_dir_default = (
+    f"{CIENA_LLM_DIR}/ciena_llm/results/"
+    + TEST_NAME
+    + datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 )
-DATASET_PATH = f"{DATASET_BASE_PATH}/sample"
+RESULTS_DIR = os.getenv("RESULTS_DIR", results_dir_default)
 
-LANGUAGE = "es"
-MODEL = "llama3.2:3b"
+DATASET_PATH = os.getenv("DATASET_PATH")
+if not DATASET_PATH or not os.path.exists(DATASET_PATH):
+    print("DATASET_PATH not set or does not exist. Exiting.")
+    sys.exit(1)
+
+
+LANGUAGE = os.getenv("CIENA_LLM_LANGUAGE", "en")
+MODEL = os.getenv("CIENA_LLM_MODEL", "llama3.2:3b")
 
 OVERRIDE_CONFIG = {
     "llm": {"name": MODEL},
@@ -69,5 +84,5 @@ OVERRIDE_CONFIG = {
     },
 }
 
-test = ClimateImpactExtractorTest(TEST_NAME, DATASET_PATH, OVERRIDE_CONFIG)
+test = ClimateImpactExtractorTest(TEST_NAME, DATASET_PATH, OVERRIDE_CONFIG, RESULTS_DIR)
 test.run()

@@ -12,18 +12,28 @@ from .log import setup_logging, format_execution_time
 
 
 class ClimateImpactExtractorTest:
-    def __init__(self, test_name, dataset_path, override_config=None):
+    def __init__(self, test_name, dataset_path, override_config=None, results_dir=None):
         self.test_name = test_name
         self.dataset_path = dataset_path
         self.override_config = override_config
-        current_time = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-        # TODO make sure results directory is always the same independently of where the script is run from
-        base_results_dir = os.path.abspath("./results")
-        self.results_dir = os.path.join(base_results_dir, self.test_name, current_time)
-        self.latest_results_dir = os.path.join(
-            base_results_dir, self.test_name, "latest"
-        )
+
+        # Create results directory with provided path or default path
+        if results_dir:
+            self.results_dir = results_dir
+            self.latest_results_dir = None
+        else:
+            current_time = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+            # TODO make sure results directory is always the same independently of where the script is run from
+            base_results_dir = os.path.abspath("./results")
+            self.results_dir = os.path.join(
+                base_results_dir, self.test_name, current_time
+            )
+            self.latest_results_dir = os.path.join(
+                base_results_dir, self.test_name, "latest"
+            )
         os.makedirs(self.results_dir, exist_ok=True)
+
+        # Setup logging
         setup_logging(os.path.join(self.results_dir, "execution.log"))
 
     def run(self):
@@ -94,11 +104,12 @@ class ClimateImpactExtractorTest:
             f.write(commit_hash)
 
         # Create a symlink to the latest results
-        if os.path.islink(self.latest_results_dir) or os.path.exists(
-            self.latest_results_dir
-        ):
-            os.remove(self.latest_results_dir)
-        os.symlink(self.results_dir, self.latest_results_dir)
+        if self.latest_results_dir:
+            if os.path.islink(self.latest_results_dir) or os.path.exists(
+                self.latest_results_dir
+            ):
+                os.remove(self.latest_results_dir)
+            os.symlink(self.results_dir, self.latest_results_dir)
 
         # Log execution details
         logging.info(
