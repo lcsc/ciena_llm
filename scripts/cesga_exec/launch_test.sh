@@ -6,7 +6,7 @@ export CIENA_LLM_DIR="$HOME/CienaLLM"
 export TEST_NAME="test_cesga_short_env_delete" # REMOVE Rename test
 export RESULTS_DIR="$CIENA_LLM_DIR/results/$TEST_NAME/$(date +%Y%m%d_%H%M%S)/"
 export DATASET_PATH="$CIENA_LLM_DIR/data/test-datasets-small/news-elpais-binary-2T-1F/sample"
-export CIENA_LLM_MODEL="llama3.2:2b" # TODO does not exist, pull and warmup model
+export CIENA_LLM_MODEL="llama3.2:1b"
 export CIENA_LLM_LANGUAGE="en"
 
 mkdir -p $RESULTS_DIR

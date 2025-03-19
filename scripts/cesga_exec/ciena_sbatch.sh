@@ -10,6 +10,8 @@
 #SBATCH --mail-type=BEGIN,END,FAIL
 #SBATCH --mail-user=jvela@ipe.csic.es
 
+echo $SLURM_JOBID >$RESULTS_DIR/slurm_job_id.txt
+
 # TODO rename file to ciena_sbatch_test_short.sh
 # TODO add timers to the script
 
@@ -55,9 +57,24 @@ done
 export OLLAMA_HOST=$(hostname -i):$OLLAMA_PORT
 export OLLAMA_TMPDIR=$TMPDIR
 
-echo "OLLAMA_PORT: $OLLAMA_PORT"
-echo "OLLAMA_HOST: $OLLAMA_HOST"
-echo "OLLAMA_TMPDIR: $OLLAMA_TMPDIR"
+cat <<EOF
+----------------------------------------
+Job Configuration:
+SLURM_JOBID: $SLURM_JOBID
+
+OLLAMA_PORT: $OLLAMA_PORT
+OLLAMA_HOST: $OLLAMA_HOST
+OLLAMA_TMPDIR: $OLLAMA_TMPDIR
+
+TEST_NAME: $TEST_NAME
+RESULTS_DIR: $RESULTS_DIR
+DATASET_PATH: $DATASET_PATH
+
+CIENA_LLM_DIR: $CIENA_LLM_DIR
+CIENA_LLM_MODEL: $CIENA_LLM_MODEL
+CIENA_LLM_LANGUAGE: $CIENA_LLM_LANGUAGE
+----------------------------------------
+EOF
 
 # Start the Ollama server
 ollama serve >ollama_server.log 2>&1 &
@@ -78,7 +95,7 @@ done
 ollama pull $CIENA_LLM_MODEL
 
 # Warm-up the model
-ollma run $CIENA_LLM_MODEL ""
+ollama run $CIENA_LLM_MODEL ""
 
 # Run the test
 poetry run python tests/test_cesga_short.py
