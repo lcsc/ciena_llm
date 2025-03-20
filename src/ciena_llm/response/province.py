@@ -8,10 +8,6 @@ class ProvinceLLMResponse(BaseModel):
     )
 
     @classmethod
-    def get_default_response(cls):
-        return {"response": []}
-
-    @classmethod
     def parse_response_to_dict(cls, response):
         """
         Parser to ensure the response is always a dictionary
@@ -32,7 +28,17 @@ class ProvinceLLMResponse(BaseModel):
         return response
 
     @classmethod
+    def get_default_response(cls):
+        """
+        Get the default response for the model
+        """
+        return {"response": []}
+
+    @classmethod
     def get_format_instructions(cls):
+        """
+        Get the JSON format instructions for the model
+        """
         # TODO maybe put this in the prompt template manager?
         # JSON format instructions for the model
         return """

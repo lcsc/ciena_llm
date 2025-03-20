@@ -29,11 +29,17 @@ ImpactLLMResponse: BaseModel = create_model("ImpactLLMResponse", **fields)
 
 @classmethod
 def get_default_response(cls):
+    """
+    Get the default response for the model
+    """
     return {"drought": None, **{impact: None for impact in IMPACTS}}
 
 
 @classmethod
 def get_format_instructions(cls):
+    """
+    Get the JSON format instructions for the model
+    """
     # JSON format instructions for the model
     impacts_json = ",\n    ".join([f'"{i}": <true or false>' for i in IMPACTS])
 
