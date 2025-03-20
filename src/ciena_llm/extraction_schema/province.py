@@ -1,10 +1,29 @@
-from pydantic import BaseModel, Field
+from typing import Type
+
+from pydantic import BaseModel, Field, create_model
 
 
-class ProvinceExtractionSchema(BaseModel):
-    response: list[str] = Field(
-        default_factory=list,
-        description="Provinces affected by the drought as mentioned or inferred from the article.",
+def build_model(event: str) -> Type[BaseModel]:
+    """
+    Factory function to create a dynamic ProvinceLLMResponse model.
+
+    :param event: The event name
+    :return: A dynamically created Pydantic model
+    """
+
+    fields = {
+        "response": (
+            list[str],
+            Field(
+                default_factory=list,
+                description=f"Provinces affected by {event} as mentioned or inferred from the article.",
+            ),
+        )
+    }
+
+    # Dynamically create model
+    province_extraction_schema: BaseModel = create_model(
+        "ProvinceExtractionSchema", **fields
     )
 
     @classmethod
@@ -51,3 +70,10 @@ class ProvinceExtractionSchema(BaseModel):
 }
 ```
 """
+
+    # Add the class methods to the model
+    province_extraction_schema.normalize_response_format = normalize_response_format
+    province_extraction_schema.default_response = default_response
+    province_extraction_schema.format_instructions_as_json = format_instructions_as_json
+
+    return province_extraction_schema

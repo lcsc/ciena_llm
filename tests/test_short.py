@@ -7,7 +7,7 @@ DATASET_BASE_PATH = (
 )
 DATASET_PATH = f"{DATASET_BASE_PATH}/sample"
 
-LANGUAGE = "es"
+LANGUAGE = "en"
 MODEL = "llama3.2:3b"
 
 OVERRIDE_CONFIG = {

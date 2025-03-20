@@ -17,10 +17,7 @@ from ciena_llm.chain import (
     SummarizationChain,
     ResponseParsingChain,
 )
-from ciena_llm.extraction_schema import (
-    ProvinceExtractionSchema,
-    ImpactExtractionSchema,
-)
+from ciena_llm.extraction_schema.factory import ExtractionSchemaFactory
 from ciena_llm.output import OutputManager
 
 
@@ -44,8 +41,12 @@ class ClimateImpactExtractor:
         # Define available schemas for extraction stages
         self.extraction_schemas_by_stage = {
             # "event_identification": EventLLMResponse, # TODO not implemented
-            "impact_extraction": ImpactExtractionSchema,
-            "location_extraction": ProvinceExtractionSchema,
+            "impact_extraction": ExtractionSchemaFactory.get_extraction_schema(
+                stage="impact_extraction", config=self.config
+            ),
+            "location_extraction": ExtractionSchemaFactory.get_extraction_schema(
+                stage="location_extraction", config=self.config
+            ),
         }
 
         # Dynamically initialize (enabled) pipeline steps for each stage
@@ -53,7 +54,6 @@ class ClimateImpactExtractor:
         self.enabled_pipeline_steps = {}
 
         # TODO make dynamic for every step of a stage
-        # TODO include summarization in here?
         for stage, settings in self.stages.items():
             if settings.get("enable", False):
                 schema = self.extraction_schemas_by_stage.get(stage)
