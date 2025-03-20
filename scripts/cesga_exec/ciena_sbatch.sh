@@ -4,7 +4,6 @@
 #----------------------------------------------------
 #SBATCH -J ciena_llm_test            # Job name
 #SBATCH -c 32                        # Cores per task requested
-#SBATCH -t 00:05:00                  # Run time (hh:mm:ss)
 #SBATCH --mem-per-cpu=3G             # Memory per core demandes # TODO adjust
 #SBATCH --gres=gpu:a100:1            # Number of GPUs
 #SBATCH --mail-type=BEGIN,END,FAIL
@@ -45,7 +44,8 @@ export OLLAMA_HOST=$(hostname -i):$OLLAMA_PORT
 export OLLAMA_TMPDIR=$TMPDIR
 
 # Start the Ollama server
-ollama serve >ollama_server.log 2>&1 &
+ollama serve >$RESULTS_DIR/ollama_server.log 2>&1 &
+
 RETRY_COUNT=0
 while ! curl -s $OLLAMA_HOST | grep -q "Ollama is running"; do
     echo "Ollama server is not running. Retrying..."
@@ -91,4 +91,4 @@ CIENA_LLM_LANGUAGE: $CIENA_LLM_LANGUAGE
 EOF
 
 # Run the test
-poetry run python tests/test_cesga_short.py
+poetry run python tests/$TEST_NAME.py
