@@ -48,9 +48,7 @@ class ExtractionChain(Runnable):
                 stage=self.stage,
                 **self.prompt_config,
                 output="json",
-                # TODO which one is better?
-                # format_instructions=self.response_parser.get_format_instructions(),
-                format_instructions=self.extraction_schema.get_format_instructions(),
+                format_instructions=self.extraction_schema.format_instructions_as_json(),
                 impacts=PromptTemplateManager.get_impact_names_text(
                     self.impact_config, self.language
                 ),

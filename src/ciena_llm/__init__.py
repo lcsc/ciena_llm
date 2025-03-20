@@ -17,9 +17,9 @@ from ciena_llm.chain import (
     SummarizationChain,
     ResponseParsingChain,
 )
-from ciena_llm.response import (
-    ProvinceLLMResponse,
-    ImpactLLMResponse,
+from ciena_llm.extraction_schema import (
+    ProvinceExtractionSchema,
+    ImpactExtractionSchema,
 )
 from ciena_llm.output import OutputManager
 
@@ -42,23 +42,23 @@ class ClimateImpactExtractor:
         self.stages = self.config.get("stages", {})
 
         # Define available schemas for extraction stages
-        self.stage_schemas = {
+        self.extraction_schemas_by_stage = {
             # "event_identification": EventLLMResponse, # TODO not implemented
-            "impact_extraction": ImpactLLMResponse,
-            "location_extraction": ProvinceLLMResponse,
+            "impact_extraction": ImpactExtractionSchema,
+            "location_extraction": ProvinceExtractionSchema,
         }
 
         # Dynamically initialize (enabled) pipeline steps for each stage
         # TODO change name?
-        self.pipeline_steps = {}
+        self.enabled_pipeline_steps = {}
 
         # TODO make dynamic for every step of a stage
         # TODO include summarization in here?
         for stage, settings in self.stages.items():
             if settings.get("enable", False):
-                schema = self.stage_schemas.get(stage)
+                schema = self.extraction_schemas_by_stage.get(stage)
                 steps = settings.get("steps", {})
-                self.pipeline_steps[stage] = {
+                self.enabled_pipeline_steps[stage] = {
                     "extraction": (
                         ExtractionChain(
                             stage=stage,
@@ -113,7 +113,7 @@ class ClimateImpactExtractor:
             extracted_data: Dict[str, dict] = {}
 
             # Iterate through each stage
-            for stage, steps in self.pipeline_steps.items():
+            for stage, steps in self.enabled_pipeline_steps.items():
                 # Initialize input data for the current stage
                 input_data = {
                     "article_id": article_id,

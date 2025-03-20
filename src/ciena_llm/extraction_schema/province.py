@@ -1,14 +1,14 @@
 from pydantic import BaseModel, Field
 
 
-class ProvinceLLMResponse(BaseModel):
+class ProvinceExtractionSchema(BaseModel):
     response: list[str] = Field(
         default_factory=list,
         description="Provinces affected by the drought as mentioned or inferred from the article.",
     )
 
     @classmethod
-    def parse_response_to_dict(cls, response):
+    def normalize_response_format(cls, response):
         """
         Parser to ensure the response is always a dictionary
 
@@ -28,14 +28,14 @@ class ProvinceLLMResponse(BaseModel):
         return response
 
     @classmethod
-    def get_default_response(cls):
+    def default_response(cls):
         """
         Get the default response for the model
         """
         return {"response": []}
 
     @classmethod
-    def get_format_instructions(cls):
+    def format_instructions_as_json(cls):
         """
         Get the JSON format instructions for the model
         """

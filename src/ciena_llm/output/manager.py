@@ -51,9 +51,9 @@ class OutputManager:
         return self.extractor.pipeline
 
     @property
-    def pipeline_steps(self):
+    def enabled_pipeline_steps(self):
         """Get the pipeline steps used by the extractor."""
-        return self.extractor.pipeline_steps
+        return self.extractor.enabled_pipeline_steps
 
     # Methods to write the extracted data to files
 
@@ -104,7 +104,7 @@ class OutputManager:
         """
         prompts = {}
 
-        for stage, steps in self.pipeline_steps.items():
+        for stage, steps in self.enabled_pipeline_steps.items():
             prompts[stage] = {}
             for step, step_chain in steps.items():
                 if step_chain:
@@ -125,7 +125,7 @@ class OutputManager:
         }
 
         # Parsing errors from pipeline steps
-        for stage, steps in self.pipeline_steps.items():
+        for stage, steps in self.enabled_pipeline_steps.items():
             parsing_errors[stage] = {}
             for step, step_chain in steps.items():
                 if step_chain and hasattr(step_chain, "parsing_errors"):
@@ -153,7 +153,7 @@ class OutputManager:
         }
 
         # Execution times from pipeline steps
-        for stage, steps in self.pipeline_steps.items():
+        for stage, steps in self.enabled_pipeline_steps.items():
             stage_total = 0
             execution_times[stage] = {"total": 0}
 

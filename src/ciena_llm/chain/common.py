@@ -35,9 +35,9 @@ def invoke_chain(
         if response_parsing:
             # Parse the response to a dictionary if needed
             if not isinstance(output, dict) and hasattr(
-                response_class, "parse_response_to_dict"
+                response_class, "normalize_response_format"
             ):
-                output = response_class.parse_response_to_dict(output)
+                output = response_class.normalize_response_format(output)
 
             # Parse the response
             parsed_response = response_class(**output)
@@ -54,7 +54,7 @@ def invoke_chain(
 
         # Return the default error response
         return (
-            response_class(**response_class.get_default_response()),
+            response_class(**response_class.default_response()),
             {
                 "exception": str(e),
                 "output": output,
@@ -68,7 +68,7 @@ def invoke_chain(
 
         # Return the default error response
         return (
-            response_class(**response_class.get_default_response()),
+            response_class(**response_class.default_response()),
             {
                 "exception": str(e),
             },

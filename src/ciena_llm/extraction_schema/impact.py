@@ -1,7 +1,6 @@
-from pydantic import BaseModel, Field, create_model, model_validator
 from typing import Optional
 
-# TEST
+from pydantic import BaseModel, Field, create_model
 
 # TODO get from config
 IMPACTS = ["agriculture", "livestock", "energy", "hydrological_resources"]
@@ -24,11 +23,11 @@ fields["drought"] = (
 )
 
 # Create the model dynamically
-ImpactLLMResponse: BaseModel = create_model("ImpactLLMResponse", **fields)
+ImpactExtractionSchema: BaseModel = create_model("ImpactExtractionSchema", **fields)
 
 
 @classmethod
-def get_default_response(cls):
+def default_response(cls):
     """
     Get the default response for the model
     """
@@ -36,7 +35,7 @@ def get_default_response(cls):
 
 
 @classmethod
-def get_format_instructions(cls):
+def format_instructions_as_json(cls):
     """
     Get the JSON format instructions for the model
     """
@@ -53,5 +52,5 @@ def get_format_instructions(cls):
 """
 
 
-ImpactLLMResponse.get_default_response = get_default_response
-ImpactLLMResponse.get_format_instructions = get_format_instructions
+ImpactExtractionSchema.default_response = default_response
+ImpactExtractionSchema.format_instructions_as_json = format_instructions_as_json
