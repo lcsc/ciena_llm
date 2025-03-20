@@ -10,8 +10,6 @@
 #SBATCH --mail-type=BEGIN,END,FAIL
 #SBATCH --mail-user=jvela@ipe.csic.es
 
-# TODO add timers to the script
-
 cd $HOME/CienaLLM/ciena_llm
 
 echo $SLURM_JOBID >$RESULTS_DIR/slurm.id
@@ -21,6 +19,8 @@ module load cesga/2020 ollama/0.5.13 python/3.10.8
 
 # Maximum number of retries (for port and server check)
 MAX_RETRIES=5
+
+ollama_server_start_t=$(date +%s)
 
 # Set the Ollama port
 if [ -z "$SLURM_JOBID" ]; then
@@ -44,6 +44,34 @@ done
 export OLLAMA_HOST=$(hostname -i):$OLLAMA_PORT
 export OLLAMA_TMPDIR=$TMPDIR
 
+# Start the Ollama server
+ollama serve >ollama_server.log 2>&1 &
+RETRY_COUNT=0
+while ! curl -s $OLLAMA_HOST | grep -q "Ollama is running"; do
+    echo "Ollama server is not running. Retrying..."
+    RETRY_COUNT=$(expr $RETRY_COUNT + 1)
+    if [ $RETRY_COUNT -ge $MAX_RETRIES ]; then
+        echo "Error: Ollama server is not running after $MAX_RETRIES retries."
+        exit 1
+    fi
+    sleep 1
+done
+
+ollama_server_end_t=$(date +%s)
+echo "Ollama server setup time: $(expr $ollama_server_end_t - $ollama_server_start_t) seconds"
+
+model_pull_start_t=$(date +%s)
+# Pull the model if it does not exist
+ollama pull $CIENA_LLM_MODEL
+model_pull_end_t=$(date +%s)
+echo "Model pull time: $(expr $model_pull_end_t - $model_pull_start_t) seconds"
+
+warmup_start_t=$(date +%s)
+# Warm-up the model
+ollama run $CIENA_LLM_MODEL ""
+warmup_end_t=$(date +%s)
+echo "Model warm-up time: $(expr $warmup_end_t - $warmup_start_t) seconds"
+
 cat <<EOF
 ----------------------------------------
 Job Configuration:
@@ -61,27 +89,6 @@ CIENA_LLM_MODEL: $CIENA_LLM_MODEL
 CIENA_LLM_LANGUAGE: $CIENA_LLM_LANGUAGE
 ----------------------------------------
 EOF
-
-# Start the Ollama server
-ollama serve >ollama_server.log 2>&1 &
-
-# Check if the Ollama server is running
-RETRY_COUNT=0
-while ! curl -s $OLLAMA_HOST | grep -q "Ollama is running"; do
-    echo "Ollama server is not running. Retrying..."
-    RETRY_COUNT=$(expr $RETRY_COUNT + 1)
-    if [ $RETRY_COUNT -ge $MAX_RETRIES ]; then
-        echo "Error: Ollama server is not running after $MAX_RETRIES retries."
-        exit 1
-    fi
-    sleep 1
-done
-
-# Pull the model if it does not exist
-ollama pull $CIENA_LLM_MODEL
-
-# Warm-up the model
-ollama run $CIENA_LLM_MODEL ""
 
 # Run the test
 poetry run python tests/test_cesga_short.py
