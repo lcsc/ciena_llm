@@ -2,7 +2,7 @@
 
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
 
-export TEST_NAME="test_cesga_short"                                                          # REMOVE Rename test
+export TEST_NAME="test_cesga_short"
 export RESULTS_DIR="$HOME/CienaLLM/ciena_llm/results/$TEST_NAME/$(date +%Y-%m-%d_%H-%M-%S)/" # TODO do not do only with date, put something more descriptive
 export DATASET_PATH="$HOME/CienaLLM/data/test-datasets-small/news-elpais-binary-2T-1F/sample"
 export CIENA_LLM_MODEL="llama3.2:3b"

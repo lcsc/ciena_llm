@@ -33,6 +33,12 @@ def invoke_chain(
         output = chain.invoke({"text": input_text, **kwargs})
 
         if response_parsing:
+            # Parse the response to a dictionary if needed
+            if not isinstance(output, dict) and hasattr(
+                response_class, "parse_response_to_dict"
+            ):
+                output = response_class.parse_response_to_dict(output)
+
             # Parse the response
             parsed_response = response_class(**output)
 
@@ -40,6 +46,7 @@ def invoke_chain(
 
         # Return the raw output
         return (output, {})
+
     except pydantic.ValidationError as e:
         logging.error("pydantic.ValidationError: Failed to parse response: %s", e)
         # TODO Handle this error
