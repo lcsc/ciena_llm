@@ -10,27 +10,14 @@
 #SBATCH --mail-type=BEGIN,END,FAIL
 #SBATCH --mail-user=jvela@ipe.csic.es
 
-echo $SLURM_JOBID >$RESULTS_DIR/slurm_job_id.txt
-
-# TODO rename file to ciena_sbatch_test_short.sh
 # TODO add timers to the script
+
+cd $HOME/CienaLLM/ciena_llm
+
+echo $SLURM_JOBID >$RESULTS_DIR/slurm.id
 
 # Load Ollama and Python modules
 module load cesga/2020 ollama/0.5.13 python/3.10.8
-
-cd $CIENA_LLM_DIR/ciena_llm
-
-# TODO remove
-# Restore the poetry.lock file with the correct version
-# cp poetry.lock.ft3 poetry.lock
-
-# TODO remove
-# Load Python and Poetry
-# pip install poetry
-
-# TODO remove
-# poetry lock # For this specific poetry version
-# poetry install
 
 # Maximum number of retries (for port and server check)
 MAX_RETRIES=5
@@ -70,7 +57,6 @@ TEST_NAME: $TEST_NAME
 RESULTS_DIR: $RESULTS_DIR
 DATASET_PATH: $DATASET_PATH
 
-CIENA_LLM_DIR: $CIENA_LLM_DIR
 CIENA_LLM_MODEL: $CIENA_LLM_MODEL
 CIENA_LLM_LANGUAGE: $CIENA_LLM_LANGUAGE
 ----------------------------------------
