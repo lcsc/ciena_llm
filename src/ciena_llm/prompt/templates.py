@@ -101,10 +101,10 @@ Texto:
 """
 
 IMPACT_EXTRACTION_DESCRIPTION_ES = """
-Analiza el siguiente artículo. Si el artículo esta relacionado con la sequía, determina si la noticia menciona impactos de la sequía en los siguientes aspectos: {impacts}.
+Analiza el siguiente artículo. Determina si la noticia menciona impactos de la sequía en los siguientes aspectos: {impacts}.
 
 Proporciona la siguiente información:
-1. Si el artículo menciona impactos de la sequía.
+1. Si el artículo menciona la sequía.
 2. Para cada aspecto mencionado, si la sequía ha tenido un impacto en ese aspecto.
 
 Cada uno de los impactos se define de la siguiente manera:
@@ -118,7 +118,7 @@ Texto:
 """
 
 IMPACT_EXTRACTION_DESCRIPTION_EN = """
-Analyze the following article. If the article is related to drought, determine whether the news article mentions impacts of drought on the following aspects: {impacts}.
+Analyze the following article. Determine whether the news article mentions impacts of drought on the following aspects: {impacts}.
 
 Provide the following information:
 1. Whether the article mentions drought.
