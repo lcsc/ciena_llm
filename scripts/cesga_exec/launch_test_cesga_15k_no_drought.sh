@@ -4,13 +4,11 @@ DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
 
 export TEST_NAME="news_elpais_all_drought_seqia_no_drought_cienallm"
 
-# TODO do not do only with date, put something more descriptive
 export RESULTS_DIR="$HOME/CienaLLM/ciena_llm/results/$TEST_NAME/$(date +%Y-%m-%d_%H-%M-%S)/"
 
 export DATASET_PATH="$HOME/CienaLLM/data/news-elpais-all-drought-seqia-no-drought-cienallm/sample/"
 
-# export CIENA_LLM_MODEL="llama3.2:3b"
-export CIENA_LLM_MODEL="gemma3:27b"
+export CIENA_LLM_MODEL="gemma2:9b"
 export CIENA_LLM_LANGUAGE="en"
 export CIENA_LLM_SUMMARIZATION_ENABLE="False"
 export CIENA_LLM_IMPACT_EXTRACTION_ENABLE="True"
