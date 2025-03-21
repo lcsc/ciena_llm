@@ -25,11 +25,25 @@ if not DATASET_PATH or not os.path.exists(DATASET_PATH):
 LANGUAGE = os.getenv("CIENA_LLM_LANGUAGE", "en")
 MODEL = os.getenv("CIENA_LLM_MODEL", "llama3.2:3b")
 
+SUMMARIZATION_ENABLE = (
+    os.getenv("CIENA_LLM_SUMMARIZATION_ENABLE", "True").lower() == "true"
+)
+IMPACT_EXTRACTION_ENABLE = (
+    os.getenv("CIENA_LLM_IMPACT_EXTRACTION_ENABLE", "True").lower() == "true"
+)
+LOCATION_EXTRACTION_ENABLE = (
+    os.getenv("CIENA_LLM_LOCATION_EXTRACTION_ENABLE", "True").lower() == "true"
+)
+RESPONSE_PARSING_ENABLE = (
+    os.getenv("CIENA_LLM_RESPONSE_PARSING_ENABLE", "True").lower() == "true"
+)
+
+
 OVERRIDE_CONFIG = {
     "llm": {"name": MODEL},
     "stages": {
         "summarization": {
-            "enable": True,
+            "enable": SUMMARIZATION_ENABLE,
             "steps": {
                 "summarization": {
                     "enable": True,
@@ -43,7 +57,7 @@ OVERRIDE_CONFIG = {
             "enable": False,
         },
         "impact_extraction": {
-            "enable": True,
+            "enable": IMPACT_EXTRACTION_ENABLE,
             "steps": {
                 "extraction": {
                     "enable": True,
@@ -54,7 +68,7 @@ OVERRIDE_CONFIG = {
                     },
                 },
                 "response_parsing": {
-                    "enable": True,
+                    "enable": RESPONSE_PARSING_ENABLE,
                     "prompt": {
                         "language": LANGUAGE,
                     },
@@ -62,7 +76,7 @@ OVERRIDE_CONFIG = {
             },
         },
         "location_extraction": {
-            "enable": True,
+            "enable": LOCATION_EXTRACTION_ENABLE,
             "steps": {
                 "extraction": {
                     "enable": True,
@@ -73,7 +87,7 @@ OVERRIDE_CONFIG = {
                     },
                 },
                 "response_parsing": {
-                    "enable": True,
+                    "enable": RESPONSE_PARSING_ENABLE,
                     "prompt": {
                         "language": LANGUAGE,
                         "category": "province",
