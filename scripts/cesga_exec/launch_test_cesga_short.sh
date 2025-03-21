@@ -9,8 +9,7 @@ export RESULTS_DIR="$HOME/CienaLLM/ciena_llm/results/$TEST_NAME/$(date +%Y-%m-%d
 
 export DATASET_PATH="$HOME/CienaLLM/data/test-datasets-small/news-elpais-binary-2T-1F/sample"
 
-# export CIENA_LLM_MODEL="llama3.2:3b"
-export CIENA_LLM_MODEL="gemma3:27b"
+export CIENA_LLM_MODEL="llama3.2:3b"
 export CIENA_LLM_LANGUAGE="en"
 export CIENA_LLM_SUMMARIZATION_ENABLE="True"
 export CIENA_LLM_IMPACT_EXTRACTION_ENABLE="True"
