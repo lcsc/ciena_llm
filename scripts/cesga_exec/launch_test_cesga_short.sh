@@ -20,15 +20,7 @@ export SLURME_JOB_TIME="00:05:00"
 
 mkdir -p $RESULTS_DIR
 
-module load cesga/2020 python/3.10.8
-
 cd $HOME/CienaLLM/ciena_llm
-
-# TODO do always?
-# Maybe, if git pull pulls something new, do lock and install
-git pull
-poetry lock
-poetry install
 
 sbatch \
     -t $SLURME_JOB_TIME \

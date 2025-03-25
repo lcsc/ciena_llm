@@ -19,8 +19,6 @@ export SLURME_JOB_TIME="12:00:00"
 
 mkdir -p $RESULTS_DIR
 
-module load cesga/2020 python/3.10.8
-
 cd $HOME/CienaLLM/ciena_llm
 
 sbatch \
