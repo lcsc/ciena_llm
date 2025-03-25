@@ -57,6 +57,8 @@ done
 
 ollama_server_end_t=$(date +%s)
 
+RESULTS_DIR_BASE="$RESULTS_DIR"
+
 for model in $MODELS; do
     model_pull_start_t=$(date +%s)
     # Pull the model if it does not exist
@@ -69,7 +71,7 @@ for model in $MODELS; do
     warmup_end_t=$(date +%s)
 
     export CIENA_LLM_MODEL=$model
-    export RESULTS_DIR="$RESULTS_DIR/$model"
+    export RESULTS_DIR="$RESULTS_DIR_BASE/$model"
 
     cat <<EOF
     ----------------------------------------
