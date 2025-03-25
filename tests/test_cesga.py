@@ -1,4 +1,4 @@
-from common import ClimateImpactExtractorTest
+from common import ClimateImpactExtractorTest, ClimateImpactExtractorEvaluation
 
 import os
 import sys
@@ -21,6 +21,7 @@ if not DATASET_PATH or not os.path.exists(DATASET_PATH):
     print("DATASET_PATH not set or does not exist. Exiting.")
     sys.exit(1)
 
+ANNOTATION_PATH = os.getenv("ANNOTATION_PATH")
 
 LANGUAGE = os.getenv("CIENA_LLM_LANGUAGE", "en")
 MODEL = os.getenv("CIENA_LLM_MODEL", "llama3.2:3b")
@@ -100,3 +101,7 @@ OVERRIDE_CONFIG = {
 
 test = ClimateImpactExtractorTest(TEST_NAME, DATASET_PATH, OVERRIDE_CONFIG, RESULTS_DIR)
 test.run()
+
+if ANNOTATION_PATH:
+    eval = ClimateImpactExtractorEvaluation(TEST_NAME, ANNOTATION_PATH, "impact")
+    eval.run()
