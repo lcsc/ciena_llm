@@ -16,14 +16,14 @@ export CIENA_LLM_IMPACT_EXTRACTION_ENABLE="True"
 export CIENA_LLM_LOCATION_EXTRACTION_ENABLE="True"
 export CIENA_LLM_RESPONSE_PARSING_ENABLE="False"
 
-export SLURME_JOB_TIME="00:10:00"
+export SLURM_JOB_TIME="00:10:00"
 
 mkdir -p $RESULTS_DIR
 
 cd $HOME/CienaLLM/ciena_llm
 
 sbatch \
-    -t $SLURME_JOB_TIME \
+    -t $SLURM_JOB_TIME \
     -o $RESULTS_DIR/slurm.out \
     -e $RESULTS_DIR/slurm.err \
     $DIR/ciena_sbatch.sh
