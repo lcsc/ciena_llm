@@ -12,12 +12,12 @@ export ANNOTATION_PATH="$HOME/CienaLLM/data/test-datasets-small/cesga-test-12/da
 export MODELS="llama3.2:3b-instruct-q4_K_M llama3.1:8b-instruct-q4_K_M llama3.1:8b-instruct-fp16 llama3.3:70b-instruct-q4_K_M gemma2:2b-instruct-q4_K_M gemma2:9b-instruct-q4_K_M gemma2:9b-instruct-fp16 gemma2:27b-instruct-q4_K_M qwen2.5:3b-instruct-q4_K_M qwen2.5:7b-instruct-q4_K_M qwen2.5:7b-instruct-fp16 qwen2.5:72b-instruct-q4_K_M"
 
 export CIENA_LLM_LANGUAGE="en"
-export CIENA_LLM_SUMMARIZATION_ENABLE="False"
+export CIENA_LLM_SUMMARIZATION_ENABLE="True"
 export CIENA_LLM_IMPACT_EXTRACTION_ENABLE="True"
 export CIENA_LLM_LOCATION_EXTRACTION_ENABLE="True"
-export CIENA_LLM_RESPONSE_PARSING_ENABLE="False"
+export CIENA_LLM_RESPONSE_PARSING_ENABLE="True"
 
-export SLURM_JOB_TIME="03:00:00"
+export SLURM_JOB_TIME="04:00:00"
 
 mkdir -p $RESULTS_DIR
 
