@@ -67,7 +67,7 @@ for model in $MODELS; do
 
     warmup_start_t=$(date +%s)
     # Warm-up the model
-    ollama run $model ""
+    ollama run --keepalive 10m $model ""
     warmup_end_t=$(date +%s)
 
     export CIENA_LLM_MODEL=$model
@@ -104,6 +104,10 @@ for model in $MODELS; do
 EOF
 
     # Run the test
+    experiment_start_t=$(date +%s)
     poetry run python tests/test_cesga.py
+
+    experiment_end_t=$(date +%s)
+    echo "Experiment Execution Time (SLURM): $(expr $experiment_end_t - $experiment_start_t) s."
 
 done

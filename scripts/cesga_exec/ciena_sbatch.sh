@@ -66,7 +66,7 @@ model_pull_end_t=$(date +%s)
 
 warmup_start_t=$(date +%s)
 # Warm-up the model
-ollama run $CIENA_LLM_MODEL ""
+ollama run --keepalive 10m $CIENA_LLM_MODEL ""
 warmup_end_t=$(date +%s)
 
 cat <<EOF
@@ -100,4 +100,8 @@ Model warm-up: $(expr $warmup_end_t - $warmup_start_t) s.
 EOF
 
 # Run the test
+experiment_start_t=$(date +%s)
 poetry run python tests/test_cesga.py
+
+experiment_end_t=$(date +%s)
+echo "Experiment Execution Time (SLURM): $(expr $experiment_end_t - $experiment_start_t) s."
