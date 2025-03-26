@@ -51,7 +51,7 @@ def build_model(event: str, impacts: List[str]) -> Type[BaseModel]:
         return f"""
 ```json
 {{
-    {event}: <true or false>,
+    "{event}": <true or false>,
     {impacts_json}
 }}
 ```
