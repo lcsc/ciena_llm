@@ -127,9 +127,9 @@ class ClimateImpactExtractorEvaluation:
             label = df_evaluation[impact].astype(bool)
 
         df_evaluation[f"{impact}_true"] = label
-        df_evaluation[f"{impact}_predicted"] = df_evaluation[
-            "article_impacts_aggregated"
-        ].apply(lambda x: impact in x)
+        df_evaluation[f"{impact}_predicted"] = df_evaluation["article_impacts"].apply(
+            lambda x: impact in x
+        )
 
         # Remove rows with NA values in true or predicted columns for the current impact
         df_evaluation = df_evaluation.dropna(

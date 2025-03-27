@@ -54,8 +54,8 @@ for seqia_result, gen_result, label in zip(seqia_results, gen_results, labels_dr
     except AssertionError:
         continue
 
-    impacts_seqia = set(ast.literal_eval(seqia_result["article_impacts_aggregated"]))
-    impacts_gen = set(ast.literal_eval(gen_result["article_impacts_aggregated"]))
+    impacts_seqia = set(ast.literal_eval(seqia_result["article_impacts"]))
+    impacts_gen = set(ast.literal_eval(gen_result["article_impacts"]))
 
     drought_label = "True" if label["drought"] == "1" else "False"
 
@@ -246,13 +246,13 @@ for impact in config["impacts"]:
     impact = impact["tag"]
     seqia_results_impacts = {
         os.path.basename(result["article_filename"]): impact
-        in result["article_impacts_aggregated"]
+        in result["article_impacts"]
         for result in seqia_results
     }
 
     gen_results_impacts = {
         os.path.basename(result["article_filename"]): impact
-        in result["article_impacts_aggregated"]
+        in result["article_impacts"]
         for result in gen_results
     }
 
