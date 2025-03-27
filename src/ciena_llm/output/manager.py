@@ -1,8 +1,8 @@
 import json
 from typing import List, Dict
 
-from seqia.article import Article
-from seqia.utils.output import write_to_csv
+from ciena_llm.article import Article
+from ciena_llm.output.utils import write_to_csv
 
 
 class OutputManager:
@@ -73,20 +73,6 @@ class OutputManager:
         :param file: The file to write the summary to.
         """
         write_to_csv(articles, file, self.config["output"]["summary"], "article")
-
-    def write_location_to_csv(self, articles: List[Article], file: str):
-        """
-        Write the extracted location data to the given CSV file.
-
-        :param articles: The articles to write the location data of.
-        :param file: The file to write the location data to.
-        """
-        write_to_csv(
-            articles,
-            file,
-            self.config["output"]["location_article"],
-            "location_article",
-        )
 
     def write_config(self, file: str):
         """

@@ -66,10 +66,6 @@ class ClimateImpactExtractorTest:
         extractor.output_manager.write_summary_to_csv(
             articles, os.path.join(self.results_dir, "summary.csv")
         )
-        # - Locations extracted
-        extractor.output_manager.write_location_to_csv(
-            articles, os.path.join(self.results_dir, "locations.csv")
-        )
         # - Configurations used
         extractor.output_manager.write_config(
             os.path.join(self.results_dir, "config.yaml")

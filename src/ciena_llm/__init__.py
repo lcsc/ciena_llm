@@ -8,9 +8,9 @@ import dotenv
 # pylint: disable=wrong-import-position
 dotenv.load_dotenv()
 
-from seqia.article import Article
-from seqia.article.loader import ArticleLoader
-from seqia.config.loader import ConfigLoader
+from ciena_llm.article import Article
+from ciena_llm.article.loader import ArticleLoader
+from ciena_llm.config.loader import ConfigLoader
 
 from ciena_llm.chain import (
     ExtractionChain,
@@ -155,7 +155,7 @@ class ClimateImpactExtractor:
                     break
 
                 # If no impacts are detected, skip dependent stages
-                if stage == "impact_extraction" and not article.impacts_aggregated:
+                if stage == "impact_extraction" and not article.impacts:
                     logging.debug(
                         "No impacts detected in %s, skipping further processing.",
                         article.filename,
@@ -177,11 +177,11 @@ class ClimateImpactExtractor:
             # TODO would this be in "event_identification"?
             article.drought = data.drought
             # TODO make this extraction better
-            article.impacts_aggregated = [
+            article.impacts = [
                 i for i, v in data.model_dump().items() if v and i != "drought"
             ]
         elif stage == "location_extraction":
-            article.provinces = data.response
+            article.locations = data.response
 
     def _log_results(self, article: Article, extracted_data: Dict[str, dict]):
         """Logs extracted information for debugging."""
@@ -195,8 +195,10 @@ class ClimateImpactExtractor:
             pass
         if "impact_extraction" in extracted_data:
             # TODO parametrize for event, now only "drought"
-            log_message += f"Drought: {article.drought}\nImpacts: {', '.join(article.impacts_aggregated)}\n"
+            log_message += (
+                f"Drought: {article.drought}\nImpacts: {', '.join(article.impacts)}\n"
+            )
         if "location_extraction" in extracted_data:
-            log_message += f"Provinces: {', '.join(article.provinces)}"
+            log_message += f"Locations: {', '.join(article.locations)}"
 
         logging.debug(log_message)
