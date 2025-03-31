@@ -343,6 +343,38 @@ Text:
 {text}
 """
 
+################################################################################
+# Self-Criticism: Self-Calibration
+################################################################################
+
+SELF_CRITICISM_ES = """
+Dado el siguiente prompt:
+{prompt}
+
+Y la siguiente respuesta:
+{response}
+
+Analiza la respuesta y determina si es correcta o incorrecta.
+
+Si es incorrecta, proporciona una breve explicación de por qué es incorrecta y la respuesta correcta.
+
+Si es correcta, proporciona la misma respuesta correcta.
+"""
+
+SELF_CRITICISM_EN = """
+Given the following prompt:
+{prompt}
+
+And the following response:
+{response}
+
+Analyze the response and determine whether it is correct or incorrect.
+
+If it is incorrect, provide a brief explanation of why it is incorrect and the correct response.
+
+If it is correct, provide the same correct response.
+"""
+
 
 # Format instructions:
 # {format_instructions}

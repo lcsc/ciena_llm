@@ -16,6 +16,7 @@ from ciena_llm.chain import (
     ExtractionChain,
     SummarizationChain,
     ResponseParsingChain,
+    SelfCriticismChain,
 )
 from ciena_llm.extraction_schema.factory import ExtractionSchemaFactory
 from ciena_llm.output import OutputManager
@@ -59,6 +60,15 @@ class ClimateImpactExtractor:
                 schema = self.extraction_schemas_by_stage.get(stage)
                 steps = settings.get("steps", {})
                 self.enabled_pipeline_steps[stage] = {
+                    "summarization": (
+                        SummarizationChain(
+                            stage=stage,
+                            config=steps.get("summarization", {}),
+                            llm_config=self.config.get("llm"),
+                        )
+                        if steps.get("summarization", {}).get("enable", False)
+                        else None
+                    ),
                     "extraction": (
                         ExtractionChain(
                             stage=stage,
@@ -77,6 +87,22 @@ class ClimateImpactExtractor:
                         if steps.get("extraction", {}).get("enable", False)
                         else None
                     ),
+                    "self_criticism": (
+                        SelfCriticismChain(
+                            stage=stage,
+                            config=steps.get("self_criticism", {}),
+                            llm_config=self.config.get("llm"),
+                            extraction_schema=(
+                                schema
+                                if not steps.get("response_parsing", {}).get(
+                                    "enable", False
+                                )
+                                else None
+                            ),
+                        )
+                        if steps.get("self_criticism", {}).get("enable", False)
+                        else None
+                    ),
                     "response_parsing": (
                         ResponseParsingChain(
                             stage=stage,
@@ -87,15 +113,6 @@ class ClimateImpactExtractor:
                             impact_config=self.config.get("impacts"),
                         )
                         if steps.get("response_parsing", {}).get("enable", False)
-                        else None
-                    ),
-                    "summarization": (
-                        SummarizationChain(
-                            stage=stage,
-                            config=steps.get("summarization", {}),
-                            llm_config=self.config.get("llm"),
-                        )
-                        if steps.get("summarization", {}).get("enable", False)
                         else None
                     ),
                 }
@@ -126,6 +143,7 @@ class ClimateImpactExtractor:
                 # For the current stage, get the pipeline steps
                 summarization_chain = steps.get("summarization")
                 extraction_chain = steps.get("extraction")
+                self_criticism_chain = steps.get("self_criticism")
                 response_parsing_chain = steps.get("response_parsing")
 
                 # Summarization step (if enabled, will only execute in the first stage)
@@ -137,6 +155,19 @@ class ClimateImpactExtractor:
                 if extraction_chain:
                     result = extraction_chain.invoke(input_data)
                     input_data["text"] = result["output"]
+                    extracted_data[stage] = result["output"]
+
+                # Self-Criticism step (if enabled)
+                if self_criticism_chain:
+                    # TODO change input data to include response and prompt
+                    self_criticism_input_data = {
+                        "article_id": article_id,
+                        "prompt": extraction_chain.prompt_template.invoke(
+                            article_text
+                        ).text,
+                        "response": input_data["text"],
+                    }
+                    result = self_criticism_chain.invoke(self_criticism_input_data)
                     extracted_data[stage] = result["output"]
 
                 # Response Parsing step (if enabled)

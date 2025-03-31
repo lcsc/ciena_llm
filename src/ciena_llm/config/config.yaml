@@ -26,7 +26,11 @@ stages:
           step: extraction
           category: description
           cot: True
-          # output: json # TODO here?  
+      self_criticism:
+        enable: True
+        prompt:
+          step: self_criticism
+          language: en
       response_parsing:
         enable: True
         prompt:
@@ -42,6 +46,11 @@ stages:
           step: extraction
           category: province
           cot: True
+      self_criticism:
+        enable: True
+        prompt:
+          step: self_criticism
+          language: en
       response_parsing:
         enable: True
         prompt:

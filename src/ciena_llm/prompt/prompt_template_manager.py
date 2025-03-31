@@ -136,6 +136,14 @@ class PromptTemplateManager:
             "template": SUMMARIZATION_EN,
             "variables": ["text"],
         },
+        (DEFAULT, "self_criticism", DEFAULT, "es"): {
+            "template": SELF_CRITICISM_ES,
+            "variables": ["prompt", "response"],
+        },
+        (DEFAULT, "self_criticism", DEFAULT, "en"): {
+            "template": SELF_CRITICISM_EN,
+            "variables": ["prompt", "response"],
+        },
     }
 
     @classmethod
