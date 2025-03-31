@@ -38,6 +38,7 @@ LOCATION_EXTRACTION_ENABLE = (
 RESPONSE_PARSING_ENABLE = (
     os.getenv("CIENA_LLM_RESPONSE_PARSING_ENABLE", "True").lower() == "true"
 )
+COT_ENABLE = os.getenv("CIENA_LLM_COT_ENABLE", "False").lower() == "true"
 
 
 OVERRIDE_CONFIG = {
@@ -66,6 +67,7 @@ OVERRIDE_CONFIG = {
                         "language": LANGUAGE,
                         "step": "extraction",
                         "category": "description",
+                        "cot": COT_ENABLE,
                     },
                 },
                 "response_parsing": {
@@ -85,6 +87,7 @@ OVERRIDE_CONFIG = {
                         "language": LANGUAGE,
                         "step": "extraction",
                         "category": "province",
+                        "cot": COT_ENABLE,
                     },
                 },
                 "response_parsing": {
