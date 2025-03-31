@@ -18,6 +18,15 @@ Format instructions:
 """,
 }
 
+COT_INSTRUCTIONS_STR = {
+    "es": """
+Razona paso a paso y explica tu razonamiento antes de dar la respuesta final.
+""",
+    "en": """
+Reason step by step and explain your reasoning before giving the final answer.
+""",
+}
+
 
 class PromptTemplateManager:
     TEMPLATES = {
@@ -136,6 +145,7 @@ class PromptTemplateManager:
         step: str = DEFAULT,
         category: str = DEFAULT,
         language: str = "en",
+        cot: bool = False,
         output: str = "text",
         **kwargs,
     ) -> PromptTemplate:
@@ -159,9 +169,12 @@ class PromptTemplateManager:
 
         template_str = template_info["template"]
 
+        if cot:
+            template_str = f"{template_str}\n\n{COT_INSTRUCTIONS_STR[language]}"
+
         # If output is JSON, append the format instructions to the template
         if output == "json":
-            template_str += FORMAT_INSTRUCTIONS_STR[language]
+            template_str = f"{template_str}\n\n{FORMAT_INSTRUCTIONS_STR[language]}"
             if "partial_variables" not in template_info:
                 template_info["partial_variables"] = []
             template_info["partial_variables"].append("format_instructions")

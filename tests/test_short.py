@@ -9,6 +9,7 @@ DATASET_PATH = f"{DATASET_BASE_PATH}/sample"
 
 LANGUAGE = "en"
 MODEL = "llama3.2:3b"
+# MODEL = "llama3.1:8b"
 
 OVERRIDE_CONFIG = {
     "llm": {"name": MODEL},
@@ -36,6 +37,7 @@ OVERRIDE_CONFIG = {
                         "language": LANGUAGE,
                         "step": "extraction",
                         "category": "description",
+                        "cot": True,
                     },
                 },
                 "response_parsing": {
@@ -55,10 +57,11 @@ OVERRIDE_CONFIG = {
                         "language": LANGUAGE,
                         "step": "extraction",
                         "category": "province",
+                        "cot": False,
                     },
                 },
                 "response_parsing": {
-                    "enable": True,
+                    "enable": False,
                     "prompt": {
                         "language": LANGUAGE,
                         "category": "province",

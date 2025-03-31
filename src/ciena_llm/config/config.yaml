@@ -25,6 +25,7 @@ stages:
           language: en
           step: extraction
           category: description
+          cot: True
           # output: json # TODO here?  
       response_parsing:
         enable: True
@@ -40,6 +41,7 @@ stages:
           language: en
           step: extraction
           category: province
+          cot: True
       response_parsing:
         enable: True
         prompt:

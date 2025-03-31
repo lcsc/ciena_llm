@@ -10,6 +10,7 @@ ANNOTATION_PATH = f"{DATASET_BASE_PATH}/dataset.csv"
 
 LANGUAGE = "en"
 MODEL = "llama3.2:3b"
+# MODEL = "llama3.1:8b"
 
 OVERRIDE_CONFIG = {
     "llm": {"name": MODEL},
@@ -37,10 +38,11 @@ OVERRIDE_CONFIG = {
                         "language": LANGUAGE,
                         "step": "extraction",
                         "category": "description",
+                        "cot": True,
                     },
                 },
                 "response_parsing": {
-                    "enable": False,
+                    "enable": True,
                     "prompt": {
                         "language": LANGUAGE,
                     },
@@ -56,6 +58,7 @@ OVERRIDE_CONFIG = {
                         "language": LANGUAGE,
                         "step": "extraction",
                         "category": "province",
+                        "cot": False,
                     },
                 },
                 "response_parsing": {
