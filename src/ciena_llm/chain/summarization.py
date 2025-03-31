@@ -3,14 +3,19 @@ from typing import Dict
 
 from langchain_core.runnables.base import Runnable
 
-from ciena_llm.prompt.prompt_template_manager import PromptTemplateManager
 from ciena_llm.llm import LLM
+from ciena_llm.prompt.prompt_template_manager import PromptTemplateManager
 
 
 class SummarizationChain(Runnable):
-    def __init__(self, stage, config, llm_config):
-        self.pipeline_step = "summarization"
+    def __init__(
+        self,
+        stage,
+        config,
+        llm_config,
+    ):
         self.stage = stage
+        self.pipeline_step = "summarization"
 
         self.llm_config = llm_config
 
@@ -18,13 +23,14 @@ class SummarizationChain(Runnable):
         self.prompt_config = self.config["prompt"]
         self.language = self.config["prompt"]["language"]
 
-        self.llm = LLM(
-            config=self.llm_config, stage=f"{self.stage}-{self.pipeline_step}"
-        )
-
         self.prompt_template = PromptTemplateManager.get_prompt_template(
             stage=self.stage,
             **self.prompt_config,
+        )
+
+        self.llm = LLM(
+            config=self.llm_config,
+            stage=f"{self.stage}-{self.pipeline_step}",
         )
 
         self.chain = self.prompt_template | self.llm

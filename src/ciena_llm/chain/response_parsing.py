@@ -36,7 +36,11 @@ class ResponseParsingChain(Runnable):
             stage=self.stage,
             **self.prompt_config,
             output="json" if self.structured_output_mode == "prompt" else "text",
-            format_instructions=self.extraction_schema.format_instructions_as_json(),
+            format_instructions=(
+                self.extraction_schema.format_instructions_as_json()
+                if self.structured_output_mode == "prompt"
+                else None
+            ),
             impacts=PromptTemplateManager.get_impact_names_text(
                 self.impact_config, self.language
             ),
@@ -57,7 +61,7 @@ class ResponseParsingChain(Runnable):
             "stage": self.stage,
             "pipeline_step": self.pipeline_step,
             **self.prompt_config,
-            "output": "json",
+            "output": "json" if self.extraction_schema is not None else "text",
             "template": self.prompt_template.pretty_repr(),
         }
 
