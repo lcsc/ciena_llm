@@ -1,4 +1,4 @@
-from typing import Optional, List, Type
+from typing import List, Type
 
 from pydantic import BaseModel, Field, create_model
 
@@ -13,20 +13,33 @@ def build_model(event: str, impacts: List[str]) -> Type[BaseModel]:
     """
 
     # Dynamically create fields for the model
-    fields = {
-        impact: (
-            Optional[bool],
-            Field(
-                description=f"Whether the article mentions impacts on {impact.replace('_', ' ')}"
-            ),
-        )
-        for impact in impacts
-    }
+    fields = {}
 
-    # Add the event field separately
+    # Add the event field
     fields[event] = (
-        Optional[bool],
-        Field(description=f"Whether the article mentions impacts of {event}"),
+        # TODO # Optional[bool],  # bool | None,
+        bool,
+        Field(
+            description=f"Whether the article mentions impacts of {event}",
+            # default=None, # TODO
+            default=False,
+        ),
+    )
+
+    # Add impact fields
+    fields.update(
+        {
+            impact: (
+                # TODO # Optional[bool],  # bool | None,
+                bool,
+                Field(
+                    description=f"Whether the article mentions impacts of {event} on {impact.replace('_', ' ')}",
+                    # default=None, # TODO
+                    default=False,
+                ),
+            )
+            for impact in impacts
+        }
     )
 
     # Dynamically create model
@@ -39,7 +52,8 @@ def build_model(event: str, impacts: List[str]) -> Type[BaseModel]:
         """
         Get the default response for the model
         """
-        return {event: None, **{impact: None for impact in impacts}}
+        default_values = {event: False, **{impact: False for impact in impacts}}
+        return cls(**default_values)
 
     @classmethod
     def format_instructions_as_json(cls):

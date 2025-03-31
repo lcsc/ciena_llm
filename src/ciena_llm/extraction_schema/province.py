@@ -51,7 +51,8 @@ def build_model(event: str) -> Type[BaseModel]:
         """
         Get the default response for the model
         """
-        return {"response": []}
+        default_values = {"response": []}
+        return cls(**default_values)
 
     @classmethod
     def format_instructions_as_json(cls):

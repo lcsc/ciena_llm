@@ -64,12 +64,15 @@ class ClimateImpactExtractor:
                             stage=stage,
                             config=steps.get("extraction", {}),
                             llm_config=self.config.get("llm"),
-                            extraction_schema=schema,
+                            extraction_schema=(
+                                schema
+                                if not steps.get("response_parsing", {}).get(
+                                    "enable", False
+                                )
+                                else None
+                            ),
                             event_config=self.config.get("event"),
                             impact_config=self.config.get("impacts"),
-                            response_parsing_enable=(
-                                steps.get("response_parsing", {}).get("enable", False)
-                            ),
                         )
                         if steps.get("extraction", {}).get("enable", False)
                         else None

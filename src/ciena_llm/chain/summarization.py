@@ -52,7 +52,7 @@ class SummarizationChain(Runnable):
         start_time = time.time()
 
         # Invoke summarization chain
-        summarized_text = self.chain.invoke({"text": input_text})
+        (response, _) = self.chain.invoke({"text": input_text})
 
         execution_time = time.time() - start_time
 
@@ -60,5 +60,5 @@ class SummarizationChain(Runnable):
 
         return {
             "article_id": article_id,
-            "output": summarized_text.strip(),
+            "output": response.strip(),
         }

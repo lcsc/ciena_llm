@@ -2,11 +2,9 @@ import time
 from typing import Dict
 
 from langchain_core.runnables.base import Runnable
-from langchain_core.output_parsers import JsonOutputParser
 
 from ciena_llm.llm import LLM
 from ciena_llm.prompt.prompt_template_manager import PromptTemplateManager
-from ciena_llm.chain.common import invoke_chain
 
 
 class ExtractionChain(Runnable):
@@ -14,11 +12,10 @@ class ExtractionChain(Runnable):
         self,
         stage,
         config,
-        extraction_schema,
         llm_config,
+        extraction_schema,
         event_config=None,
         impact_config=None,
-        response_parsing_enable=False,
     ):
         self.stage = stage
         self.pipeline_step = "extraction"
@@ -28,58 +25,42 @@ class ExtractionChain(Runnable):
         self.event_config = event_config
         self.impact_config = impact_config
 
+        self.structured_output_mode = self.llm_config.get("structured_output_mode")
+
         self.config = config
         self.prompt_config = self.config["prompt"]
         self.language = self.config["prompt"]["language"]
-        # If the response parsing pipeline step is disabled in the config, the extraction chain will have to parse the response
-        self.response_parsing_enable = not response_parsing_enable
 
-        self.llm = LLM(
-            config=self.llm_config, stage=f"{self.stage}-{self.pipeline_step}"
+        self.prompt_template = PromptTemplateManager.get_prompt_template(
+            stage=self.stage,
+            **self.prompt_config,
+            output="json" if self.structured_output_mode == "prompt" else "text",
+            format_instructions=(
+                self.extraction_schema.format_instructions_as_json()
+                if self.structured_output_mode == "prompt"
+                else None
+            ),
+            impacts=PromptTemplateManager.get_impact_names_text(
+                self.impact_config, self.language
+            ),
+            impact_descriptions=PromptTemplateManager.get_impact_descriptions_text(
+                self.impact_config, self.language
+            ),
         )
 
-        # TODO do better?
-        if self.response_parsing_enable:
-            self.response_parser = JsonOutputParser(
-                pydantic_object=self.extraction_schema
-            )
+        self.llm = LLM(
+            config=self.llm_config,
+            stage=f"{self.stage}-{self.pipeline_step}",
+            extraction_schema=self.extraction_schema,
+        )
 
-            self.prompt_template = PromptTemplateManager.get_prompt_template(
-                stage=self.stage,
-                **self.prompt_config,
-                output="json",
-                format_instructions=self.extraction_schema.format_instructions_as_json(),
-                impacts=PromptTemplateManager.get_impact_names_text(
-                    self.impact_config, self.language
-                ),
-                impact_descriptions=PromptTemplateManager.get_impact_descriptions_text(
-                    self.impact_config, self.language
-                ),
-            )
-
-            self.chain = self.prompt_template | self.llm | self.response_parser
-
-        else:
-            self.prompt_template = PromptTemplateManager.get_prompt_template(
-                stage=self.stage,
-                **self.prompt_config,
-                output="text",
-                # TODO always pass as parameters?
-                impacts=PromptTemplateManager.get_impact_names_text(
-                    self.impact_config, self.language
-                ),
-                impact_descriptions=PromptTemplateManager.get_impact_descriptions_text(
-                    self.impact_config, self.language
-                ),
-            )
-
-            self.chain = self.prompt_template | self.llm
+        self.chain = self.prompt_template | self.llm
 
         self.prompts = {
             "stage": self.stage,
             "pipeline_step": self.pipeline_step,
             **self.prompt_config,
-            "output": "json" if self.response_parsing_enable else "text",
+            "output": "json" if self.extraction_schema is not None else "text",
             "template": self.prompt_template.pretty_repr(),
         }
 
@@ -100,12 +81,7 @@ class ExtractionChain(Runnable):
         start_time = time.time()
 
         # Invoke extraction chain
-        (response, parsing_error) = invoke_chain(
-            self.chain,
-            input_text,
-            self.extraction_schema,
-            response_parsing=self.response_parsing_enable,
-        )
+        (response, parsing_error) = self.chain.invoke({"text": input_text})
 
         execution_time = time.time() - start_time
 

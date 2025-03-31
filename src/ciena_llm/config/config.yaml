@@ -4,6 +4,7 @@ llm:
   temperature: 0
   context_length: 32768
   num_predict_tokens: 2048
+  structured_output_mode: "tool" # "prompt" or "tool"
 
 stages:
   summarization:

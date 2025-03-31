@@ -2,13 +2,12 @@ import time
 from typing import Dict
 
 from langchain_core.runnables.base import Runnable
-from langchain_core.output_parsers import JsonOutputParser
 
 from ciena_llm.llm import LLM
 from ciena_llm.prompt.prompt_template_manager import PromptTemplateManager
-from ciena_llm.chain.common import invoke_chain
 
 
+# TODO now it is the same as ExtractionChain. Merge?
 class ResponseParsingChain(Runnable):
     def __init__(
         self,
@@ -27,20 +26,16 @@ class ResponseParsingChain(Runnable):
         self.event_config = event_config
         self.impact_config = impact_config
 
+        self.structured_output_mode = self.llm_config.get("structured_output_mode")
+
         self.config = config
         self.prompt_config = self.config["prompt"]
         self.language = self.config["prompt"]["language"]
 
-        self.response_parser = JsonOutputParser(pydantic_object=self.extraction_schema)
-
-        self.llm = LLM(
-            config=self.llm_config, stage=f"{self.stage}-{self.pipeline_step}"
-        )
-
         self.prompt_template = PromptTemplateManager.get_prompt_template(
             stage=self.stage,
             **self.prompt_config,
-            output="json",
+            output="json" if self.structured_output_mode == "prompt" else "text",
             format_instructions=self.extraction_schema.format_instructions_as_json(),
             impacts=PromptTemplateManager.get_impact_names_text(
                 self.impact_config, self.language
@@ -50,7 +45,13 @@ class ResponseParsingChain(Runnable):
             ),
         )
 
-        self.chain = self.prompt_template | self.llm | self.response_parser
+        self.llm = LLM(
+            config=self.llm_config,
+            stage=f"{self.stage}-{self.pipeline_step}",
+            extraction_schema=self.extraction_schema,
+        )
+
+        self.chain = self.prompt_template | self.llm
 
         self.prompts = {
             "stage": self.stage,
@@ -77,11 +78,7 @@ class ResponseParsingChain(Runnable):
         start_time = time.time()
 
         # Invoke response parsing chain
-        (response, parsing_error) = invoke_chain(
-            self.chain,
-            input_text,
-            self.extraction_schema,
-        )
+        (response, parsing_error) = self.chain.invoke({"text": input_text})
 
         execution_time = time.time() - start_time
 
