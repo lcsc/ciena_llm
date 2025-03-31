@@ -15,10 +15,10 @@ OVERRIDE_CONFIG = {
     "llm": {"name": MODEL},
     "stages": {
         "summarization": {
-            "enable": True,
+            "enable": False,
             "steps": {
                 "summarization": {
-                    "enable": True,
+                    "enable": False,
                     "prompt": {
                         "language": LANGUAGE,
                     },
@@ -40,6 +40,12 @@ OVERRIDE_CONFIG = {
                         "cot": True,
                     },
                 },
+                "self_criticism": {
+                    "enable": True,
+                    "prompt": {
+                        "language": LANGUAGE,
+                    },
+                },
                 "response_parsing": {
                     "enable": True,
                     "prompt": {
@@ -58,6 +64,12 @@ OVERRIDE_CONFIG = {
                         "step": "extraction",
                         "category": "province",
                         "cot": False,
+                    },
+                },
+                "self_criticism": {
+                    "enable": True,
+                    "prompt": {
+                        "language": LANGUAGE,
                     },
                 },
                 "response_parsing": {

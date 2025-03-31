@@ -39,6 +39,9 @@ RESPONSE_PARSING_ENABLE = (
     os.getenv("CIENA_LLM_RESPONSE_PARSING_ENABLE", "True").lower() == "true"
 )
 COT_ENABLE = os.getenv("CIENA_LLM_COT_ENABLE", "False").lower() == "true"
+SELF_CRITICISM_ENABLE = (
+    os.getenv("CIENA_LLM_SELF_CRITICISM_ENABLE", "False").lower() == "true"
+)
 
 
 OVERRIDE_CONFIG = {
@@ -70,6 +73,12 @@ OVERRIDE_CONFIG = {
                         "cot": COT_ENABLE,
                     },
                 },
+                "self_criticism": {
+                    "enable": SELF_CRITICISM_ENABLE,
+                    "prompt": {
+                        "language": LANGUAGE,
+                    },
+                },
                 "response_parsing": {
                     "enable": RESPONSE_PARSING_ENABLE,
                     "prompt": {
@@ -88,6 +97,12 @@ OVERRIDE_CONFIG = {
                         "step": "extraction",
                         "category": "province",
                         "cot": COT_ENABLE,
+                    },
+                },
+                "self_criticism": {
+                    "enable": SELF_CRITICISM_ENABLE,
+                    "prompt": {
+                        "language": LANGUAGE,
                     },
                 },
                 "response_parsing": {

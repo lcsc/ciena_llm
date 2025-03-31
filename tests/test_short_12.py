@@ -41,6 +41,12 @@ OVERRIDE_CONFIG = {
                         "cot": True,
                     },
                 },
+                "self_criticism": {
+                    "enable": True,
+                    "prompt": {
+                        "language": LANGUAGE,
+                    },
+                },
                 "response_parsing": {
                     "enable": True,
                     "prompt": {
@@ -59,6 +65,12 @@ OVERRIDE_CONFIG = {
                         "step": "extraction",
                         "category": "province",
                         "cot": False,
+                    },
+                },
+                "self_criticism": {
+                    "enable": True,
+                    "prompt": {
+                        "language": LANGUAGE,
                     },
                 },
                 "response_parsing": {
