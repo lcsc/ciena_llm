@@ -42,7 +42,7 @@ Text:
 
 
 ################################################################################
-# Impact Classification
+# Impact Classification (Single Impact)
 ################################################################################
 
 IMPACT_CLASSIFICATION_BOOLEAN_ES = """
@@ -100,6 +100,37 @@ Texto:
 {text}
 """
 
+
+################################################################################
+# Impact Extraction (Multi-Impact and Event)
+################################################################################
+
+IMPACT_EXTRACTION_SIMPLE_ES = """
+Analiza el siguiente artículo. Determina si la noticia menciona impactos de la sequía en los siguientes aspectos: {impacts}.
+
+Proporciona la siguiente información:
+1. Si el artículo menciona la sequía.
+2. Para cada aspecto mencionado, si la sequía ha tenido un impacto en ese aspecto.
+
+Si el artículo no menciona ningún impacto de la sequía en los aspectos mencionados, no incluyas información adicional.
+
+Texto:
+{text}
+"""
+
+IMPACT_EXTRACTION_SIMPLE_EN = """
+Analyze the following article. Determine whether the news article mentions impacts of drought on the following aspects: {impacts}.
+
+Provide the following information:
+1. Whether the article mentions drought.
+2. For each mentioned aspect, whether drought has had an impact on that aspect.
+
+If the article does not mention any impacts of drought on the mentioned aspects, do not include any additional information.
+
+Text:
+{text}
+"""
+
 IMPACT_EXTRACTION_DESCRIPTION_ES = """
 Analiza el siguiente artículo. Determina si la noticia menciona impactos de la sequía en los siguientes aspectos: {impacts}.
 
@@ -133,13 +164,6 @@ If the article does not mention any impacts of drought on the mentioned aspects,
 Text:
 {text}
 """
-
-
-################################################################################
-# Impact Extraction
-################################################################################
-
-# TODO
 
 
 ################################################################################

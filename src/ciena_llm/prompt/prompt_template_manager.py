@@ -75,6 +75,16 @@ class PromptTemplateManager:
             "variables": ["text"],
             "partial_variables": ["impact", "impact_description"],
         },
+        ("impact_extraction", "extraction", "simple", "es"): {
+            "template": IMPACT_EXTRACTION_SIMPLE_ES,
+            "variables": ["text"],
+            "partial_variables": ["impacts"],
+        },
+        ("impact_extraction", "extraction", "simple", "en"): {
+            "template": IMPACT_EXTRACTION_SIMPLE_EN,
+            "variables": ["text"],
+            "partial_variables": ["impacts"],
+        },
         ("impact_extraction", "extraction", "description", "es"): {
             "template": IMPACT_EXTRACTION_DESCRIPTION_ES,
             "variables": ["text"],

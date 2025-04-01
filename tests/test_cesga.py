@@ -42,6 +42,9 @@ COT_ENABLE = os.getenv("CIENA_LLM_COT_ENABLE", "False").lower() == "true"
 SELF_CRITICISM_ENABLE = (
     os.getenv("CIENA_LLM_SELF_CRITICISM_ENABLE", "False").lower() == "true"
 )
+IMPACT_PROMPT_CATEGORY = os.getenv(
+    "CIENA_LLM_IMPACT_PROMPT_CATEGORY", "simple"
+)
 
 
 OVERRIDE_CONFIG = {
@@ -69,7 +72,7 @@ OVERRIDE_CONFIG = {
                     "prompt": {
                         "language": LANGUAGE,
                         "step": "extraction",
-                        "category": "description",
+                        "category": IMPACT_PROMPT_CATEGORY,
                         "cot": COT_ENABLE,
                     },
                 },
