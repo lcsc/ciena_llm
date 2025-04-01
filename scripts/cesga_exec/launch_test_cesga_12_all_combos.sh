@@ -13,7 +13,7 @@ export CIENA_LLM_LANGUAGE="en"
 export CIENA_LLM_IMPACT_EXTRACTION_ENABLE="True"
 export CIENA_LLM_LOCATION_EXTRACTION_ENABLE="True"
 
-export SLURM_JOB_TIME="2:00:00"
+export SLURM_JOB_TIME="0:10:00"
 
 bools=("True" "False")
 categories=("simple" "description")
