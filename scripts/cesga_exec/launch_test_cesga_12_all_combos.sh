@@ -7,7 +7,7 @@ export TEST_NAME="test-12-all-combos"
 export DATASET_PATH="$HOME/CienaLLM/data/test-datasets-small/cesga-test-12/sample/"
 export ANNOTATION_PATH="$HOME/CienaLLM/data/test-datasets-small/cesga-test-12/dataset.csv"
 
-export CIENA_LLM_MODEL="gemma2:9b"
+export CIENA_LLM_MODEL="llama3.1:8b-instruct-q4_K_M"
 export CIENA_LLM_LANGUAGE="en"
 
 export CIENA_LLM_IMPACT_EXTRACTION_ENABLE="True"
