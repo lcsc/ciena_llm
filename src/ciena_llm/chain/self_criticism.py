@@ -30,10 +30,14 @@ class SelfCriticismChain(Runnable):
 
         self.prompt_template = PromptTemplateManager.get_prompt_template(
             **self.prompt_config,
-            output="json" if self.structured_output_mode == "prompt" else "text",
+            output=(
+                "json"
+                if self.extraction_schema and self.structured_output_mode == "prompt"
+                else "text"
+            ),
             format_instructions=(
                 self.extraction_schema.format_instructions_as_json()
-                if self.structured_output_mode == "prompt"
+                if self.extraction_schema and self.structured_output_mode == "prompt"
                 else None
             ),
         )
