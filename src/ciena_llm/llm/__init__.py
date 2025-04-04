@@ -158,7 +158,7 @@ class LLM:
             logging.error("pydantic.ValidationError: Failed to parse response: %s", e)
             # Return the default error response
             return (
-                self.extraction_schema(**self.extraction_schema.default_response()),
+                self.extraction_schema.default_response(),
                 response_content,
                 {"exception": str(e), "output": response_content},
             )
@@ -167,7 +167,7 @@ class LLM:
             logging.error("OutputParserException: Failed to parse response: %s", e)
             # Return the default error response
             return (
-                self.extraction_schema(**self.extraction_schema.default_response()),
+                self.extraction_schema.default_response(),
                 "",
                 {"exception": str(e)},
             )

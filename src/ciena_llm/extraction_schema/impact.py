@@ -1,4 +1,4 @@
-from typing import List, Type
+from typing import List, Type, Optional
 
 from pydantic import BaseModel, Field, create_model
 
@@ -17,11 +17,11 @@ def build_model(event: str, impacts: List[str]) -> Type[BaseModel]:
 
     # Add the event field
     fields[event] = (
-        # TODO # Optional[bool],  # bool | None,
-        bool,
+        Optional[bool],  # bool | None,
+        # bool,
         Field(
             description=f"Whether the article mentions impacts of {event}",
-            # default=None, # TODO
+            # default=None,
             default=False,
         ),
     )
@@ -30,11 +30,11 @@ def build_model(event: str, impacts: List[str]) -> Type[BaseModel]:
     fields.update(
         {
             impact: (
-                # TODO # Optional[bool],  # bool | None,
-                bool,
+                Optional[bool],  # bool | None,
+                # bool,
                 Field(
                     description=f"Whether the article mentions impacts of {event} on {impact.replace('_', ' ')}",
-                    # default=None, # TODO
+                    # default=None,
                     default=False,
                 ),
             )
@@ -52,7 +52,7 @@ def build_model(event: str, impacts: List[str]) -> Type[BaseModel]:
         """
         Get the default response for the model
         """
-        default_values = {event: False, **{impact: False for impact in impacts}}
+        default_values = {event: None, **{impact: None for impact in impacts}}
         return cls(**default_values)
 
     @classmethod

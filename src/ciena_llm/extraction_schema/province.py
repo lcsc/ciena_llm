@@ -51,7 +51,7 @@ def build_model(event: str) -> Type[BaseModel]:
         """
         Get the default response for the model
         """
-        default_values = {"response": []}
+        default_values = {"response": None}
         return cls(**default_values)
 
     @classmethod
