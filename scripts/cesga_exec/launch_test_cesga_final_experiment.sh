@@ -13,7 +13,8 @@ categories=("simple" "description")
 
 export DATASETS="news-elpais-grupoz-impact-complete-subset news-elpais-sample-194-annotated-e2e"
 
-export MODELS="llama3.2:3b-instruct-q4_K_M llama3.1:8b-instruct-q4_K_M"
+export MODELS="llama3.1:8b-instruct-q4_K_M"
+# export MODELS="llama3.2:3b-instruct-q4_K_M llama3.1:8b-instruct-q4_K_M"
 # export MODELS="llama3.2:3b-instruct-q4_K_M llama3.1:8b-instruct-q4_K_M llama3.1:8b-instruct-fp16 llama3.3:70b-instruct-q4_K_M qwen2.5:3b-instruct-q4_K_M qwen2.5:7b-instruct-q4_K_M qwen2.5:7b-instruct-fp16 qwen2.5:72b-instruct-q4_K_M"
 # export MODELS="llama3.2:3b-instruct-q4_K_M llama3.1:8b-instruct-q4_K_M llama3.1:8b-instruct-fp16 llama3.3:70b-instruct-q4_K_M gemma2:2b-instruct-q4_K_M gemma2:9b-instruct-q4_K_M gemma2:9b-instruct-fp16 gemma2:27b-instruct-q4_K_M qwen2.5:3b-instruct-q4_K_M qwen2.5:7b-instruct-q4_K_M qwen2.5:7b-instruct-fp16 qwen2.5:72b-instruct-q4_K_M"
 
