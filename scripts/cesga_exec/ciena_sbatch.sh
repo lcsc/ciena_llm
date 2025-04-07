@@ -40,7 +40,7 @@ while netstat -tuln | grep -q ":$OLLAMA_PORT"; do
     export OLLAMA_PORT=$(expr $OLLAMA_PORT + 1)
 done
 
-export OLLAMA_HOST=$(hostname -i):$OLLAMA_PORT
+export OLLAMA_HOST="127.0.0.1:$OLLAMA_PORT"
 export OLLAMA_TMPDIR=$TMPDIR
 
 # Start the Ollama server
