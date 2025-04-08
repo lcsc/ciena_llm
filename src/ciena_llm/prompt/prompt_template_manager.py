@@ -30,6 +30,26 @@ Reason step by step and explain your reasoning before giving the final answer.
 
 class PromptTemplateManager:
     TEMPLATES = {
+        ("event_identification", "extraction", DEFAULT, "es"): {
+            "template": EVENT_EXTRACTION_ES,
+            "variables": ["text"],
+            "partial_variables": ["event"],
+        },
+        ("event_identification", "extraction", DEFAULT, "en"): {
+            "template": EVENT_EXTRACTION_EN,
+            "variables": ["text"],
+            "partial_variables": ["event"],
+        },
+        ("event_identification", "response_parsing", DEFAULT, "es"): {
+            "template": EVENT_IDENTIFICATION_RESPONSE_PARSING_ES,
+            "variables": ["text"],
+            "partial_variables": ["event"],
+        },
+        ("event_identification", "response_parsing", DEFAULT, "en"): {
+            "template": EVENT_IDENTIFICATION_RESPONSE_PARSING_EN,
+            "variables": ["text"],
+            "partial_variables": ["event"],
+        },
         ("drought", "classification", "boolean", "es"): {
             "template": DROUGHT_CLASSIFICATION_BOOLEAN_ES,
             "variables": ["text"],
@@ -209,6 +229,19 @@ class PromptTemplateManager:
             input_variables=template_info["variables"],
             partial_variables=partial_vars,
         )
+
+    @classmethod
+    def get_event_name_text(cls, event_config: Dict, language: str) -> str:
+        """
+        Retrieves and returns a string of event names from the given event configuration.
+
+        :param event_config: A dictionary of event names and descriptions.
+        :param language: The language of the event names text.
+        :return: A string of event names.
+        """
+        event_name = event_config[f"text_{language}"]
+
+        return event_name
 
     @classmethod
     def get_impact_names_text(cls, impact_config: Dict, language: str) -> str:

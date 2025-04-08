@@ -4,6 +4,7 @@ from pydantic import BaseModel
 
 from ciena_llm.extraction_schema.impact import build_model as build_impact_model
 from ciena_llm.extraction_schema.province import build_model as build_province_model
+from ciena_llm.extraction_schema.event import build_model as build_event_model
 
 
 class ExtractionSchemaFactory:
@@ -27,6 +28,9 @@ class ExtractionSchemaFactory:
         """
 
         event = config.get("event").get("tag")
+
+        if stage == "event_identification":
+            return build_event_model(event)
 
         if stage == "impact_extraction":
             impacts = [impact.get("tag") for impact in config.get("impacts")]

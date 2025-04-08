@@ -29,6 +29,9 @@ MODEL = os.getenv("CIENA_LLM_MODEL", "llama3.2:3b")
 SUMMARIZATION_ENABLE = (
     os.getenv("CIENA_LLM_SUMMARIZATION_ENABLE", "True").lower() == "true"
 )
+EVENT_IDENTIFICATION_ENABLE = (
+    os.getenv("CIENA_LLM_EVENT_IDENTIFICATION_ENABLE", "False").lower() == "true"
+)
 IMPACT_EXTRACTION_ENABLE = (
     os.getenv("CIENA_LLM_IMPACT_EXTRACTION_ENABLE", "True").lower() == "true"
 )
@@ -42,9 +45,7 @@ COT_ENABLE = os.getenv("CIENA_LLM_COT_ENABLE", "False").lower() == "true"
 SELF_CRITICISM_ENABLE = (
     os.getenv("CIENA_LLM_SELF_CRITICISM_ENABLE", "False").lower() == "true"
 )
-IMPACT_PROMPT_CATEGORY = os.getenv(
-    "CIENA_LLM_IMPACT_PROMPT_CATEGORY", "simple"
-)
+IMPACT_PROMPT_CATEGORY = os.getenv("CIENA_LLM_IMPACT_PROMPT_CATEGORY", "simple")
 
 
 OVERRIDE_CONFIG = {
@@ -62,7 +63,29 @@ OVERRIDE_CONFIG = {
             },
         },
         "event_identification": {
-            "enable": False,
+            "enable": EVENT_IDENTIFICATION_ENABLE,
+            "steps": {
+                "extraction": {
+                    "enable": True,
+                    "prompt": {
+                        "language": LANGUAGE,
+                        "step": "extraction",
+                        "cot": COT_ENABLE,
+                    },
+                },
+                "self_criticism": {
+                    "enable": SELF_CRITICISM_ENABLE,
+                    "prompt": {
+                        "language": LANGUAGE,
+                    },
+                },
+                "response_parsing": {
+                    "enable": RESPONSE_PARSING_ENABLE,
+                    "prompt": {
+                        "language": LANGUAGE,
+                    },
+                },
+            },
         },
         "impact_extraction": {
             "enable": IMPACT_EXTRACTION_ENABLE,
@@ -72,7 +95,6 @@ OVERRIDE_CONFIG = {
                     "prompt": {
                         "language": LANGUAGE,
                         "step": "extraction",
-                        "category": IMPACT_PROMPT_CATEGORY,
                         "cot": COT_ENABLE,
                     },
                 },

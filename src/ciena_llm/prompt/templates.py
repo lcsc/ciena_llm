@@ -35,10 +35,20 @@ Text:
 
 
 ################################################################################
-# Drough Extraction
+# Event Identification (extraction)
 ################################################################################
 
-# TODO
+EVENT_EXTRACTION_EN = """
+Analyze the following article and determine if the news article mentions an event related to {event}.
+Text:
+{text}
+"""
+
+EVENT_EXTRACTION_ES = """
+Analiza el siguiente artículo y determina si la noticia menciona un evento relacionado con {event}.
+Texto:
+{text}
+"""
 
 
 ################################################################################
@@ -259,6 +269,22 @@ BOOLEAN_RESPONSE_PARSING_EN = """
 Extract whether the following LLM response is affirmative or negative.
 
 Text:
+{text}
+"""
+
+################################################################################
+# Event Identification Response Parsers
+################################################################################
+
+EVENT_IDENTIFICATION_RESPONSE_PARSING_EN = """
+Extract whether the following LLM response says the article mentions an event related to {event}.
+Text:
+{text}
+"""
+
+EVENT_IDENTIFICATION_RESPONSE_PARSING_ES = """
+Extrae si la siguiente respuesta de un LLM indica que el artículo menciona un evento relacionado con {event}.
+Texto:
 {text}
 """
 

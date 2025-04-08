@@ -14,8 +14,25 @@ stages:
         prompt:
           step: summarization
           language: en
-  event_identification: # TODO not implemented. do in impact_extraction?
-    enable: False 
+  event_identification:
+    enable: False
+    steps:
+      extraction:
+        enable: True
+        prompt:
+          language: en
+          step: extraction
+          cot: False
+      self_criticism:
+        enable: True
+        prompt:
+          step: self_criticism
+          language: en
+      response_parsing:
+        enable: True
+        prompt:
+          step: response_parsing
+          language: en
   impact_extraction:
     enable: True
     steps:

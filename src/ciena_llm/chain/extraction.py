@@ -44,6 +44,9 @@ class ExtractionChain(Runnable):
                 if self.extraction_schema and self.structured_output_mode == "prompt"
                 else None
             ),
+            event=PromptTemplateManager.get_event_name_text(
+                self.event_config, self.language
+            ),
             impacts=PromptTemplateManager.get_impact_names_text(
                 self.impact_config, self.language
             ),

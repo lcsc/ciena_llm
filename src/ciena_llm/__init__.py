@@ -41,7 +41,9 @@ class ClimateImpactExtractor:
 
         # Define available schemas for extraction stages
         self.extraction_schemas_by_stage = {
-            # "event_identification": EventLLMResponse, # TODO not implemented
+            "event_identification": ExtractionSchemaFactory.get_extraction_schema(
+                stage="event_identification", config=self.config
+            ),
             "impact_extraction": ExtractionSchemaFactory.get_extraction_schema(
                 stage="impact_extraction", config=self.config
             ),
@@ -51,10 +53,8 @@ class ClimateImpactExtractor:
         }
 
         # Dynamically initialize (enabled) pipeline steps for each stage
-        # TODO change name?
         self.enabled_pipeline_steps = {}
 
-        # TODO make dynamic for every step of a stage
         for stage, settings in self.stages.items():
             if settings.get("enable", False):
                 schema = self.extraction_schemas_by_stage.get(stage)
@@ -126,7 +126,7 @@ class ClimateImpactExtractor:
             logging.debug("START - Processing article: %s", article.filename)
 
             # Extract article ID and text
-            article_id = article.filename  # TODO Or use a unique ID if available
+            article_id = article.filename
             article_text = article.get_headline_and_body(separator=".")
 
             # Structure to store extracted data
@@ -159,7 +159,6 @@ class ClimateImpactExtractor:
 
                 # Self-Criticism step (if enabled)
                 if self_criticism_chain:
-                    # TODO change input data to include response and prompt
                     self_criticism_input_data = {
                         "article_id": article_id,
                         "prompt": extraction_chain.prompt_template.invoke(
@@ -183,7 +182,8 @@ class ClimateImpactExtractor:
                 # If no event is detected, skip dependent stages
                 if stage == "event_identification" and not article.drought:
                     logging.debug(
-                        "No drought detected in %s, skipping further processing.",
+                        "No %s detected in %s, skipping further processing.",
+                        self.config.get("event").get("tag"),
                         article.filename,
                     )
                     break
@@ -204,13 +204,10 @@ class ClimateImpactExtractor:
     def _store_extracted_data(self, article: Article, stage: str, data: dict):
         """Stores extracted data in the article object based on the processing stage."""
         if stage == "event_identification":
-            # TODO not implemented
-            # article.identified_events = data
-            pass
-        elif stage == "impact_extraction":
-            # TODO would this be in "event_identification"?
             article.drought = data.drought
-            # TODO make this extraction better
+        elif stage == "impact_extraction":
+            if not article.drought:
+                article.drought = data.drought
             article.impacts = [
                 i for i, v in data.model_dump().items() if v and i != "drought"
             ]
@@ -222,13 +219,9 @@ class ClimateImpactExtractor:
         log_message = f"END - Processed article: {article.filename}\n"
 
         if "event_identification" in extracted_data:
-            # TODO not implemented
-            # log_message += (
-            #     f"Identified Events: {', '.join(article.identified_events)}\n"
-            # )
-            pass
+            log_message += f"Drought: {article.drought}\n"
         if "impact_extraction" in extracted_data:
-            # TODO parametrize for event, now only "drought"
+            # TODO parametrize for event, not only "drought"
             log_message += (
                 f"Drought: {article.drought}\nImpacts: {', '.join(article.impacts)}\n"
             )

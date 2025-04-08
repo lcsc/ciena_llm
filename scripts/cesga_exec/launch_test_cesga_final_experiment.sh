@@ -5,6 +5,7 @@ DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
 export TEST_NAME="test-final-experiment"
 
 export CIENA_LLM_LANGUAGE="en"
+export CIENA_LLM_EVENT_IDENTIFICATION_ENABLE="False"
 export CIENA_LLM_IMPACT_EXTRACTION_ENABLE="True"
 export CIENA_LLM_LOCATION_EXTRACTION_ENABLE="True"
 

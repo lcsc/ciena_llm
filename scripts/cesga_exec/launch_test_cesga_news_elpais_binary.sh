@@ -11,6 +11,7 @@ export DATASET_PATH="$HOME/CienaLLM/data/noticias-elpais-sample-2k-anotado-binar
 export CIENA_LLM_MODEL="llama3.1:8b-instruct-q4_K_M"
 export CIENA_LLM_LANGUAGE="en"
 export CIENA_LLM_SUMMARIZATION_ENABLE="False"
+export CIENA_LLM_EVENT_IDENTIFICATION_ENABLE="False"
 export CIENA_LLM_IMPACT_EXTRACTION_ENABLE="True"
 export CIENA_LLM_LOCATION_EXTRACTION_ENABLE="False"
 export CIENA_LLM_RESPONSE_PARSING_ENABLE="False"

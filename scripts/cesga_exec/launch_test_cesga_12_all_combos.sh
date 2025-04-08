@@ -10,6 +10,7 @@ export ANNOTATION_PATH="$HOME/CienaLLM/data/test-datasets-small/cesga-test-12/da
 export CIENA_LLM_MODEL="llama3.1:8b-instruct-q4_K_M"
 export CIENA_LLM_LANGUAGE="en"
 
+export CIENA_LLM_EVENT_IDENTIFICATION_ENABLE="False"
 export CIENA_LLM_IMPACT_EXTRACTION_ENABLE="True"
 export CIENA_LLM_LOCATION_EXTRACTION_ENABLE="True"
 
