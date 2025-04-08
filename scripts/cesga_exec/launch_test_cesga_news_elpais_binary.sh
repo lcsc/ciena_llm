@@ -4,7 +4,7 @@ DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
 
 export TEST_NAME="news_elpais_binary_2k"
 
-export RESULTS_DIR="$HOME/CienaLLM/ciena_llm/results/$TEST_NAME/$(date +%Y-%m-%d_%H-%M-%S)/"
+export RESULTS_DIR="$HOME/CienaLLM/ciena_llm/results/$TEST_NAME/event_identification/"
 
 export DATASET_PATH="$HOME/CienaLLM/data/noticias-elpais-sample-2k-anotado-binario-2240/sample/"
 
@@ -19,7 +19,7 @@ export CIENA_LLM_COT_ENABLE="True"
 export CIENA_LLM_SELF_CRITICISM_ENABLE="True"
 export CIENA_LLM_IMPACT_PROMPT_CATEGORY="description"
 
-export SLURM_JOB_TIME="2:00:00"
+export SLURM_JOB_TIME="4:00:00"
 
 mkdir -p $RESULTS_DIR
 
