@@ -3,9 +3,7 @@
 # CienaLLM (test)
 #----------------------------------------------------
 #SBATCH -J ciena_llm_test            # Job name
-#SBATCH -c 32                        # Cores per task requested
-#SBATCH --mem-per-cpu=3G             # Memory per core demandes # TODO adjust
-#SBATCH --gres=gpu:a100:1            # Number of GPUs
+#SBATCH --mem-per-cpu=3G             # Memory per core demandes
 #SBATCH --mail-type=BEGIN,END,FAIL
 #SBATCH --mail-user=jvela@ipe.csic.es
 

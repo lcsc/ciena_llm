@@ -63,6 +63,8 @@ for dataset in $DATASETS; do
                                 -t $SLURM_JOB_TIME \
                                 -o $RESULTS_DIR/slurm.out \
                                 -e $RESULTS_DIR/slurm.err \
+                                -c 64 \
+                                --gres=gpu:a100:2 \
                                 $DIR/ciena_sbatch.sh
                         done
                     done

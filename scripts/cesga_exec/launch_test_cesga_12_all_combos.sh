@@ -40,6 +40,8 @@ for summarization in "${bools[@]}"; do
                         -t $SLURM_JOB_TIME \
                         -o $RESULTS_DIR/slurm.out \
                         -e $RESULTS_DIR/slurm.err \
+                        -c 32 \
+                        --gres=gpu:a100:1 \
                         $DIR/ciena_sbatch.sh
 
                 done
