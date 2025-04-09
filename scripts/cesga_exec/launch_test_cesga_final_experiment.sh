@@ -21,11 +21,16 @@ export DATASETS="news-elpais-grupoz-impact-complete-subset news-elpais-sample-19
 
 export MODELS="llama3.3:70b-instruct-q4_K_M"
 
+export SLURM_JOB_TIME="8:00:00"
+export SLURM_CPUS=64
+export SLURM_GPUS=2
+
 # TODO:
 # export MODELS="qwen2.5:3b-instruct-q4_K_M"
 # export MODELS="qwen2.5:7b-instruct-q4_K_M"
 # export MODELS="qwen2.5:7b-instruct-fp16"
 # export MODELS="qwen2.5:72b-instruct-q4_K_M"
+# TODO Gemma3?
 # export MODELS="gemma2:2b-instruct-q4_K_M"
 # export MODELS="gemma2:9b-instruct-q4_K_M"
 # export MODELS="gemma2:9b-instruct-fp16"
@@ -33,11 +38,6 @@ export MODELS="llama3.3:70b-instruct-q4_K_M"
 
 for dataset in $DATASETS; do
     for model in $MODELS; do
-        if [[ $model == *"llama3.1"* || $model == *"llama3.3"* || $model == *"gemma2:27b"* || $model == *"qwen2.5:72b"* ]]; then
-            export SLURM_JOB_TIME="2:00:00"
-        else
-            export SLURM_JOB_TIME="0:30:00"
-        fi
         for summarization in "${bools[@]}"; do
             for response_parsing in "${bools[@]}"; do
                 for self_criticism in "${bools[@]}"; do
@@ -63,8 +63,8 @@ for dataset in $DATASETS; do
                                 -t $SLURM_JOB_TIME \
                                 -o $RESULTS_DIR/slurm.out \
                                 -e $RESULTS_DIR/slurm.err \
-                                -c 64 \
-                                --gres=gpu:a100:2 \
+                                -c $SLURM_CPUS \
+                                --gres=gpu:a100:$SLURM_GPUS \
                                 $DIR/ciena_sbatch.sh
                         done
                     done
