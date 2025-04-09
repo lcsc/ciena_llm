@@ -12,20 +12,16 @@ export CIENA_LLM_LOCATION_EXTRACTION_ENABLE="True"
 bools=("True" "False")
 categories=("simple" "description")
 
+export DATASETS="news-elpais-grupoz-impact-complete-subset news-elpais-sample-194-annotated-e2e"
+
 # DONE:
-# export MODELS="llama3.1:8b-instruct-q4_K_M"
-# export MODELS="llama3.2:3b-instruct-q4_K_M"
-# export MODELS="llama3.1:8b-instruct-fp16"
 
-export MODELS="llama3.3:70b-instruct-q4_K_M"
-
-export DATASETS="news-elpais-grupoz-impact-complete-subset" # news-elpais-sample-194-annotated-e2e"
-
-export SLURM_JOB_TIME="8:00:00"
-export SLURM_CPUS=64
-export SLURM_GPUS=2
+export MODELS="llama3.1:8b-instruct-fp16"
 
 # TODO:
+# export MODELS="llama3.1:8b-instruct-q4_K_M"
+# export MODELS="llama3.2:3b-instruct-q4_K_M"
+# export MODELS="llama3.3:70b-instruct-q4_K_M"
 # export MODELS="qwen2.5:3b-instruct-q4_K_M"
 # export MODELS="qwen2.5:7b-instruct-q4_K_M"
 # export MODELS="qwen2.5:7b-instruct-fp16"
@@ -35,6 +31,10 @@ export SLURM_GPUS=2
 # export MODELS="gemma2:9b-instruct-q4_K_M"
 # export MODELS="gemma2:9b-instruct-fp16"
 # export MODELS="gemma2:27b-instruct-q4_K_M"
+
+export SLURM_JOB_TIME="1:00:00"
+export SLURM_CPUS=32
+export SLURM_GPUS=1
 
 for dataset in $DATASETS; do
     for model in $MODELS; do
