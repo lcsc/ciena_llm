@@ -12,14 +12,14 @@ export CIENA_LLM_LOCATION_EXTRACTION_ENABLE="True"
 bools=("True" "False")
 categories=("simple" "description")
 
-export DATASETS="news-elpais-grupoz-impact-complete-subset news-elpais-sample-194-annotated-e2e"
-
 # DONE:
 # export MODELS="llama3.1:8b-instruct-q4_K_M"
 # export MODELS="llama3.2:3b-instruct-q4_K_M"
 # export MODELS="llama3.1:8b-instruct-fp16"
 
 export MODELS="llama3.3:70b-instruct-q4_K_M"
+
+export DATASETS="news-elpais-grupoz-impact-complete-subset" # news-elpais-sample-194-annotated-e2e"
 
 export SLURM_JOB_TIME="8:00:00"
 export SLURM_CPUS=64
