@@ -2,8 +2,8 @@
 Represents articles and its fields
 """
 
-from dataclasses import dataclass, field, asdict
-from typing import List
+from dataclasses import dataclass, asdict
+from typing import List, Optional
 
 
 @dataclass(order=True)
@@ -17,9 +17,9 @@ class Article:
     url: str
     headline: str
     body: str
-    drought: bool = False
-    impacts: List = field(default_factory=list)
-    locations: List[str] = field(default_factory=list)
+    drought: Optional[bool] = None
+    impacts: Optional[List] = None
+    locations: Optional[List[str]] = None
 
     def to_dict(self):
         """

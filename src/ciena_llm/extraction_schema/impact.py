@@ -15,17 +15,6 @@ def build_model(event: str, impacts: List[str]) -> Type[BaseModel]:
     # Dynamically create fields for the model
     fields = {}
 
-    # Add the event field
-    fields[event] = (
-        Optional[bool],  # bool | None,
-        # bool,
-        Field(
-            description=f"Whether the article mentions impacts of {event}",
-            # default=None,
-            default=False,
-        ),
-    )
-
     # Add impact fields
     fields.update(
         {
@@ -52,7 +41,7 @@ def build_model(event: str, impacts: List[str]) -> Type[BaseModel]:
         """
         Get the default response for the model
         """
-        default_values = {event: None, **{impact: None for impact in impacts}}
+        default_values = {**{impact: None for impact in impacts}}
         return cls(**default_values)
 
     @classmethod
@@ -65,7 +54,6 @@ def build_model(event: str, impacts: List[str]) -> Type[BaseModel]:
         return f"""
 ```json
 {{
-    "{event}": <true or false>,
     {impacts_json}
 }}
 ```

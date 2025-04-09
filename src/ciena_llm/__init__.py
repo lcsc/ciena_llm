@@ -206,11 +206,7 @@ class ClimateImpactExtractor:
         if stage == "event_identification":
             article.drought = data.drought
         elif stage == "impact_extraction":
-            if not article.drought:
-                article.drought = data.drought
-            article.impacts = [
-                i for i, v in data.model_dump().items() if v and i != "drought"
-            ]
+            article.impacts = [i for i, v in data.model_dump().items() if v]
         elif stage == "location_extraction":
             article.locations = data.response
 
@@ -219,12 +215,10 @@ class ClimateImpactExtractor:
         log_message = f"END - Processed article: {article.filename}\n"
 
         if "event_identification" in extracted_data:
+            # TODO parametrize for event, not only "drought"
             log_message += f"Drought: {article.drought}\n"
         if "impact_extraction" in extracted_data:
-            # TODO parametrize for event, not only "drought"
-            log_message += (
-                f"Drought: {article.drought}\nImpacts: {', '.join(article.impacts)}\n"
-            )
+            log_message += f"Impacts: {', '.join(article.impacts)}\n"
         if "location_extraction" in extracted_data:
             log_message += f"Locations: {', '.join(article.locations)}"
 

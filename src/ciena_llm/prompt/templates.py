@@ -112,66 +112,60 @@ Texto:
 
 
 ################################################################################
-# Impact Extraction (Multi-Impact and Event)
+# Impact Extraction (Multi-Impact)
 ################################################################################
 
 IMPACT_EXTRACTION_SIMPLE_ES = """
-Analiza el siguiente artículo. Determina si la noticia menciona impactos de la sequía en los siguientes aspectos: {impacts}.
+Eres una persona experta en análisis ambiental. Tu tarea es analizar el siguiente artículo de prensa y determinar si informa o menciona algún impacto causado por la sequía en determinados aspectos.
 
-Proporciona la siguiente información:
-1. Si el artículo menciona la sequía.
-2. Para cada aspecto mencionado, si la sequía ha tenido un impacto en ese aspecto.
+Los aspectos que debes considerar son:
+{impacts}
 
-Si el artículo no menciona ningún impacto de la sequía en los aspectos mencionados, no incluyas información adicional.
+Lee detenidamente el artículo y determina, para cada aspecto, si se menciona un impacto atribuido específicamente a la sequía. No infieras impactos a menos que estén claramente expresados o fuertemente implicados en el texto.
 
-Texto:
+Artículo a analizar:
 {text}
 """
 
 IMPACT_EXTRACTION_SIMPLE_EN = """
-Analyze the following article. Determine whether the news article mentions impacts of drought on the following aspects: {impacts}.
+You are an expert in environmental analysis. Your task is to analyze the following news article and determine whether it reports or mentions any impact caused by drought on specific aspects.
 
-Provide the following information:
-1. Whether the article mentions drought.
-2. For each mentioned aspect, whether drought has had an impact on that aspect.
+The aspects to consider are: {impacts}
 
-If the article does not mention any impacts of drought on the mentioned aspects, do not include any additional information.
+Please carefully read the article and determine for each aspect whether there is a reported impact caused specifically by drought. Do not infer impacts unless they are clearly stated or strongly implied in the text.
 
-Text:
+Article to analyze:
 {text}
 """
 
 IMPACT_EXTRACTION_DESCRIPTION_ES = """
-Analiza el siguiente artículo. Determina si la noticia menciona impactos de la sequía en los siguientes aspectos: {impacts}.
+Eres una persona experta en análisis ambiental. Tu tarea es analizar el siguiente artículo de prensa y determinar si informa o menciona algún impacto causado por la sequía en determinados aspectos.
 
-Proporciona la siguiente información:
-1. Si el artículo menciona la sequía.
-2. Para cada aspecto mencionado, si la sequía ha tenido un impacto en ese aspecto.
+Los aspectos que debes considerar son:
+{impacts}
 
-Cada uno de los impactos se define de la siguiente manera:
+Cada uno de estos aspectos se describe brevemente a continuación para orientar la interpretación, aunque estas definiciones no son exhaustivas:
+
 {impact_descriptions}
-Las descripciones de los impactos son únicamente para referencia y no son exhaustivas.
 
-Si el artículo no menciona ningún impacto de la sequía en los aspectos mencionados, no incluyas información adicional.
+Lee detenidamente el artículo y determina, para cada aspecto, si se menciona un impacto atribuido específicamente a la sequía. No infieras impactos a menos que estén claramente expresados o fuertemente implicados en el texto.
 
-Texto:
+Artículo a analizar:
 {text}
 """
 
 IMPACT_EXTRACTION_DESCRIPTION_EN = """
-Analyze the following article. Determine whether the news article mentions impacts of drought on the following aspects: {impacts}.
+You are an expert in environmental analysis. Your task is to analyze the following news article and determine whether it reports or mentions any impact caused by drought on specific aspects.
 
-Provide the following information:
-1. Whether the article mentions drought.
-2. For each mentioned aspect, whether drought has had an impact on that aspect.
+The aspects to consider are: {impacts}
 
-Each of the impacts is defined as follows:
+Each aspect is briefly described below to guide interpretation, but these definitions are not exhaustive:
+
 {impact_descriptions}
-The impact descriptions are for reference only and are not exhaustive.
 
-If the article does not mention any impacts of drought on the mentioned aspects, do not include any additional information.
+Please carefully read the article and determine for each aspect whether there is a reported impact caused specifically by drought. Do not infer impacts unless they are clearly stated or strongly implied in the text.
 
-Text:
+Article to analyze:
 {text}
 """
 
