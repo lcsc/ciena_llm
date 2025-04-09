@@ -15,11 +15,13 @@ export CIENA_LLM_EVENT_IDENTIFICATION_ENABLE="True"
 export CIENA_LLM_IMPACT_EXTRACTION_ENABLE="False"
 export CIENA_LLM_LOCATION_EXTRACTION_ENABLE="False"
 export CIENA_LLM_RESPONSE_PARSING_ENABLE="True"
-export CIENA_LLM_COT_ENABLE="True"
-export CIENA_LLM_SELF_CRITICISM_ENABLE="True"
+export CIENA_LLM_COT_ENABLE="False"
+export CIENA_LLM_SELF_CRITICISM_ENABLE="False"
 export CIENA_LLM_IMPACT_PROMPT_CATEGORY="description"
 
-export SLURM_JOB_TIME="6:00:00"
+export SLURM_JOB_TIME="3:00:00"
+export SLURM_CPUS=32
+export SLURM_GPUS=1
 
 mkdir -p $RESULTS_DIR
 
@@ -29,6 +31,6 @@ sbatch \
     -t $SLURM_JOB_TIME \
     -o $RESULTS_DIR/slurm.out \
     -e $RESULTS_DIR/slurm.err \
-    -c 32 \
-    --gres=gpu:a100:1 \
+    -c $SLURM_CPUS \
+    --gres=gpu:a100:$SLURM_GPUS \
     $DIR/ciena_sbatch.sh
