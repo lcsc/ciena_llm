@@ -208,7 +208,7 @@ class ClimateImpactExtractor:
         elif stage == "impact_extraction":
             article.impacts = [i for i, v in data.model_dump().items() if v]
         elif stage == "location_extraction":
-            article.locations = data.response
+            article.locations = data.response if data.response else []
 
     def _log_results(self, article: Article, extracted_data: Dict[str, dict]):
         """Logs extracted information for debugging."""
