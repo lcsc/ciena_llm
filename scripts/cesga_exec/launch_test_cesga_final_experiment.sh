@@ -31,7 +31,7 @@ export MODELS="llama3.1:8b-instruct-fp16"
 # export MODELS="gemma2:9b-instruct-fp16"
 # export MODELS="gemma2:27b-instruct-q4_K_M"
 
-export SLURM_JOB_TIME="1:00:00"
+export SLURM_JOB_TIME="2:00:00"
 export SLURM_CPUS=32
 export SLURM_GPUS=1
 
