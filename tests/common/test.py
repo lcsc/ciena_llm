@@ -54,8 +54,30 @@ class ClimateImpactExtractorTest:
 
         start_time = time.time()
 
-        # Run the extractor
+        # Create the ClimateImpactExtractor instance
         extractor = ClimateImpactExtractor(override_config_path)
+
+        # Save Job configurations
+        # - Configurations used
+        extractor.output_manager.write_config(
+            os.path.join(self.results_dir, "config.yaml")
+        )
+        # - Prompts used
+        extractor.output_manager.write_prompts_to_json(
+            os.path.join(self.results_dir, "prompts.json")
+        )
+        # - Git commit used
+        with open(
+            os.path.join(self.results_dir, "git_commit.txt"), "w", encoding="utf-8"
+        ) as f:
+            commit_hash = (
+                subprocess.check_output(["git", "rev-parse", "HEAD"])
+                .strip()
+                .decode("utf-8")
+            )
+            f.write(commit_hash)
+
+        # Run the extractor
         articles = extractor(dataset_path=self.dataset_path)
 
         test_execution_time = time.time() - start_time
@@ -65,14 +87,6 @@ class ClimateImpactExtractorTest:
         # - Summary of the results
         extractor.output_manager.write_summary_to_csv(
             articles, os.path.join(self.results_dir, "summary.csv")
-        )
-        # - Configurations used
-        extractor.output_manager.write_config(
-            os.path.join(self.results_dir, "config.yaml")
-        )
-        # - Prompts used
-        extractor.output_manager.write_prompts_to_json(
-            os.path.join(self.results_dir, "prompts.json")
         )
         # - Excluded problematic articles
         extractor.output_manager.write_excluded_problematic_articles_to_csv(
