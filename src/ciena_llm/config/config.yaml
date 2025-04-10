@@ -5,6 +5,7 @@ llm:
   context_length: 32768
   num_predict_tokens: 2048
   structured_output_mode: "tool" # "prompt" or "tool"
+  seed: 42
 
 stages:
   summarization:

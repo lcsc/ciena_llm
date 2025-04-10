@@ -31,6 +31,7 @@ class LLM:
         self.llm_temperature = self.config.get("temperature")
         self.llm_context_length = self.config.get("context_length")
         self.llm_num_predict_tokens = self.config.get("num_predict_tokens")
+        self.llm_seed = int(self.config.get("seed"))
 
         self.structured_output_mode = self.config.get("structured_output_mode")
 
@@ -42,6 +43,7 @@ class LLM:
                 temperature=self.llm_temperature,
                 num_ctx=self.llm_context_length,
                 num_predict=self.llm_num_predict_tokens,
+                seed=self.llm_seed,
             )
         else:
             raise ValueError(f"Unsupported backend: {backend_name}")
