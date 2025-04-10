@@ -1,4 +1,4 @@
-from typing import Type
+from typing import Type, Optional
 
 from pydantic import BaseModel, Field, create_model
 
@@ -13,9 +13,9 @@ def build_model(event: str) -> Type[BaseModel]:
 
     fields = {
         "response": (
-            list[str],
+            Optional[list[str]],
             Field(
-                default_factory=list,
+                default=False,
                 description=f"Provinces affected by {event} as mentioned or inferred from the article.",
             ),
         )
