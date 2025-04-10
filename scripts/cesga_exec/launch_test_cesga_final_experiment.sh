@@ -7,7 +7,7 @@ export TEST_NAME="test-final-experiment"
 export CIENA_LLM_LANGUAGE="en"
 export CIENA_LLM_EVENT_IDENTIFICATION_ENABLE="False"
 export CIENA_LLM_IMPACT_EXTRACTION_ENABLE="True"
-export CIENA_LLM_LOCATION_EXTRACTION_ENABLE="True"
+export CIENA_LLM_LOCATION_EXTRACTION_ENABLE="False"
 
 bools=("True" "False")
 categories=("simple" "description")
@@ -15,14 +15,13 @@ categories=("simple" "description")
 export DATASETS="news-elpais-grupoz-impact-complete-subset news-elpais-sample-194-annotated-e2e"
 
 # DONE:
-# export MODELS="llama3.1:8b-instruct-fp16"
+export MODELS="llama3.1:8b-instruct-fp16"
+
+# TODO:
 # export MODELS="llama3.1:8b-instruct-q4_K_M"
 # export MODELS="llama3.2:3b-instruct-q4_K_M"
 # export MODELS="qwen2.5:3b-instruct-q4_K_M"
-
-export MODELS="qwen2.5:7b-instruct-q4_K_M"
-
-# TODO:
+# export MODELS="qwen2.5:7b-instruct-q4_K_M"
 # export MODELS="llama3.3:70b-instruct-q4_K_M"
 # export MODELS="qwen2.5:7b-instruct-fp16"
 # export MODELS="qwen2.5:72b-instruct-q4_K_M"
