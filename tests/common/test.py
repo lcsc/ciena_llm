@@ -58,6 +58,11 @@ class ClimateImpactExtractorTest:
         extractor = ClimateImpactExtractor(override_config_path)
 
         # Save Job configurations
+        # - Datset path
+        with open(
+            os.path.join(self.results_dir, "dataset_path.txt"), "w", encoding="utf-8"
+        ) as f:
+            f.write(self.dataset_path)
         # - Configurations used
         extractor.output_manager.write_config(
             os.path.join(self.results_dir, "config.yaml")
