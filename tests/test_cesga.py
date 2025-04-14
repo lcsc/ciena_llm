@@ -46,9 +46,7 @@ SELF_CRITICISM_ENABLE = (
     os.getenv("CIENA_LLM_SELF_CRITICISM_ENABLE", "False").lower() == "true"
 )
 IMPACT_PROMPT_CATEGORY = os.getenv("CIENA_LLM_IMPACT_PROMPT_CATEGORY", "simple")
-STRUCTURED_OUTPUT_MODE = (
-    os.getenv("CIENA_LLM_STRUCTURED_OUTPUT_MODE", "tool").lower() == "tool"
-)
+STRUCTURED_OUTPUT_MODE = os.getenv("CIENA_LLM_STRUCTURED_OUTPUT_MODE", "tool").lower()
 
 OVERRIDE_CONFIG = {
     "llm": {
