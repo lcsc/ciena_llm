@@ -22,12 +22,12 @@ export DATASETS="news-elpais-grupoz-impact-complete-subset news-elpais-sample-19
 # export MODELS="qwen2.5:7b-instruct-q4_K_M"
 # export MODELS="qwen2.5:7b-instruct-fp16"
 # export MODELS="gemma3:4b-it-q4_K_M"
+# export MODELS="gemma3:12b-it-q4_K_M"
 
-export MODELS="gemma3:12b-it-q4_K_M"
+export MODELS="gemma3:12b-it-fp16"
 export CIENA_LLM_STRUCTURED_OUTPUT_MODE="prompt"
 
 # TODO:
-# export MODELS="gemma3:12b-it-fp16"
 # export MODELS="llama3.3:70b-instruct-q4_K_M"
 # export MODELS="qwen2.5:72b-instruct-q4_K_M"
 # export MODELS="gemma3:27b-it-q4_K_M"
