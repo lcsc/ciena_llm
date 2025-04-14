@@ -46,10 +46,15 @@ SELF_CRITICISM_ENABLE = (
     os.getenv("CIENA_LLM_SELF_CRITICISM_ENABLE", "False").lower() == "true"
 )
 IMPACT_PROMPT_CATEGORY = os.getenv("CIENA_LLM_IMPACT_PROMPT_CATEGORY", "simple")
-
+STRUCTURED_OUTPUT_MODE = (
+    os.getenv("CIENA_LLM_STRUCTURED_OUTPUT_MODE", "tool").lower() == "tool"
+)
 
 OVERRIDE_CONFIG = {
-    "llm": {"name": MODEL},
+    "llm": {
+        "name": MODEL,
+        "structured_output_mode": STRUCTURED_OUTPUT_MODE,
+    },
     "stages": {
         "summarization": {
             "enable": SUMMARIZATION_ENABLE,
