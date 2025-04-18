@@ -30,8 +30,8 @@ export SLURM_CPUS=64
 export SLURM_GPUS=2
 export CIENA_LLM_STRUCTURED_OUTPUT_MODE="tool"
 
-export DATASETS="news-elpais-sample-194-annotated-e2e"
-# export DATASETS="news-elpais-grupoz-impact-complete-subset"
+# export DATASETS="news-elpais-sample-194-annotated-e2e"
+export DATASETS="news-elpais-grupoz-impact-complete-subset"
 # export DATASETS="news-elpais-sample-194-annotated-e2e news-elpais-grupoz-impact-complete-subset"
 
 export MODELS="qwen2.5:72b-instruct-q4_K_M"
