@@ -19,6 +19,7 @@ categories=("simple" "description")
 # export MODELS="gemma3:12b-it-q4_K_M"
 # export MODELS="gemma3:12b-it-fp16"
 # export MODELS="gemma3:27b-it-q4_K_M"
+# export MODELS="llama3.1:8b-instruct-fp16"
 
 export SLURM_JOB_TIME="2:00:00"
 export SLURM_CPUS=32
@@ -31,8 +32,7 @@ export SLURM_GPUS=1
 # export DATASETS="news-elpais-grupoz-impact-complete-subset"
 export DATASETS="news-elpais-sample-194-annotated-e2e news-elpais-grupoz-impact-complete-subset"
 
-export MODELS="llama3.1:8b-instruct-fp16"
-# export MODELS="llama3.1:8b-instruct-q4_K_M"
+export MODELS="llama3.1:8b-instruct-q4_K_M"
 # export MODELS="llama3.2:3b-instruct-q4_K_M"
 # export MODELS="llama3.3:70b-instruct-q4_K_M"
 # export MODELS="qwen2.5:3b-instruct-q4_K_M"
