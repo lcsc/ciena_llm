@@ -9,32 +9,36 @@ export CIENA_LLM_EVENT_IDENTIFICATION_ENABLE="False"
 export CIENA_LLM_IMPACT_EXTRACTION_ENABLE="True"
 export CIENA_LLM_LOCATION_EXTRACTION_ENABLE="False"
 
+export CIENA_LLM_STRUCTURED_OUTPUT_MODE="prompt"
+
 bools=("True" "False")
 categories=("simple" "description")
 
 # DONE:
-# export MODELS="llama3.1:8b-instruct-fp16"
-# export MODELS="llama3.1:8b-instruct-q4_K_M"
-# export MODELS="llama3.2:3b-instruct-q4_K_M"
-# export MODELS="qwen2.5:3b-instruct-q4_K_M"
-# export MODELS="qwen2.5:7b-instruct-q4_K_M"
-# export MODELS="qwen2.5:7b-instruct-fp16"
 # export MODELS="gemma3:4b-it-q4_K_M"
 # export MODELS="gemma3:12b-it-q4_K_M"
 # export MODELS="gemma3:12b-it-fp16"
-# export MODELS="llama3.3:70b-instruct-q4_K_M"
 # export MODELS="gemma3:27b-it-q4_K_M"
 
-export SLURM_JOB_TIME="10:00:00"
-export SLURM_CPUS=64
-export SLURM_GPUS=2
-export CIENA_LLM_STRUCTURED_OUTPUT_MODE="tool"
+export SLURM_JOB_TIME="2:00:00"
+export SLURM_CPUS=32
+export SLURM_GPUS=1
+# export SLURM_JOB_TIME="10:00:00"
+# export SLURM_CPUS=64
+# export SLURM_GPUS=2
 
 # export DATASETS="news-elpais-sample-194-annotated-e2e"
-export DATASETS="news-elpais-grupoz-impact-complete-subset"
-# export DATASETS="news-elpais-sample-194-annotated-e2e news-elpais-grupoz-impact-complete-subset"
+# export DATASETS="news-elpais-grupoz-impact-complete-subset"
+export DATASETS="news-elpais-sample-194-annotated-e2e news-elpais-grupoz-impact-complete-subset"
 
-export MODELS="qwen2.5:72b-instruct-q4_K_M"
+export MODELS="llama3.1:8b-instruct-fp16"
+# export MODELS="llama3.1:8b-instruct-q4_K_M"
+# export MODELS="llama3.2:3b-instruct-q4_K_M"
+# export MODELS="llama3.3:70b-instruct-q4_K_M"
+# export MODELS="qwen2.5:3b-instruct-q4_K_M"
+# export MODELS="qwen2.5:7b-instruct-q4_K_M"
+# export MODELS="qwen2.5:7b-instruct-fp16"
+# export MODELS="qwen2.5:72b-instruct-q4_K_M"
 
 for dataset in $DATASETS; do
     for model in $MODELS; do
