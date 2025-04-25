@@ -98,6 +98,7 @@ OVERRIDE_CONFIG = {
                     "prompt": {
                         "language": LANGUAGE,
                         "step": "extraction",
+                        "category": IMPACT_PROMPT_CATEGORY,
                         "cot": COT_ENABLE,
                     },
                 },
