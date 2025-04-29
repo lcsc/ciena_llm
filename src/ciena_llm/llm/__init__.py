@@ -173,6 +173,14 @@ class LLM:
                 "",
                 {"exception": str(e)},
             )
+        except TypeError as e:
+            logging.error("TypeError: Failed to parse response: %s", e)
+            # Return the default error response
+            return (
+                self.extraction_schema.default_response(),
+                "",
+                {"exception": str(e)},
+            )
 
     def __call__(self, text) -> Tuple[Union[str, BaseModel], Union[Dict, None]]:
         """
