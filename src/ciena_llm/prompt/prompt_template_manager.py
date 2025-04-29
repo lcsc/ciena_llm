@@ -11,10 +11,12 @@ FORMAT_INSTRUCTIONS_STR = {
     "es": """
 Instrucciones de formato:
 {format_instructions}
+Asegurate que incluyes un único JSON en tu respuesta en vez de varios JSONs.
 """,
     "en": """
 Format instructions:
 {format_instructions}
+Make sure to include a single JSON in your response instead of multiple JSONs.
 """,
 }
 
