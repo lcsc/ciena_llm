@@ -22,8 +22,8 @@ export SLURM_CPUS=64
 export SLURM_GPUS=2
 
 # export DATASETS="news-elpais-sample-194-annotated-e2e news-elpais-grupoz-impact-complete-subset"
-# export DATASETS="news-elpais-sample-194-annotated-e2e"
-export DATASETS="news-elpais-grupoz-impact-complete-subset"
+export DATASETS="news-elpais-sample-194-annotated-e2e"
+# export DATASETS="news-elpais-grupoz-impact-complete-subset"
 
 # DONE:
 # export MODELS="gemma3:4b-it-q4_K_M gemma3:12b-it-q4_K_M gemma3:12b-it-fp16"
@@ -32,10 +32,9 @@ export DATASETS="news-elpais-grupoz-impact-complete-subset"
 # export MODELS="qwen2.5:3b-instruct-q4_K_M"
 # export MODELS="qwen2.5:7b-instruct-fp16"
 # export MODELS="qwen2.5:7b-instruct-q4_K_M"
+# export MODELS="llama3.3:70b-instruct-q4_K_M"
 
-export MODELS="llama3.3:70b-instruct-q4_K_M"
-
-# export MODELS="qwen2.5:72b-instruct-q4_K_M"
+export MODELS="qwen2.5:72b-instruct-q4_K_M"
 
 for dataset in $DATASETS; do
     for model in $MODELS; do
