@@ -22,8 +22,8 @@ export SLURM_CPUS=64
 export SLURM_GPUS=2
 
 # export DATASETS="news-elpais-sample-194-annotated-e2e news-elpais-grupoz-impact-complete-subset"
-export DATASETS="news-elpais-sample-194-annotated-e2e"
-# export DATASETS="news-elpais-grupoz-impact-complete-subset"
+# export DATASETS="news-elpais-sample-194-annotated-e2e"
+export DATASETS="news-elpais-grupoz-impact-complete-subset"
 
 # DONE:
 # export MODELS="gemma3:4b-it-q4_K_M gemma3:12b-it-q4_K_M gemma3:12b-it-fp16"
