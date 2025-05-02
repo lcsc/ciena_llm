@@ -1,4 +1,5 @@
 import os
+import json
 from typing import List, Dict
 from tqdm import tqdm
 import logging
@@ -164,7 +165,11 @@ class ClimateImpactExtractor:
                         "prompt": extraction_chain.prompt_template.invoke(
                             article_text
                         ).text,
-                        "response": input_data["text"],
+                        "response": (
+                            json.dumps(input_data["text"].model_dump())
+                            if not response_parsing_chain
+                            else input_data["text"]
+                        ),
                     }
                     result = self_criticism_chain.invoke(self_criticism_input_data)
                     extracted_data[stage] = result["output"]
