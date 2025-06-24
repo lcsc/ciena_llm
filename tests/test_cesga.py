@@ -150,7 +150,7 @@ test = ClimateImpactExtractorTest(TEST_NAME, DATASET_PATH, OVERRIDE_CONFIG, RESU
 test.run()
 
 if ANNOTATION_PATH:
-    eval = ClimateImpactExtractorEvaluation(
+    evaluation = ClimateImpactExtractorEvaluation(
         TEST_NAME, ANNOTATION_PATH, "impact", RESULTS_DIR
     )
-    eval.run()
+    evaluation.run()

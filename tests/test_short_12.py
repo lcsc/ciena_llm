@@ -1,4 +1,4 @@
-from common import ClimateImpactExtractorTest, ClimateImpactExtractorEvaluation
+from common import ClimateImpactExtractorTest  # , ClimateImpactExtractorEvaluation
 
 
 TEST_NAME = "test_short_12"
@@ -64,7 +64,7 @@ OVERRIDE_CONFIG = {
                         "language": LANGUAGE,
                         "step": "extraction",
                         "category": "province",
-                        "cot": False,
+                        "cot": True,
                     },
                 },
                 "self_criticism": {
@@ -74,7 +74,7 @@ OVERRIDE_CONFIG = {
                     },
                 },
                 "response_parsing": {
-                    "enable": False,
+                    "enable": True,
                     "prompt": {
                         "language": LANGUAGE,
                         "category": "province",
@@ -88,5 +88,5 @@ OVERRIDE_CONFIG = {
 test = ClimateImpactExtractorTest(TEST_NAME, DATASET_PATH, OVERRIDE_CONFIG)
 test.run()
 
-eval = ClimateImpactExtractorEvaluation(TEST_NAME, ANNOTATION_PATH, "impact")
-eval.run()
+# evaluation = ClimateImpactExtractorEvaluation(TEST_NAME, ANNOTATION_PATH, "impact")
+# evaluation.run()

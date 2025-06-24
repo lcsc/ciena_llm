@@ -9,6 +9,10 @@ DATASET_PATH = f"{DATASET_BASE_PATH}/sample"
 LANGUAGE = "en"
 
 OVERRIDE_CONFIG = {
+    "llm": {
+        "name": "llama3.1:8b",
+        "structured_output_mode": "prompt",
+    },
     "stages": {
         "summarization": {
             "enable": False,
@@ -81,31 +85,32 @@ OVERRIDE_CONFIG = {
 }
 
 
-MODEL = "llama3.2:3b"
-OVERRIDE_CONFIG["llm"]["name"] = MODEL
-OVERRIDE_CONFIG["llm"]["structured_output_mode"] = "prompt"
-TEST_NAME = f"test_json_mode/{MODEL}/prompt"
-test = ClimateImpactExtractorTest(TEST_NAME, DATASET_PATH, OVERRIDE_CONFIG)
-test.run()
+# MODEL = "llama3.2:3b"
+# OVERRIDE_CONFIG["llm"]["name"] = MODEL
+# OVERRIDE_CONFIG["llm"]["structured_output_mode"] = "prompt"
+# TEST_NAME = f"test_json_mode/{MODEL}/prompt"
+# test = ClimateImpactExtractorTest(TEST_NAME, DATASET_PATH, OVERRIDE_CONFIG)
+# test.run()
 
-MODEL = "llama3.2:3b"
-OVERRIDE_CONFIG["llm"]["name"] = MODEL
-OVERRIDE_CONFIG["llm"]["structured_output_mode"] = "tool"
-TEST_NAME = f"test_json_mode/{MODEL}/tool"
-test = ClimateImpactExtractorTest(TEST_NAME, DATASET_PATH, OVERRIDE_CONFIG)
-test.run()
+# MODEL = "llama3.2:3b"
+# OVERRIDE_CONFIG["llm"]["name"] = MODEL
+# OVERRIDE_CONFIG["llm"]["structured_output_mode"] = "tool"
+# TEST_NAME = f"test_json_mode/{MODEL}/tool"
+# test = ClimateImpactExtractorTest(TEST_NAME, DATASET_PATH, OVERRIDE_CONFIG)
+# test.run()
 
-MODEL = "gemma3:4b"
-OVERRIDE_CONFIG["llm"]["name"] = MODEL
-OVERRIDE_CONFIG["llm"]["structured_output_mode"] = "prompt"
-TEST_NAME = f"test_json_mode/{MODEL}/prompt"
-test = ClimateImpactExtractorTest(TEST_NAME, DATASET_PATH, OVERRIDE_CONFIG)
-test.run()
+# TODO fails with an error
+# MODEL = "gemma3:4b"
+# OVERRIDE_CONFIG["llm"]["name"] = MODEL
+# OVERRIDE_CONFIG["llm"]["structured_output_mode"] = "prompt"
+# TEST_NAME = f"test_json_mode/{MODEL}/prompt"
+# test = ClimateImpactExtractorTest(TEST_NAME, DATASET_PATH, OVERRIDE_CONFIG)
+# test.run()
 
-MODEL = "gemma3:4b"
-OVERRIDE_CONFIG["llm"]["name"] = MODEL
-OVERRIDE_CONFIG["llm"]["structured_output_mode"] = "tool"
-TEST_NAME = f"test_json_mode/{MODEL}/tool"
-test = ClimateImpactExtractorTest(TEST_NAME, DATASET_PATH, OVERRIDE_CONFIG)
-test.run()
-
+# TODO does not support tool calling
+# MODEL = "gemma3:4b"
+# OVERRIDE_CONFIG["llm"]["name"] = MODEL
+# OVERRIDE_CONFIG["llm"]["structured_output_mode"] = "tool"
+# TEST_NAME = f"test_json_mode/{MODEL}/tool"
+# test = ClimateImpactExtractorTest(TEST_NAME, DATASET_PATH, OVERRIDE_CONFIG)
+# test.run()

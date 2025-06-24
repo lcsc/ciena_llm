@@ -8,11 +8,14 @@ DATASET_BASE_PATH = (
 DATASET_PATH = f"{DATASET_BASE_PATH}/sample"
 
 LANGUAGE = "en"
-MODEL = "llama3.2:3b"
-# MODEL = "llama3.1:8b"
+# MODEL = "gemma3:4b-it-q4_K_M"
+MODEL = "llama3.1:8b"
 
 OVERRIDE_CONFIG = {
-    "llm": {"name": MODEL},
+    "llm": {
+        "name": MODEL,
+        "structured_output_mode": "prompt",
+    },
     "stages": {
         "summarization": {
             "enable": False,
@@ -27,21 +30,17 @@ OVERRIDE_CONFIG = {
         },
         "event_identification": {
             "enable": False,
-        },
-        "impact_extraction": {
-            "enable": True,
             "steps": {
                 "extraction": {
                     "enable": True,
                     "prompt": {
                         "language": LANGUAGE,
                         "step": "extraction",
-                        "category": "description",
-                        "cot": True,
+                        "cot": False,
                     },
                 },
                 "self_criticism": {
-                    "enable": True,
+                    "enable": False,
                     "prompt": {
                         "language": LANGUAGE,
                     },
@@ -54,7 +53,7 @@ OVERRIDE_CONFIG = {
                 },
             },
         },
-        "location_extraction": {
+        "impact_extraction": {
             "enable": True,
             "steps": {
                 "extraction": {
@@ -62,7 +61,7 @@ OVERRIDE_CONFIG = {
                     "prompt": {
                         "language": LANGUAGE,
                         "step": "extraction",
-                        "category": "province",
+                        "category": "description",
                         "cot": False,
                     },
                 },
@@ -74,6 +73,32 @@ OVERRIDE_CONFIG = {
                 },
                 "response_parsing": {
                     "enable": False,
+                    "prompt": {
+                        "language": LANGUAGE,
+                    },
+                },
+            },
+        },
+        "location_extraction": {
+            "enable": False,
+            "steps": {
+                "extraction": {
+                    "enable": True,
+                    "prompt": {
+                        "language": LANGUAGE,
+                        "step": "extraction",
+                        "category": "province",
+                        "cot": False,
+                    },
+                },
+                "self_criticism": {
+                    "enable": False,
+                    "prompt": {
+                        "language": LANGUAGE,
+                    },
+                },
+                "response_parsing": {
+                    "enable": True,
                     "prompt": {
                         "language": LANGUAGE,
                         "category": "province",
