@@ -32,6 +32,22 @@ Reason step by step and explain your reasoning before giving the final answer.
 
 class PromptTemplateManager:
     TEMPLATES = {
+        ("summarization", "summarization", DEFAULT, "es"): {
+            "template": SUMMARIZATION_ES,
+            "variables": ["text"],
+        },
+        ("summarization", "summarization", DEFAULT, "en"): {
+            "template": SUMMARIZATION_EN,
+            "variables": ["text"],
+        },
+        (DEFAULT, "self_criticism", DEFAULT, "es"): {
+            "template": SELF_CRITICISM_ES,
+            "variables": ["prompt", "response"],
+        },
+        (DEFAULT, "self_criticism", DEFAULT, "en"): {
+            "template": SELF_CRITICISM_EN,
+            "variables": ["prompt", "response"],
+        },
         ("event_identification", "extraction", DEFAULT, "es"): {
             "template": EVENT_EXTRACTION_ES,
             "variables": ["text"],
@@ -52,88 +68,42 @@ class PromptTemplateManager:
             "variables": ["text"],
             "partial_variables": ["event"],
         },
-        ("drought", "classification", "boolean", "es"): {
-            "template": DROUGHT_CLASSIFICATION_BOOLEAN_ES,
-            "variables": ["text"],
-        },
-        ("drought", "classification", "boolean", "en"): {
-            "template": DROUGHT_CLASSIFICATION_BOOLEAN_EN,
-            "variables": ["text"],
-        },
-        ("drought", "classification", DEFAULT, "es"): {
-            "template": DROUGHT_CLASSIFICATION_ES,
-            "variables": ["text"],
-        },
-        ("drought", "classification", DEFAULT, "en"): {
-            "template": DROUGHT_CLASSIFICATION_EN,
-            "variables": ["text"],
-        },
-        ("drought", "response_parsing", DEFAULT, "en"): {
-            "template": DROUGHT_RESPONSE_PARSING_EN,
-            "variables": ["text"],
-        },
-        ("impact_extraction", "classification", "boolean", "es"): {
-            "template": IMPACT_CLASSIFICATION_BOOLEAN_ES,
-            "variables": ["text"],
-            "partial_variables": ["impact"],
-        },
-        ("impact_extraction", "classification", "boolean", "en"): {
-            "template": IMPACT_CLASSIFICATION_BOOLEAN_EN,
-            "variables": ["text"],
-            "partial_variables": ["impact"],
-        },
-        ("impact_extraction", "classification", DEFAULT, "es"): {
-            "template": IMPACT_CLASSIFICATION_ES,
-            "variables": ["text"],
-            "partial_variables": ["impact"],
-        },
-        ("impact_extraction", "classification", DEFAULT, "en"): {
-            "template": IMPACT_CLASSIFICATION_EN,
-            "variables": ["text"],
-            "partial_variables": ["impact"],
-        },
-        ("impact_extraction", "classification", "description", "en"): {
-            "template": IMPACT_CLASSIFICATION_DESCRIPTION_EN,
-            "variables": ["text"],
-            "partial_variables": ["impact", "impact_description"],
-        },
         ("impact_extraction", "extraction", "simple", "es"): {
-            "template": IMPACT_EXTRACTION_SIMPLE_ES,
+            "template": DROUGHT_IMPACT_EXTRACTION_SIMPLE_ES,
             "variables": ["text"],
             "partial_variables": ["impacts"],
         },
         ("impact_extraction", "extraction", "simple", "en"): {
-            "template": IMPACT_EXTRACTION_SIMPLE_EN,
+            "template": DROUGHT_IMPACT_EXTRACTION_SIMPLE_EN,
             "variables": ["text"],
             "partial_variables": ["impacts"],
         },
         ("impact_extraction", "extraction", "description", "es"): {
-            "template": IMPACT_EXTRACTION_DESCRIPTION_ES,
+            "template": DROUGHT_IMPACT_EXTRACTION_DESCRIPTION_ES,
             "variables": ["text"],
             "partial_variables": ["impacts", "impact_descriptions"],
         },
         ("impact_extraction", "extraction", "description", "en"): {
-            "template": IMPACT_EXTRACTION_DESCRIPTION_EN,
+            "template": DROUGHT_IMPACT_EXTRACTION_DESCRIPTION_EN,
             "variables": ["text"],
             "partial_variables": ["impacts", "impact_descriptions"],
         },
         ("impact_extraction", "response_parsing", DEFAULT, "en"): {
-            "template": IMPACT_RESPONSE_PARSING_EN,
+            "template": DROUGHT_IMPACT_RESPONSE_PARSING_EN,
             "variables": ["text"],
             "partial_variables": ["impacts", "impact_descriptions"],
         },
         ("impact_extraction", "response_parsing", DEFAULT, "es"): {
-            "template": IMPACT_RESPONSE_PARSING_ES,
+            "template": DROUGHT_IMPACT_RESPONSE_PARSING_ES,
             "variables": ["text"],
             "partial_variables": ["impacts", "impact_descriptions"],
         },
         ("location_extraction", "extraction", "location", "es"): {
-            "template": LOCATION_EXTRACTION_ES,
+            "template": DROUGHT_LOCATION_EXTRACTION_ES,
             "variables": ["text"],
         },
         ("location_extraction", "extraction", "location", "en"): {
-            # TODO category = location or province?
-            "template": LOCATION_PROVINCE_EXTRACTION_EN,
+            "template": DROUGHT_LOCATION_PROVINCE_EXTRACTION_EN,
             "variables": ["text"],
         },
         ("location_extraction", "response_parsing", "location", "en"): {
@@ -141,11 +111,11 @@ class PromptTemplateManager:
             "variables": ["text"],
         },
         ("location_extraction", "extraction", "province", "en"): {
-            "template": PROVINCE_EXTRACTION_EN,
+            "template": DROUGHT_PROVINCE_EXTRACTION_EN,
             "variables": ["text"],
         },
         ("location_extraction", "extraction", "province", "es"): {
-            "template": PROVINCE_EXTRACTION_ES,
+            "template": DROUGHT_PROVINCE_EXTRACTION_ES,
             "variables": ["text"],
         },
         ("location_extraction", "response_parsing", "province", "en"): {
@@ -155,26 +125,6 @@ class PromptTemplateManager:
         ("location_extraction", "response_parsing", "province", "es"): {
             "template": PROVINCE_RESPONSE_PARSING_ES,
             "variables": ["text"],
-        },
-        (DEFAULT, "response_parsing", "boolean", "en"): {
-            "template": BOOLEAN_RESPONSE_PARSING_EN,
-            "variables": ["text"],
-        },
-        ("summarization", "summarization", DEFAULT, "es"): {
-            "template": SUMMARIZATION_ES,
-            "variables": ["text"],
-        },
-        ("summarization", "summarization", DEFAULT, "en"): {
-            "template": SUMMARIZATION_EN,
-            "variables": ["text"],
-        },
-        (DEFAULT, "self_criticism", DEFAULT, "es"): {
-            "template": SELF_CRITICISM_ES,
-            "variables": ["prompt", "response"],
-        },
-        (DEFAULT, "self_criticism", DEFAULT, "en"): {
-            "template": SELF_CRITICISM_EN,
-            "variables": ["prompt", "response"],
         },
     }
 
