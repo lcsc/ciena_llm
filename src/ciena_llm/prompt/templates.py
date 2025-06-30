@@ -227,6 +227,30 @@ Texto:
 
 
 ################################################################################
+# Hail Event Extraction
+################################################################################
+
+HAIL_EVENT_EXTRACTION_EN = """
+You are an expert in environmental and meteorological analysis. Your task is to thoroughly analyze the following news article and extract all information related to past hail events described in the text.
+
+Only consider hail events that have already occurred. Do not include any information about possible or predicted hail events.
+
+For each past hail event mentioned or clearly implied, provide a summary with the following details for each event:
+
+- locations: List all specific locations (e.g., cities, towns, regions, landmarks) directly affected by the hail event. Use proper names without additional descriptive text. If no locations are mentioned, leave this field empty.
+- date: The date and, if available, the time when the hail event occurred. If the article provides a specific date, use the format YYYY-MM-DD. If a specific time is also provided or can be reliably inferred, use the format YYYY-MM-DD HH:mm. If neither date nor time can be determined, leave this field empty or use the most precise information available from the article.
+- duration: The duration of the hail event. Prefer a numeric value in minutes or hours if available; otherwise, use the textual description from the article. If the duration cannot be inferred, leave this field empty.
+- damages: List all types of damages or impacts caused specifically by this hail event, as described in the article, using the exact wording and language from the article wherever possible. Only include damages that are directly attributed to this hail event.
+- size: The size of the hailstones, if mentioned, using the exact text and language from the article (e.g., in centimeters, millimeters, or using descriptive terms such as "golf ball-sized"). If not mentioned, leave this field empty.
+
+If the article does not mention or clearly imply any past hail events, do not return any hail event information.
+
+Text:
+{text}
+"""
+
+
+################################################################################
 # Event Identification Response Parsers
 ################################################################################
 
@@ -297,6 +321,19 @@ Extrae de la siguiente respuesta de un LLM las provincias.
 Si se mencionan otras localizaciones, infiere las provincias.
 
 Texto:
+{text}
+"""
+
+################################################################################
+# Hail Event Response Parsers
+################################################################################
+
+HAIL_EVENT_RESPONSE_PARSING_EN = """
+Extract from the following LLM response the hail events information.
+
+If no hail event is mentioned, do not return any event.
+
+Text:
 {text}
 """
 

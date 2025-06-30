@@ -40,25 +40,14 @@ class ClimateImpactExtractor:
         self.config = self.config_loader.config
         self.stages = self.config.get("stages", {})
 
-        # Define available schemas for extraction stages
-        self.extraction_schemas_by_stage = {
-            "event_identification": ExtractionSchemaFactory.get_extraction_schema(
-                stage="event_identification", config=self.config
-            ),
-            "impact_extraction": ExtractionSchemaFactory.get_extraction_schema(
-                stage="impact_extraction", config=self.config
-            ),
-            "location_extraction": ExtractionSchemaFactory.get_extraction_schema(
-                stage="location_extraction", config=self.config
-            ),
-        }
-
         # Dynamically initialize (enabled) pipeline steps for each stage
         self.enabled_pipeline_steps = {}
 
         for stage, settings in self.stages.items():
             if settings.get("enable", False):
-                schema = self.extraction_schemas_by_stage.get(stage)
+                schema = ExtractionSchemaFactory.get_extraction_schema(
+                    stage=stage, config=self.config
+                )
                 steps = settings.get("steps", {})
                 self.enabled_pipeline_steps[stage] = {
                     "summarization": (
@@ -128,7 +117,7 @@ class ClimateImpactExtractor:
 
             # Extract article ID and text
             article_id = article.filename
-            article_text = article.get_headline_and_body(separator=".")
+            article_text = article.get_headline_and_body_and_date()
 
             # Structure to store extracted data
             extracted_data: Dict[str, dict] = {}
@@ -208,23 +197,28 @@ class ClimateImpactExtractor:
 
     def _store_extracted_data(self, article: Article, stage: str, data: dict):
         """Stores extracted data in the article object based on the processing stage."""
+        # TODO parametrize for event, not only "drought"
         if stage == "event_identification":
             article.drought = data.drought
         elif stage == "impact_extraction":
             article.impacts = [i for i, v in data.model_dump().items() if v]
         elif stage == "location_extraction":
             article.locations = data.response if data.response else []
+        elif stage == "hail_extraction":
+            article.hail_event = data.model_dump() if data.model_dump() else {}
 
     def _log_results(self, article: Article, extracted_data: Dict[str, dict]):
         """Logs extracted information for debugging."""
         log_message = f"END - Processed article: {article.filename}\n"
 
+        # TODO parametrize for event, not only "drought"
         if "event_identification" in extracted_data:
-            # TODO parametrize for event, not only "drought"
             log_message += f"Drought: {article.drought}\n"
         if "impact_extraction" in extracted_data:
             log_message += f"Impacts: {', '.join(article.impacts)}\n"
         if "location_extraction" in extracted_data:
             log_message += f"Locations: {', '.join(article.locations)}"
+        if "hail_extraction" in extracted_data:
+            log_message += f"Hail Event: {json.dumps(article.hail_event, indent=2)}\n"
 
         logging.debug(log_message)

@@ -1,10 +1,11 @@
-from typing import Dict, Type, Optional
+from typing import Dict, Type
 
 from pydantic import BaseModel
 
 from ciena_llm.extraction_schema.impact import build_model as build_impact_model
 from ciena_llm.extraction_schema.province import build_model as build_province_model
 from ciena_llm.extraction_schema.event import build_model as build_event_model
+from ciena_llm.extraction_schema.hail_event import build_model as build_hail_model
 
 
 class ExtractionSchemaFactory:
@@ -27,16 +28,21 @@ class ExtractionSchemaFactory:
         :return: A dynamically created Pydantic model
         """
 
-        event = config.get("event").get("tag")
 
         if stage == "event_identification":
+            event = config.get("event").get("tag")
             return build_event_model(event)
 
         if stage == "impact_extraction":
+            event = config.get("event").get("tag")
             impacts = [impact.get("tag") for impact in config.get("impacts")]
             return build_impact_model(event, impacts)
 
         if stage == "location_extraction":
+            event = config.get("event").get("tag")
             return build_province_model(event)
+
+        if stage == "hail_extraction":
+            return build_hail_model()
 
         raise ValueError(f"Stage {stage} not supported")

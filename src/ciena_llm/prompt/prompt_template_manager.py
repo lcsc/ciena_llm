@@ -126,6 +126,16 @@ class PromptTemplateManager:
             "template": PROVINCE_RESPONSE_PARSING_ES,
             "variables": ["text"],
         },
+        ("hail_extraction", "extraction", DEFAULT, "en"): {
+            "template": HAIL_EVENT_EXTRACTION_EN,
+            "variables": ["text"],
+            "partial_variables": ["event"],
+        },
+        ("hail_extraction", "response_parsing", DEFAULT, "en"): {
+            "template": HAIL_EVENT_RESPONSE_PARSING_EN,
+            "variables": ["text"],
+            "partial_variables": ["event"],
+        },
     }
 
     @classmethod
@@ -191,6 +201,8 @@ class PromptTemplateManager:
         :param language: The language of the event names text.
         :return: A string of event names.
         """
+        if not event_config:
+            return None
         event_name = event_config[f"text_{language}"]
 
         return event_name
@@ -204,6 +216,8 @@ class PromptTemplateManager:
         :param language: The language of the impact names text.
         :return: A string of impact names.
         """
+        if not impact_config:
+            return None
         impact_names = [i[f"text_{language}"] for i in impact_config]
         impact_names_text = ", ".join(impact_names)
 
@@ -218,6 +232,9 @@ class PromptTemplateManager:
         :param language: The language of the impact descriptions text.
         :return: A string of impact descriptions.
         """
+
+        if not impact_config:
+            return None
 
         impact_names = [i[f"text_{language}"] for i in impact_config]
         impact_descriptions = [i[f"description_{language}"] for i in impact_config]
