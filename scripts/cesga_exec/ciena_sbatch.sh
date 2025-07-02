@@ -11,6 +11,8 @@ cd $HOME/CienaLLM/ciena_llm
 
 echo $SLURM_JOBID >$RESULTS_DIR/slurm.id
 
+SCRIPT_NAME=${SCRIPT_NAME:-"tests/test_cesga.py"}
+
 # Load Ollama and Python modules
 module load cesga/2022 ollama/0.6.4 python/3.10.8
 
@@ -73,6 +75,8 @@ Job Configuration:
 
 SLURM_JOBID: $SLURM_JOBID
 
+SCRIPT_NAME: $SCRIPT_NAME
+
 OLLAMA_PORT: $OLLAMA_PORT
 OLLAMA_HOST: $OLLAMA_HOST
 OLLAMA_TMPDIR: $OLLAMA_TMPDIR
@@ -104,7 +108,7 @@ EOF
 
 # Run the test
 experiment_start_t=$(date +%s)
-poetry run python tests/test_cesga.py
+poetry run python $SCRIPT_NAME
 
 experiment_end_t=$(date +%s)
 echo "Experiment Execution Time (SLURM): $(expr $experiment_end_t - $experiment_start_t) s."
