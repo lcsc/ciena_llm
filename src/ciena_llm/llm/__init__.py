@@ -113,10 +113,12 @@ class LLM:
         self.log_tool_call(f"Output from LLM ({self.stage})", response)
         # Check for parsing errors
         if response["parsed"] is None:
-            response_parsing_error = {
-                "exception": str(response["parsing_error"]),
-                "output": str(response),
-            }
+            response_parsing_error = {}
+            if response["parsing_error"] is not None:
+                response_parsing_error = {
+                    "exception": str(response["parsing_error"]),
+                    "output": str(response),
+                }
             response = self.extraction_schema.default_response()
         else:
             response_parsing_error = {}
