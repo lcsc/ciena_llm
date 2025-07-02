@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 from pydantic import BaseModel, Field
 
 
@@ -9,11 +9,19 @@ class HailEvent(BaseModel):
     )
     date: str = Field(
         default="",
-        description="Date of the hail event (preferred format: YYYY-MM-DD HH:mm, but other formats are allowed if cannot be inferred from text).",
+        description="Date of the hail event (format: YYYY-MM-DD HH:mm or YYYY-MM-DD).",
+    )
+    date_text: str = Field(
+        default="",
+        description="Textual representation of the date of the hail event, if the date cannot be inferred from the text.",
     )
     duration: str = Field(
         default="",
-        description="Duration of the hail event (preferred format: minutes, but can be text if cannot be inferred from text).",
+        description="Duration of the hail event in minutes.",
+    )
+    duration_text: str = Field(
+        default="",
+        description="Textual representation of the duration of the hail event, if the duration cannot be inferred from the text.",
     )
     damages: List[str] = Field(
         default_factory=list,

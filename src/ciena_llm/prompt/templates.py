@@ -237,11 +237,13 @@ Only consider hail events that have already occurred. Do not include any informa
 
 For each past hail event mentioned or clearly implied, provide a summary with the following details for each event:
 
-- locations: List all specific locations (e.g., cities, towns, regions, landmarks) directly affected by the hail event. Use proper names without additional descriptive text. If no locations are mentioned, leave this field empty.
-- date: The date and, if available, the time when the hail event occurred. If the article provides a specific date, use the format YYYY-MM-DD. If a specific time is also provided or can be reliably inferred, use the format YYYY-MM-DD HH:mm. If neither date nor time can be determined, leave this field empty or use the most precise information available from the article.
-- duration: The duration of the hail event. Prefer a numeric value in minutes or hours if available; otherwise, use the textual description from the article. If the duration cannot be inferred, leave this field empty.
-- damages: List all types of damages or impacts caused specifically by this hail event, as described in the article, using the exact wording and language from the article wherever possible. Only include damages that are directly attributed to this hail event.
-- size: The size of the hailstones, if mentioned, using the exact text and language from the article (e.g., in centimeters, millimeters, or using descriptive terms such as "golf ball-sized"). If not mentioned, leave this field empty.
+- locations (list[str]): List all specific locations (e.g., cities, towns, regions, landmarks) directly affected by the hail event. Use proper names without additional descriptive text. If no locations are mentioned, leave this field empty.
+- date (str): The date and, if available, the time when the hail event occurred. Use the format YYYY-MM-DD for dates, and YYYY-MM-DD HH:mm if a specific time is provided or can be reliably inferred. If neither date nor time can be determined, leave this field empty.
+- date_text (str): If the article provides a textual description of the date or time (e.g., "last Tuesday", "in early June"), include it here using the exact wording and language from the article. If not available, leave this field empty.
+- duration (str): The duration of the hail event in minutes if available or can be inferred. If the duration cannot be inferred, leave this field empty.
+- duration_text (str): If the article provides a textual description of the duration (e.g., "a few minutes", "several hours"), include it here using the exact wording and language from the article. If not available, leave this field empty.
+- damages (list[str]): List all types of damages or impacts caused specifically by this hail event, using the exact wording and language from the article whenever possible. Only include damages directly attributed to this hail event, and ensure to include quantifiable damages (such as number of affected hectares, casualties, or economic losses) if provided.
+- size (str): The size of the hailstones, if mentioned, using the exact text and language from the article (e.g., in centimeters, millimeters, or using descriptive terms such as "golf ball-sized"). If not mentioned, leave this field empty.
 
 If the article does not mention or clearly imply any past hail events, do not return any hail event information.
 
