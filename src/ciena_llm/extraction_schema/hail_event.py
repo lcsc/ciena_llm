@@ -7,28 +7,28 @@ class HailEvent(BaseModel):
         default_factory=list,
         description="List of locations directly affected by the hail event.",
     )
-    date: str = Field(
-        default="",
+    date: Optional[str] = Field(
+        default=None,
         description="Date of the hail event (format: YYYY-MM-DD HH:mm or YYYY-MM-DD).",
     )
-    date_text: str = Field(
-        default="",
+    date_text: Optional[str] = Field(
+        default=None,
         description="Textual representation of the date of the hail event, if the date cannot be inferred from the text.",
     )
-    duration: str = Field(
-        default="",
-        description="Duration of the hail event in minutes.",
+    duration: Optional[str | int] = Field(
+        default=None,
+        description="Duration of the hail event in minutes",
     )
-    duration_text: str = Field(
-        default="",
+    duration_text: Optional[str] = Field(
+        default=None,
         description="Textual representation of the duration of the hail event, if the duration cannot be inferred from the text.",
     )
     damages: List[str] = Field(
         default_factory=list,
         description="List of damages caused by the hail event.",
     )
-    size: str = Field(
-        default="",
+    size: Optional[str] = Field(
+        default=None,
         description="Size of the hail.",
     )
 
