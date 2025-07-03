@@ -9,7 +9,7 @@ export RESULTS_DIR="$HOME/CienaLLM/ciena_llm/results/$TEST_NAME/$(date +%Y-%m-%d
 
 export DATASET_PATH="$HOME/CienaLLM/data/test-datasets-small/test-hail-10/"
 
-export CIENA_LLM_MODEL="qwen2.5:72b-instruct-q4_K_M"
+export CIENA_LLM_MODEL="qwen3:32b"
 export CIENA_LLM_LANGUAGE="en"
 
 export CIENA_LLM_SUMMARIZATION_ENABLE="False"
@@ -19,8 +19,8 @@ export CIENA_LLM_SELF_CRITICISM_ENABLE="False"
 export CIENA_LLM_IMPACT_PROMPT_CATEGORY="description"
 
 export SLURM_JOB_TIME="00:10:00"
-export SLURM_CPUS=64
-export SLURM_GPUS=2
+export SLURM_CPUS=32
+export SLURM_GPUS=1
 
 mkdir -p $RESULTS_DIR
 
