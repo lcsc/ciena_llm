@@ -94,6 +94,7 @@ stages:
           step: response_parsing
           language: en
     
+# HAIL (not needed)
 # event:
 #   tag: "hail"
 #   text_es: "granizo"
@@ -101,10 +102,42 @@ stages:
 #   description_es: null
 #   description_en: null
 
+# DROUGHT
+# event:
+#   tag: "drought"
+#   text_es: "sequía"
+#   text_en: "drought"
+#     description_es: "Noticias sobre sequías suelen hacer referencia a la falta de lluvias, a la disminución de los caudales de los ríos, a la disminución de los niveles de los embalses o a la disminución de las aguas subterráneas." # TODO check
+#     description_en: "News about droughts usually refer to the lack of rain, the decrease in river flows, the decrease in reservoir levels, or the decrease in groundwater." # TODO check
+#   impacts:
+#     - tag: "agriculture"
+#       text_es: "agricultura"
+#       text_en: "agriculture"
+#       description_es: "Noticias sobre los impactos de la sequía en la agricultura suelen hacer referencia a perdidas en los cultivos tanto de secano como de regadío. Se suele comentar que se ha perdido o se perderá una parte de la cosecha."
+#       description_en: "News about the impacts of drought on agriculture usually refer to losses in both rainfed and irrigated crops. It is often mentioned that part of the harvest has been lost or will be lost."
+#     - tag: "livestock"
+#       text_es: "ganadería"
+#       text_en: "livestock"
+#       description_es: "Noticias sobre los impactos de la sequía en la ganadería suelen hacer referencia a que se han perdido los pastos de los que se alimenta el ganado, en sequías más extremas pueden hacer referencia a que no se dispone de agua para dar de beber al ganado."
+#       description_en: "News about the impacts of drought on livestock usually refer to the loss of pastures that feed the livestock. In more extreme droughts, it may be mentioned that there is no water available to give the livestock to drink."
+#     - tag: "hydrological_resources"
+#       text_es: "recursos hídricos"
+#       text_en: "hydrological resources"
+#       description_es: "Noticias sobre los impactos de la sequía en los recursos hídricos suelen hacer mención a la disminución de los caudales de los ríos, de los niveles de los embalses o de las aguas subterráneas. También a la falta de agua que esto provoca en las poblaciones, decretándose cortes de agua o dejando de usar el agua para ciertos usos, o la necesidad de traer agua de otras localidades."
+#       description_en: "News about the impacts of drought on hydrological resources usually mention the decrease in river flows, reservoir levels, or groundwater. It is also mentioned the lack of water that this causes in the populations, with water cuts being decreed or water not being used for certain uses, or the need to bring water from other locations."
+#     - tag: "energy"
+#       text_es: "energía"
+#       text_en: "energy"
+#       description_es: "Noticias sobre los impactos de la sequía en la energía  suelen mencionar que debido al bajo caudal de ríos o embalses no es posible turbinar y por tanto desciende la generación de energía hidroeléctrica."
+#       description_en: "News about the impacts of drought on energy usually mention that due to the low flow of rivers or reservoirs, it is not possible to turbine and therefore the generation of hydroelectric energy decreases."
+
 output:
   summary:
     - article_filename
     - article_hail_event
+    # - article_drought
+    # - article_impacts
+    # - article_locations
     - article_date
     - article_url
     - article_headline

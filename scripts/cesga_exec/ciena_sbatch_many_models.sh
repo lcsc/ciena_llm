@@ -110,7 +110,7 @@ EOF
 
     # Run the test
     experiment_start_t=$(date +%s)
-    poetry run python tests/test_cesga.py
+    poetry run python tests/test_cesga_drought.py
 
     experiment_end_t=$(date +%s)
     echo "Experiment Execution Time (SLURM): $(expr $experiment_end_t - $experiment_start_t) s."

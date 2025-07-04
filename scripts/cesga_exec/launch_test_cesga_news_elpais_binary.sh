@@ -3,6 +3,7 @@
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
 
 export TEST_NAME="news_elpais_binary_2k"
+export SCRIPT_NAME="tests/test_cesga_drought.py"
 
 export CIENA_LLM_MODEL="qwen2.5:72b-instruct-q4_K_M"
 
