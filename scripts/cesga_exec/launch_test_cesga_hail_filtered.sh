@@ -17,7 +17,7 @@ export SLURM_GPUS=2
 
 for i in {0..9}; do
 
-    export DATASET_PATH="$HOME/CienaLLM/data/CienaLLM/data/news-elpais-hail-filtered/subsets/subset_$i"
+    export DATASET_PATH="$HOME/CienaLLM/data/news-elpais-hail-filtered/subsets/subset_$i"
     export TEST_NAME="news_elpais_hail_filtered"
     export SCRIPT_NAME="tests/test_cesga_hail.py"
 
