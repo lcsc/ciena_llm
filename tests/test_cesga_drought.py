@@ -143,6 +143,7 @@ OVERRIDE_CONFIG = {
                 },
             },
         },
+        "hail_extraction": {"enable": False},
     },
     "event": {
         "tag": "drought",
@@ -150,6 +151,17 @@ OVERRIDE_CONFIG = {
         "text_en": "drought",
         "description_es": "Noticias sobre sequías suelen hacer referencia a la falta de lluvias, a la disminución de los caudales de los ríos, a la disminución de los niveles de los embalses o a la disminución de las aguas subterráneas.",
         "description_en": "News about droughts usually refer to the lack of rain, the decrease in river flows, the decrease in reservoir levels, or the decrease in groundwater.",
+    },
+    "output": {
+        "summary": [
+            "article_filename",
+            "article_drought",
+            # "article_impacts",
+            # "article_locations",
+            "article_date",
+            "article_url",
+            "article_headline",
+        ]
     },
 }
 
