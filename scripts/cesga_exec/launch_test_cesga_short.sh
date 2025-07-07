@@ -3,6 +3,7 @@
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
 
 export TEST_NAME="test_cesga_short"
+export SCRIPT_NAME="tests/test_cesga_drought.py"
 
 # TODO do not do only with date, put something more descriptive
 export RESULTS_DIR="$HOME/CienaLLM/ciena_llm/results/$TEST_NAME/$(date +%Y-%m-%d_%H-%M-%S)/"

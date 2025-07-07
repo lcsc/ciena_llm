@@ -3,6 +3,7 @@
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
 
 export TEST_NAME="test-final-experiment"
+export SCRIPT_NAME="tests/test_cesga_drought.py"
 
 export CIENA_LLM_LANGUAGE="en"
 export CIENA_LLM_EVENT_IDENTIFICATION_ENABLE="False"
