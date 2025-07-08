@@ -11,11 +11,11 @@ export CIENA_LLM_COT_ENABLE="False"
 export CIENA_LLM_SELF_CRITICISM_ENABLE="False"
 export CIENA_LLM_IMPACT_PROMPT_CATEGORY="description"
 
-export SLURM_JOB_TIME="03:00:00"
+export SLURM_JOB_TIME="24:00:00"
 export SLURM_CPUS=64
 export SLURM_GPUS=2
 
-for i in {0..9}; do
+for i in {0..29}; do
 
     export DATASET_PATH="$HOME/CienaLLM/data/news-elpais-hail-filtered/subsets/subset_$i"
     export TEST_NAME="news_elpais_hail_filtered"
