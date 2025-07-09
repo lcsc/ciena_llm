@@ -229,7 +229,10 @@ class LLM:
             self.llm_context_length,
         )
         if num_tokens_full_prompt > self.llm_context_length:
-            raise ValueError("Full prompt exceeds context length.")
+            logging.warning(
+                "Full prompt exceeds context length. The LLM may not be able to process the input correctly."
+            )
+            # raise ValueError("Full prompt exceeds context length.")
 
     def check_predicted_tokens(self, text):
         """
