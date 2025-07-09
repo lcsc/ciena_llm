@@ -164,5 +164,7 @@ cython_debug/
 # Other
 
 results/
+results
 results_cesga/
+results_cesga
 .env
