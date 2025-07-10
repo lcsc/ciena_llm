@@ -156,8 +156,8 @@ OVERRIDE_CONFIG = {
         "summary": [
             "article_filename",
             "article_drought",
-            # "article_impacts",
-            # "article_locations",
+            "article_impacts",
+            "article_locations",
             "article_date",
             "article_url",
             "article_headline",
