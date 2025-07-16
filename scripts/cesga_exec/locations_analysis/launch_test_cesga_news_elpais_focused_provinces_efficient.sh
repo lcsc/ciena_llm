@@ -5,7 +5,7 @@ DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." &>/dev/null && pwd)"
 export TEST_NAME="news_elpais_focused_provinces"
 export SCRIPT_NAME="tests/test_cesga_drought.py"
 
-export CIENA_LLM_MODEL="llama3.2:3b-instruct-q4_K_M"
+export CIENA_LLM_MODEL="qwen2.5:7b-instruct-q4_K_M"
 
 export RESULTS_DIR="$HOME/CienaLLM/ciena_llm/results/$TEST_NAME/efficient/$(date +%Y-%m-%d_%H-%M-%S)/"
 
@@ -21,9 +21,9 @@ export CIENA_LLM_COT_ENABLE="False"
 export CIENA_LLM_SELF_CRITICISM_ENABLE="False"
 export CIENA_LLM_IMPACT_PROMPT_CATEGORY="simple"
 
-export SLURM_JOB_TIME="0:30:00"
-export SLURM_CPUS=64
-export SLURM_GPUS=2
+export SLURM_JOB_TIME="1:00:00"
+export SLURM_CPUS=32
+export SLURM_GPUS=1
 
 mkdir -p $RESULTS_DIR
 

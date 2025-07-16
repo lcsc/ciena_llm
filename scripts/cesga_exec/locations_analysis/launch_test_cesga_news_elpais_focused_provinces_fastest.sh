@@ -22,8 +22,8 @@ export CIENA_LLM_SELF_CRITICISM_ENABLE="False"
 export CIENA_LLM_IMPACT_PROMPT_CATEGORY="description"
 
 export SLURM_JOB_TIME="0:30:00"
-export SLURM_CPUS=64
-export SLURM_GPUS=2
+export SLURM_CPUS=32
+export SLURM_GPUS=1
 
 mkdir -p $RESULTS_DIR
 
