@@ -60,6 +60,26 @@ class HailEvents(BaseModel):
             "```\n"
         )
 
+    @classmethod
+    def normalize_response_format(cls, response):
+        """
+        Parser to ensure the response is always a dictionary
+
+        Convert the response to a dictionary if it is a list.
+        This handles common generation errors in the LLM when no provinces are found.
+        """
+
+        # If is a list, return it as a dictionary
+        if isinstance(response, list):
+            return {"events": response}
+
+        # If is not a dictionary, return an empty dictionary
+        if not isinstance(response, dict):
+            return {"events": []}
+
+        # Else return the response as is
+        return response
+
 
 def build_model():
     # TODO
