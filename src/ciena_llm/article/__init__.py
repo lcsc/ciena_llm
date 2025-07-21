@@ -34,18 +34,26 @@ class Article:
         """
         return cls(**data)
 
-    def get_headline_and_body(self, separator: str = "~") -> str:
+    def format_fields(self, fields: Optional[list] = None) -> str:
         """
-        Get string with headline and body with a custom separator
+        Get a string representation of specified fields in the article.
+        If no fields are specified, headline, date, and body are included.
         """
-        return f"{self.headline}{separator}{self.body}"
+        if fields is None:
+            fields = ["headline", "date", "body"]
 
-    def get_headline_and_body_and_date(self) -> str:
-        """
-        Get string with headline, body, and date
-        """
+        values = []
+        headline = self.headline if "headline" in fields else ""
+        date_str = ""
+        if "date" in fields:
+            date_str = self.date.strftime("%A, %B %d, %Y")
+        body = self.body if "body" in fields else ""
 
-        date = self.date
-        formatted_date = date.strftime("%A, %B %d, %Y")
-
-        return f"{self.headline}\nPublished date: {formatted_date}\n\n{self.body}"
+        result = ""
+        if headline:
+            result += f"{headline}\n"
+        if date_str:
+            result += f"Published date: {date_str}\n\n"
+        if body:
+            result += f"{body}"
+        return result.strip()

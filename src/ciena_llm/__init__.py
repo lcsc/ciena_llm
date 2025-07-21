@@ -40,6 +40,9 @@ class ClimateImpactExtractor:
         self.config = self.config_loader.config
         self.steps_config = self.config.get("steps", {})
 
+        self.article_fields = self.config.get("article_fields", None)
+        print(f"Article fields: {self.article_fields}")
+
         self.extraction_task = self.config.get("extraction_task")
         extraction_schema = ExtractionSchemaFactory.get_extraction_schema(
             name=self.extraction_task, config=self.config
@@ -116,7 +119,7 @@ class ClimateImpactExtractor:
 
             # Extract article ID and text
             article_id = article.filename
-            article_text = article.get_headline_and_body_and_date()
+            article_text = article.format_fields(self.article_fields)
 
             # Structure to store extracted data
             extracted_data = {}
