@@ -3,7 +3,7 @@
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
 
 export TEST_NAME="test-12-all-combos"
-export SCRIPT_NAME="tests/test_cesga_drought.py"
+export SCRIPT_NAME="tests/v0.3_tests/test_cesga_drought.py"
 
 export DATASET_PATH="$HOME/CienaLLM/data/test-datasets-small/cesga-test-12/sample/"
 export ANNOTATION_PATH="$HOME/CienaLLM/data/test-datasets-small/cesga-test-12/dataset.csv"

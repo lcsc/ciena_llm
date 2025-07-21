@@ -21,7 +21,7 @@ for i in {0..14}; do
 
     export DATASET_PATH="$HOME/CienaLLM/data/news-elpais-all-drought-seqia/subsets/subset_$i"
     export TEST_NAME="news_elpais_all_drought_seqia"
-    export SCRIPT_NAME="tests/test_cesga_drought.py"
+    export SCRIPT_NAME="tests/v0.3_tests/test_cesga_drought.py"
 
     export RESULTS_DIR="$HOME/CienaLLM/ciena_llm/results/$TEST_NAME/subset_$i/"
 

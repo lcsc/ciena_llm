@@ -11,7 +11,7 @@ cd $HOME/CienaLLM/ciena_llm
 
 echo $SLURM_JOBID >$RESULTS_DIR/slurm.id
 
-SCRIPT_NAME=${SCRIPT_NAME:-"tests/test_cesga_drought.py"}
+SCRIPT_NAME=${SCRIPT_NAME:-"tests/v0.3_tests/test_cesga_drought.py"}
 
 # Load Ollama and Python modules
 module load cesga/2022 ollama/0.6.4 python/3.10.8
