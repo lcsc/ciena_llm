@@ -30,7 +30,7 @@ OVERRIDE_CONFIG = {
             },
         },
         "self_criticism": {
-            "enable": True,
+            "enable": False,
             "prompt": {
                 "language": LANGUAGE,
             },
