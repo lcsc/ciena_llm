@@ -32,11 +32,11 @@ Reason step by step and explain your reasoning before giving the final answer.
 
 class PromptTemplateManager:
     TEMPLATES = {
-        ("summarization", "summarization", DEFAULT, "es"): {
+        (DEFAULT, "summarization", DEFAULT, "es"): {
             "template": SUMMARIZATION_ES,
             "variables": ["text"],
         },
-        ("summarization", "summarization", DEFAULT, "en"): {
+        (DEFAULT, "summarization", DEFAULT, "en"): {
             "template": SUMMARIZATION_EN,
             "variables": ["text"],
         },
@@ -48,90 +48,97 @@ class PromptTemplateManager:
             "template": SELF_CRITICISM_EN,
             "variables": ["prompt", "response"],
         },
-        ("event_identification", "extraction", DEFAULT, "es"): {
+        ("event", "extraction", DEFAULT, "es"): {
             "template": EVENT_EXTRACTION_ES,
             "variables": ["text"],
             "partial_variables": ["event"],
         },
-        ("event_identification", "extraction", DEFAULT, "en"): {
+        ("event", "extraction", DEFAULT, "en"): {
             "template": EVENT_EXTRACTION_EN,
             "variables": ["text"],
             "partial_variables": ["event"],
         },
-        ("event_identification", "response_parsing", DEFAULT, "es"): {
+        ("event", "response_parsing", DEFAULT, "es"): {
             "template": EVENT_IDENTIFICATION_RESPONSE_PARSING_ES,
             "variables": ["text"],
             "partial_variables": ["event"],
         },
-        ("event_identification", "response_parsing", DEFAULT, "en"): {
+        ("event", "response_parsing", DEFAULT, "en"): {
             "template": EVENT_IDENTIFICATION_RESPONSE_PARSING_EN,
             "variables": ["text"],
             "partial_variables": ["event"],
         },
-        ("impact_extraction", "extraction", "simple", "es"): {
-            "template": DROUGHT_IMPACT_EXTRACTION_SIMPLE_ES,
+        ("impact", "extraction", "simple", "es"): {
+            "template": IMPACT_EXTRACTION_SIMPLE_ES,
             "variables": ["text"],
-            "partial_variables": ["impacts"],
+            "partial_variables": ["event", "impacts"],
         },
-        ("impact_extraction", "extraction", "simple", "en"): {
-            "template": DROUGHT_IMPACT_EXTRACTION_SIMPLE_EN,
+        ("impact", "extraction", "simple", "en"): {
+            "template": IMPACT_EXTRACTION_SIMPLE_EN,
             "variables": ["text"],
-            "partial_variables": ["impacts"],
+            "partial_variables": ["event", "impacts"],
         },
-        ("impact_extraction", "extraction", "description", "es"): {
-            "template": DROUGHT_IMPACT_EXTRACTION_DESCRIPTION_ES,
+        ("impact", "extraction", "description", "es"): {
+            "template": IMPACT_EXTRACTION_DESCRIPTION_ES,
             "variables": ["text"],
-            "partial_variables": ["impacts", "impact_descriptions"],
+            "partial_variables": ["event", "impacts", "impact_descriptions"],
         },
-        ("impact_extraction", "extraction", "description", "en"): {
-            "template": DROUGHT_IMPACT_EXTRACTION_DESCRIPTION_EN,
+        ("impact", "extraction", "description", "en"): {
+            "template": IMPACT_EXTRACTION_DESCRIPTION_EN,
             "variables": ["text"],
-            "partial_variables": ["impacts", "impact_descriptions"],
+            "partial_variables": ["event", "impacts", "impact_descriptions"],
         },
-        ("impact_extraction", "response_parsing", DEFAULT, "en"): {
-            "template": DROUGHT_IMPACT_RESPONSE_PARSING_EN,
+        ("impact", "response_parsing", DEFAULT, "en"): {
+            "template": IMPACT_RESPONSE_PARSING_EN,
             "variables": ["text"],
-            "partial_variables": ["impacts", "impact_descriptions"],
+            "partial_variables": ["event", "impacts", "impact_descriptions"],
         },
-        ("impact_extraction", "response_parsing", DEFAULT, "es"): {
-            "template": DROUGHT_IMPACT_RESPONSE_PARSING_ES,
+        ("impact", "response_parsing", DEFAULT, "es"): {
+            "template": IMPACT_RESPONSE_PARSING_ES,
             "variables": ["text"],
-            "partial_variables": ["impacts", "impact_descriptions"],
+            "partial_variables": ["event", "impacts", "impact_descriptions"],
         },
-        ("location_extraction", "extraction", "location", "es"): {
-            "template": DROUGHT_LOCATION_EXTRACTION_ES,
+        ("location", "extraction", "location", "es"): {
+            "template": LOCATION_EXTRACTION_ES,
             "variables": ["text"],
+            "partial_variables": ["event"],
         },
-        ("location_extraction", "extraction", "location", "en"): {
-            "template": DROUGHT_LOCATION_PROVINCE_EXTRACTION_EN,
+        ("location", "extraction", "location", "en"): {
+            "template": LOCATION_PROVINCE_EXTRACTION_EN,
             "variables": ["text"],
+            "partial_variables": ["event"],
         },
-        ("location_extraction", "response_parsing", "location", "en"): {
+        ("location", "response_parsing", "location", "en"): {
             "template": LOCATION_RESPONSE_PARSING_EN,
             "variables": ["text"],
+            "partial_variables": ["event"],
         },
-        ("location_extraction", "extraction", "province", "en"): {
-            "template": DROUGHT_PROVINCE_EXTRACTION_EN,
+        ("location", "extraction", "province", "en"): {
+            "template": PROVINCE_EXTRACTION_EN,
             "variables": ["text"],
+            "partial_variables": ["event"],
         },
-        ("location_extraction", "extraction", "province", "es"): {
-            "template": DROUGHT_PROVINCE_EXTRACTION_ES,
+        ("location", "extraction", "province", "es"): {
+            "template": PROVINCE_EXTRACTION_ES,
             "variables": ["text"],
+            "partial_variables": ["event"],
         },
-        ("location_extraction", "response_parsing", "province", "en"): {
+        ("location", "response_parsing", "province", "en"): {
             "template": PROVINCE_RESPONSE_PARSING_EN,
             "variables": ["text"],
+            "partial_variables": ["event"],
         },
-        ("location_extraction", "response_parsing", "province", "es"): {
+        ("location", "response_parsing", "province", "es"): {
             "template": PROVINCE_RESPONSE_PARSING_ES,
             "variables": ["text"],
+            "partial_variables": ["event"],
         },
-        ("hail_extraction", "extraction", DEFAULT, "en"): {
+        ("hail_event", "extraction", DEFAULT, "en"): {
             "template": HAIL_EVENT_EXTRACTION_EN,
             "variables": ["text"],
             "partial_variables": ["event"],
         },
-        ("hail_extraction", "response_parsing", DEFAULT, "en"): {
+        ("hail_event", "response_parsing", DEFAULT, "en"): {
             "template": HAIL_EVENT_RESPONSE_PARSING_EN,
             "variables": ["text"],
             "partial_variables": ["event"],
@@ -141,7 +148,7 @@ class PromptTemplateManager:
     @classmethod
     def get_prompt_template(
         cls,
-        stage: str = DEFAULT,
+        extraction_task: str = DEFAULT,
         step: str = DEFAULT,
         category: str = DEFAULT,
         language: str = "en",
@@ -150,10 +157,10 @@ class PromptTemplateManager:
         **kwargs,
     ) -> PromptTemplate:
         """
-        Retrieves and returns a LangChain PromptTemplate for a given stage, step, language, category, and output type.
+        Retrieves and returns a LangChain PromptTemplate for a given extraction_task, step, language, category, and output type.
 
-        :param stage: The stage type (e.g., "drought", "impact", "location").
-        :param step: The step within the stage (e.g., "classification", "extraction").
+        :param extraction_task: The extraction_task
+        :param step: The pipeline step (e.g., "classification", "extraction").
         :param category: The step within the category (default is "default").
         :param language: The language of the template (default is "en").
         :param output: The output type of the template (default is "text"). Options are "text" and "json". If "json", the format instructions will be appended to the template.
@@ -161,10 +168,10 @@ class PromptTemplateManager:
         :return: A LangChain PromptTemplate object.
         """
         try:
-            template_info = cls.TEMPLATES[(stage, step, category, language)]
+            template_info = cls.TEMPLATES[(extraction_task, step, category, language)]
         except KeyError as exc:
             raise ValueError(
-                f"Template for stage '{stage}', step '{step}', category '{category}', and language '{language}' not recognized."
+                f"Template for extraction_task '{extraction_task}', step '{step}', category '{category}', and language '{language}' not recognized."
             ) from exc
 
         template_str = template_info["template"]
