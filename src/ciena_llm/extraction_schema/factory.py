@@ -16,33 +16,32 @@ class ExtractionSchemaFactory:
     @classmethod
     def get_extraction_schema(
         cls,
-        stage: str,
+        name: str,
         config: Dict,
     ) -> Type[BaseModel]:
         """
         Factory function to create a dynamic extraction schema model.
 
-        :param stage: The extraction stage
+        :param name: The extraction schema name
         :param language: The language of the extraction schema
         :param config: The configuration
         :return: A dynamically created Pydantic model
         """
 
-
-        if stage == "event_identification":
+        if name == "event":
             event = config.get("event").get("tag")
             return build_event_model(event)
 
-        if stage == "impact_extraction":
+        if name == "impact":
             event = config.get("event").get("tag")
             impacts = [impact.get("tag") for impact in config.get("impacts")]
             return build_impact_model(event, impacts)
 
-        if stage == "location_extraction":
+        if name == "location":
             event = config.get("event").get("tag")
             return build_province_model(event)
 
-        if stage == "hail_extraction":
+        if name == "hail_event":
             return build_hail_model()
 
-        raise ValueError(f"Stage {stage} not supported")
+        raise ValueError(f"Schema '{name}' not supported")

@@ -3,7 +3,7 @@ Represents articles and its fields
 """
 
 from dataclasses import dataclass, asdict
-from typing import List, Optional, Dict
+from typing import Optional, Dict
 from datetime import datetime
 
 
@@ -18,12 +18,7 @@ class Article:
     url: str
     headline: str
     body: str
-    # TODO remove drought specific fields
-    drought: Optional[bool] = None
-    impacts: Optional[List] = None
-    locations: Optional[List[str]] = None
-    # TODO generalize to any type of event
-    hail_event: Optional[dict] = None
+    extracted_data: Optional[Dict] = None
 
     def to_dict(self):
         """

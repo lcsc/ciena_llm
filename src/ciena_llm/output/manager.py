@@ -41,19 +41,9 @@ class OutputManager:
         return self.extractor.config
 
     @property
-    def stages(self):
-        """Get the stages used by the extractor."""
-        return self.extractor.stages
-
-    @property
-    def pipeline(self):
-        """Get the pipeline used by the extractor."""
-        return self.extractor.pipeline
-
-    @property
-    def enabled_pipeline_steps(self):
+    def steps(self):
         """Get the pipeline steps used by the extractor."""
-        return self.extractor.enabled_pipeline_steps
+        return self.extractor.steps
 
     # Methods to write the extracted data to files
 
@@ -90,11 +80,9 @@ class OutputManager:
         """
         prompts = {}
 
-        for stage, steps in self.enabled_pipeline_steps.items():
-            prompts[stage] = {}
-            for step, step_chain in steps.items():
-                if step_chain:
-                    prompts[stage][step] = step_chain.prompts
+        for step, step_chain in self.steps.items():
+            if step_chain:
+                prompts[step] = step_chain.prompts
 
         with open(file, "w", encoding="utf-8") as f:
             json.dump(prompts, f, indent=4)
@@ -111,16 +99,14 @@ class OutputManager:
         }
 
         # Parsing errors from pipeline steps
-        for stage, steps in self.enabled_pipeline_steps.items():
-            parsing_errors[stage] = {}
-            for step, step_chain in steps.items():
-                if step_chain and hasattr(step_chain, "parsing_errors"):
-                    step_errors = step_chain.parsing_errors
-                    parsing_errors[stage][step] = {
-                        "parsing_errors": step_errors,
-                        "total": len(step_errors),
-                    }
-                    parsing_errors["total"] += len(step_errors)
+        for step, step_chain in self.steps.items():
+            if step_chain and hasattr(step_chain, "parsing_errors"):
+                step_errors = step_chain.parsing_errors
+                parsing_errors[step] = {
+                    "total": len(step_errors),
+                    "parsing_errors": step_errors,
+                }
+                parsing_errors["total"] += len(step_errors)
 
         with open(file, "w", encoding="utf-8") as f:
             json.dump(parsing_errors, f, indent=4)
@@ -139,24 +125,18 @@ class OutputManager:
         }
 
         # Execution times from pipeline steps
-        for stage, steps in self.enabled_pipeline_steps.items():
-            stage_total = 0
-            execution_times[stage] = {"total": 0}
 
-            for step, step_chain in steps.items():
-                if step_chain:
-                    step_times = step_chain.execution_times
-                    step_total = sum(step_times.values())
+        for step, step_chain in self.steps.items():
+            if step_chain:
+                step_times = step_chain.execution_times
+                step_total = sum(step_times.values())
 
-                    execution_times[stage][step] = {
-                        "total": step_total,
-                        "execution_times": step_times,
-                    }
+                execution_times[step] = {
+                    "total": step_total,
+                    "execution_times": step_times,
+                }
 
-                    stage_total += step_total
-
-            execution_times[stage]["total"] = stage_total
-            execution_times["total"] += stage_total
+                execution_times["total"] += step_total
 
         with open(file, "w", encoding="utf-8") as f:
             json.dump(execution_times, f, indent=4)

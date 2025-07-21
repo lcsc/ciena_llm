@@ -10,11 +10,9 @@ from ciena_llm.prompt.prompt_template_manager import PromptTemplateManager
 class SummarizationChain(Runnable):
     def __init__(
         self,
-        stage,
         config,
         llm_config,
     ):
-        self.stage = stage
         self.pipeline_step = "summarization"
 
         self.llm_config = llm_config
@@ -24,19 +22,18 @@ class SummarizationChain(Runnable):
         self.language = self.config["prompt"]["language"]
 
         self.prompt_template = PromptTemplateManager.get_prompt_template(
-            stage=self.stage,
+            step=self.pipeline_step,
             **self.prompt_config,
         )
 
         self.llm = LLM(
             config=self.llm_config,
-            stage=f"{self.stage}-{self.pipeline_step}",
+            pipeline_step=f"{self.pipeline_step}",
         )
 
         self.chain = self.prompt_template | self.llm
 
         self.prompts = {
-            "stage": self.stage,
             "pipeline_step": self.pipeline_step,
             **self.prompt_config,
             "template": self.prompt_template.pretty_repr(),

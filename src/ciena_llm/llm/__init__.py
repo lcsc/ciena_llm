@@ -14,16 +14,18 @@ from langchain_ollama import ChatOllama
 
 
 class LLM:
-    def __init__(self, config: dict, stage: str, extraction_schema: BaseModel = None):
+    def __init__(
+        self, config: dict, pipeline_step: str, extraction_schema: BaseModel = None
+    ):
         """
         Initialize the LLM with the specific configuration.
 
         :param config: Configuration dictionary containing settings.
-        :param stage: The stage name (e.g., "impact", "drought", etc.).
+        :param pipeline_step: The pipeline_step name (e.g., "impact", "drought", etc.).
         :param extraction_schema: The extraction schema to be used for parsing the LLM output.
         """
 
-        self.stage = stage
+        self.pipeline_step = pipeline_step
         self.config = config
         self.extraction_schema = extraction_schema
 
@@ -94,7 +96,7 @@ class LLM:
         # Obtain the response content
         response = response.content
         # Log output after LLM call
-        self.log(f"Output from LLM ({self.stage})", response)
+        self.log(f"Output from LLM ({self.pipeline_step})", response)
 
         return (
             response,
@@ -110,7 +112,7 @@ class LLM:
         # Obtain the response content
         response_content = response["raw"].content
         # Log structured output
-        self.log_tool_call(f"Output from LLM ({self.stage})", response)
+        self.log_tool_call(f"Output from LLM ({self.pipeline_step})", response)
         # Check for parsing errors
         if response["parsed"] is None:
             response_parsing_error = {}
@@ -139,7 +141,7 @@ class LLM:
             response_content = response.content
 
             # Log output after LLM call
-            self.log(f"Output from LLM ({self.stage})", response_content)
+            self.log(f"Output from LLM ({self.pipeline_step})", response_content)
 
             # Invoke the response parser
             response = self.response_parser.invoke(response)
@@ -195,7 +197,7 @@ class LLM:
         self.check_context_length(text.to_string())
 
         # Log input before calling LLM
-        self.log(f"Input to LLM ({self.stage})", text)
+        self.log(f"Input to LLM ({self.pipeline_step})", text)
 
         # Call the LLM with the input text using the `invoke` method
         if self.llm_structured is None:

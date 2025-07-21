@@ -10,15 +10,15 @@ from ciena_llm.prompt.prompt_template_manager import PromptTemplateManager
 class ExtractionChain(Runnable):
     def __init__(
         self,
-        stage,
+        extraction_task,
         config,
         llm_config,
         extraction_schema,
         event_config=None,
         impact_config=None,
     ):
-        self.stage = stage
         self.pipeline_step = "extraction"
+        self.extraction_task = extraction_task
 
         self.llm_config = llm_config
         self.extraction_schema = extraction_schema
@@ -32,7 +32,8 @@ class ExtractionChain(Runnable):
         self.language = self.config["prompt"]["language"]
 
         self.prompt_template = PromptTemplateManager.get_prompt_template(
-            stage=self.stage,
+            extraction_task=self.extraction_task,
+            step=self.pipeline_step,
             **self.prompt_config,
             output=(
                 "json"
@@ -57,14 +58,13 @@ class ExtractionChain(Runnable):
 
         self.llm = LLM(
             config=self.llm_config,
-            stage=f"{self.stage}-{self.pipeline_step}",
+            pipeline_step=f"{self.pipeline_step}",
             extraction_schema=self.extraction_schema,
         )
 
         self.chain = self.prompt_template | self.llm
 
         self.prompts = {
-            "stage": self.stage,
             "pipeline_step": self.pipeline_step,
             **self.prompt_config,
             "output": "json" if self.extraction_schema is not None else "text",

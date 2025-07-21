@@ -11,12 +11,10 @@ from ciena_llm.prompt.prompt_template_manager import PromptTemplateManager
 class SelfCriticismChain(Runnable):
     def __init__(
         self,
-        stage,
         config,
         llm_config,
         extraction_schema,
     ):
-        self.stage = stage
         self.pipeline_step = "self_criticism"
 
         self.llm_config = llm_config
@@ -29,6 +27,7 @@ class SelfCriticismChain(Runnable):
         self.language = self.config["prompt"]["language"]
 
         self.prompt_template = PromptTemplateManager.get_prompt_template(
+            step=self.pipeline_step,
             **self.prompt_config,
             output=(
                 "json"
@@ -44,14 +43,13 @@ class SelfCriticismChain(Runnable):
 
         self.llm = LLM(
             config=self.llm_config,
-            stage=f"{self.stage}-{self.pipeline_step}",
+            pipeline_step=f"{self.pipeline_step}",
             extraction_schema=self.extraction_schema,
         )
 
         self.chain = self.prompt_template | self.llm
 
         self.prompts = {
-            "stage": self.stage,
             "pipeline_step": self.pipeline_step,
             **self.prompt_config,
             "output": "json" if self.extraction_schema is not None else "text",
