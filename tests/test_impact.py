@@ -1,10 +1,10 @@
+import os
+
 from common import ClimateImpactExtractorTest
 
 
-TEST_NAME = "test_short_impact"
-DATASET_BASE_PATH = (
-    "/home/javier/Developer/SeqIA/data/test-datasets-small/news-elpais-binary-2T-1F/"
-)
+TEST_NAME = "test_impact"
+DATASET_BASE_PATH = os.getenv("DATASET_BASE_PATH")
 DATASET_PATH = f"{DATASET_BASE_PATH}/sample"
 
 LANGUAGE = "en"
