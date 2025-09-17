@@ -1,6 +1,6 @@
 # CienaLLM
 
-CienaLLM is a modular Python framework for **schema-guided Generative Information Extraction (GenIE)** from climate-related news using open-weight Large Language Models (LLMs). It enables configurable prompts, multi-step extraction pipelines (summarization, self-criticism, chain-of-thought), and structured JSON outputs.
+CienaLLM (Climate Impact Extraction from News Articles using LLMs) is a modular Python framework for **schema-guided Generative Information Extraction (GenIE)** from climate-related news using open-weight Large Language Models (LLMs). It enables configurable prompts, multi-step extraction pipelines (summarization, self-criticism, chain-of-thought), and structured JSON outputs.
 
 The framework was developed and evaluated in *Vela-Tambo et al. (2025, to be published)*, focusing on extracting drought impacts from Spanish news articles. Its modular design makes it easily extensible to other hazards, domains, and languages.
 
