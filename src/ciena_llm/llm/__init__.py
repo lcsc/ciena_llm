@@ -51,7 +51,6 @@ class LLM:
                 num_predict=self.llm_num_predict_tokens,
                 seed=self.llm_seed,
                 reasoning=think_mode,
-                validate_model_on_init=think_mode,
             )
         else:
             raise ValueError(f"Unsupported backend: {backend_name}")
