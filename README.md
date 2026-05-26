@@ -94,11 +94,17 @@ You can run the framework on your own corpora of news articles formatted accordi
 If you use this framework in your research, please cite:
 
 ```bibtex
-@misc{vela2025cienallm,
-  author = {Javier Vela-Tambo and Jorge Gracia and Fernando Domínguez-Castro},
-  title = {CienaLLM: Generative Climate-Impact Extraction from News Articles with Autoregressive LLMs},
-  year = {2025},
-  note = {To be published}
+@misc{vela-tambo2025cienallm,
+  title = {{{CienaLLM}}: {{Generative Climate-Impact Extraction}} from {{News Articles}} with {{Autoregressive LLMs}}},
+  shorttitle = {{{CienaLLM}}},
+  author = {{Vela-Tambo}, Javier and Gracia, Jorge and {Dominguez-Castro}, Fernando},
+  year = 2025,
+  month = dec,
+  number = {arXiv:2512.19305},
+  eprint = {2512.19305},
+  primaryclass = {cs},
+  publisher = {arXiv},
+  doi = {10.48550/arXiv.2512.19305},
 }
 ```
 
