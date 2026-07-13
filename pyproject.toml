@@ -1,31 +1,35 @@
-[tool.poetry]
+[project]
 name = "ciena_llm"
-version = "0.4.1"
+version = "0.4.2"
 description = ""
-authors = ["Javier Vela <javier.vela00@gmail.com>"]
+authors = [
+    {name = "Javier Vela", email = "javier.vela00@gmail.com"},
+    {name = "Daniel Vilas",email = "dvilas@csic.es"}
+]
 readme = "README.md"
-packages = [{ include = "ciena_llm", from = "src" }]
+requires-python = ">=3.12,<3.15"
+dependencies = [
+    "spacy (>=3.8.14,<4.0.0)",
+    "langchain-ollama (>=1.1.0,<2.0.0)",
+    "pyyaml (>=6.0.3,<7.0.0)",
+    "transformers (>=5.13.1,<6.0.0)",
+    "pylint-pydantic (>=0.4.1,<0.5.0)",
+    "python-dotenv (>=1.2.2,<2.0.0)",
+    "scikit-learn (>=1.9.0,<2.0.0)",
+    "matplotlib (>=3.11.0,<4.0.0)",
+    "seaborn (>=0.13.2,<0.14.0)",
+    "pandas (>=3.0.3,<4.0.0)",
+    "ruff (>=0.15.21,<0.16.0)"
+
+]
+
+[tool.poetry]
+packages = [{include = "ciena_llm", from = "src"}]
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
 
 [tool.poetry.scripts]
 main = "ciena_llm.main:main"
-
-[tool.poetry.dependencies]
-python = ">=3.10,<3.13"
-python-dotenv = "^1.0.1"
-spacy = "^3.8.4"
-langchain-ollama = "^1.0.1"
-pyyaml = "^6.0.2"
-transformers = "^4.50.1"
-pylint-pydantic = "^0.3.5"
-
-[tool.poetry.group.dev.dependencies]
-scikit-learn = "^1.6.1"
-matplotlib = "^3.10.1"
-seaborn = "^0.13.2"
-pandas = "^2.2.3"
-ruff = "^0.13.0"
-python-dotenv = "^1.1.1"
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
