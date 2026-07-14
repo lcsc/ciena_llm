@@ -37,9 +37,12 @@ class LLM:
 
         self.structured_output_mode = self.config.get("structured_output_mode")
 
-        think_mode= self.config.get("thinking", None)
+        think_mode = self.config.get("thinking", None)
+        mKwArgs = self.config.get("model_kwargs",None)
         if think_mode is not None:
             print(f"LLM Thinking mode enabled: {think_mode}")
+        if mKwArgs is not None:
+            print(f"Model KwArgs: {mKwArgs}")
 
         # Initialize the appropriate backend LLM
         backend_name = self.config.get("backend", "ollama")
@@ -51,6 +54,7 @@ class LLM:
                 num_predict=self.llm_num_predict_tokens,
                 seed=self.llm_seed,
                 reasoning=think_mode,
+                model_kwargs=mKwArgs
             )
         else:
             raise ValueError(f"Unsupported backend: {backend_name}")

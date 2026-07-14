@@ -3,6 +3,7 @@ from typing import List, Dict
 
 from ciena_llm.article import Article
 from ciena_llm.output.utils import write_to_csv
+from .versions import VersionExtractor
 
 
 class OutputManager:
@@ -17,6 +18,7 @@ class OutputManager:
     def __init__(self, extractor: "ClimateImpactExtractor"):
         # Store only a reference, not the actual data
         self.extractor = extractor
+        self.version_extractor = VersionExtractor(extractor)
 
     # Properties to access the extractor's properties dynamically after initialization
 
@@ -142,3 +144,21 @@ class OutputManager:
             json.dump(execution_times, f, indent=4)
 
         return execution_times
+
+    def write_versions_to_json(self, file: str):
+        """
+        Write the versions of the models used in the extraction process to the given JSON file.
+
+        :param file: The file to write the versions to.
+        """
+        versions = {}
+
+        library_versions = self.version_extractor.extract_libraries_versions()
+        versions["libraries"] = library_versions
+        
+
+        ollama_data = self.version_extractor.extract_ollama_data()
+        versions["ollama"] = ollama_data
+
+        with open(file, "w", encoding="utf-8") as f:
+            json.dump(versions, f, indent=4)
