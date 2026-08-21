@@ -1,0 +1,195 @@
+split,url,datePublished,headline,drought_label,agriculture_label,livestock_label,hydrological_resources_label,energy_label
+test,https://elpais.com/diario/1993/06/24/espana/740872813_850215.html,1993-06-23 22:00:00+00:00,La sequía echa a  perder las cosechas,True,True,False,False,False
+test,https://elpais.com/diario/2005/07/09/cvalenciana/1120936702_850215.html,2005-07-08 22:00:00+00:00,Los agricultores piden aplazar el pago de préstamos por la sequía,True,True,False,False,False
+test,https://elpais.com/diario/2008/12/04/internacional/1228345205_850215.html,2008-12-03 23:00:00+00:00,La oposición de Bolivia reanuda las protestas contra Morales,True,True,False,False,False
+test,https://elpais.com/elpais/2011/03/16/actualidad/1300261730_850215.html,2011-03-16 11:03:00+00:00,"Muchos personajes, pocas noticias",False,False,False,False,False
+test,https://elpais.com/ccaa/2012/02/27/galicia/1330372251_191041.html,2012-02-28 07:02:01+00:00,Arden 70 hectáreas en tres incendios en Lugo y Ourense,True,False,False,False,False
+test,https://elpais.com/ccaa/2012/07/26/andalucia/1343320763_317789.html,2012-07-26 21:58:47+00:00,"La Junta mantendrá la subvención a los seguros agrarios, aunque reducida",True,True,True,False,False
+test,https://elpais.com/ccaa/2012/09/03/galicia/1346696916_899933.html,2012-09-04 06:28:44+00:00,El juez archiva el caso de As Fragas por no hallar culpable,True,False,False,False,False
+test,https://elpais.com/diario/2005/10/19/espana/1129672819_850215.html,2005-10-18 22:00:00+00:00,Los embalses suben por primera vez desde mayo gracias a las lluvias,True,True,False,True,False
+test,https://elpais.com/economia/2012/08/30/agencias/1346327933_353489.html,2012-08-30 11:58:56+00:00,Blas Calzada dice que tras crear el banco malo fluirá el crédito a las pymes,False,False,False,False,False
+test,https://elpais.com/diario/2007/04/12/galicia/1176373104_850215.html,2007-04-11 22:00:00+00:00,"La comunidad, zona sensible",True,False,False,False,False
+test,https://elpais.com/diario/1998/02/13/sociedad/887324409_850215.html,1998-02-12 23:00:00+00:00,El Tribunal Europeo condena a España por la mala calidad de sus aguas de baño,True,False,False,False,False
+test,https://elpais.com/diario/2000/01/17/sociedad/948063610_850215.html,2000-01-16 23:00:00+00:00,El ex ministro Villar Mir aspira a presidir el Colegio de Caminos,True,False,False,False,False
+test,https://elpais.com/diario/2002/01/07/cvalenciana/1010434687_850215.html,2002-01-06 23:00:00+00:00,EU pide un plan para paliar el daño del mal tiempo en el campo,True,True,False,False,False
+test,https://elpais.com/diario/2005/06/06/madrid/1118057071_850215.html,2005-06-05 22:00:00+00:00,El PSOE culpa a Aguirre y Gallardón de las fugas de agua,True,False,False,False,False
+test,https://elpais.com/diario/2001/02/21/internacional/982710016_850215.html,2001-02-20 23:00:00+00:00,"Un millón de personas pueden morir de hambre en Afganistán, según la ONU",True,False,False,False,False
+test,https://elpais.com/espana/2022-11-04/sanchez-y-costa-consolidan-la-alianza-iberica-para-reforzarse-en-europa.html,2022-11-04 04:40:00.242000+00:00,Sánchez y Costa consolidan la alianza ibérica para reforzarse en Europa,True,False,False,True,False
+test,https://elpais.com/deportes/2014/11/02/actualidad/1414960238_111391.html,2014-11-02 20:38:28+00:00,El Levante respira a costa del Almería,False,False,False,False,False
+test,https://elpais.com/cultura/2019/12/07/actualidad/1575704774_845680.html,2019-12-07 07:54:16+00:00,“Ha parido usted un escritor”,False,False,False,False,False
+test,https://elpais.com/diario/2008/07/24/andalucia/1216851727_850215.html,2008-07-23 22:00:00+00:00,Regantes y «hippies» pugnan por el agua,True,True,False,False,False
+test,https://elpais.com/diario/1984/09/10/economia/463615209_850215.html,1984-09-09 22:00:00+00:00,2.000 millones de subvenciones para la agricultura castellana,True,True,True,False,False
+test,https://elpais.com/diario/2005/10/25/andalucia/1130192535_850215.html,2005-10-24 22:00:00+00:00,"La producción agraria y ganadera caerá el 4,1% este año por las inclemencias climáticas",True,True,True,False,False
+test,https://elpais.com/diario/2010/04/25/opinion/1272146407_850215.html,2010-04-25 05:00:00+00:00,La Iglesia y los derechos humanos,False,False,False,False,False
+test,https://elpais.com/diario/1998/11/17/cvalenciana/911333882_850215.html,1998-11-16 23:00:00+00:00,Expertos descartan en Alicante que la actual escasez de lluvia se deba al cambio climático,True,False,False,False,False
+test,https://elpais.com/economia/2019/05/16/alternativas/1557998719_458384.html,2019-05-16 09:45:59+00:00,De Siria a España: preservar la protección social ante el cambio climático,True,True,False,False,False
+test,https://elpais.com/diario/2009/02/12/economia/1234393204_850215.html,2009-02-11 23:00:00+00:00,Solbes carga contra los sueldos y dividendos «excesivos» en la banca,False,False,False,False,False
+test,https://elpais.com/elpais/2006/06/24/actualidad/1151137018_850215.html,2006-06-24 09:08:00+00:00,Zapatero aboga por «un gran acuerdo político de convivencia que recoja la pluralidad de Euskadi»,True,False,False,False,False
+test,https://elpais.com/diario/2010/06/20/cultura/1276984803_850215.html,2010-06-20 05:00:00+00:00,Agujero sin fondo,False,False,False,False,False
+test,https://elpais.com/economia/2013/11/14/agencias/1384451687_862861.html,2013-11-14 17:54:51+00:00,La Comisión de Presupuestos del PE aprueba el presupuesto de la UE para los próximos siete años,True,False,False,False,False
+test,https://elpais.com/diario/1988/07/04/economia/583970408_850215.html,1988-07-03 22:00:00+00:00,La alta producción y la humedad marcan a la baja la campaña cerealística,True,True,False,False,False
+test,https://elpais.com/ccaa/2014/03/01/paisvasco/1393701889_686778.html,2014-03-01 19:40:01+00:00,El Alavés suma un agónico triunfo en su campo dos meses y medio después,False,False,False,False,False
+test,https://elpais.com/diario/1981/11/28/portada/375750004_850215.html,1981-11-27 23:00:00+00:00,El Gobierno prohíbe las concentraciones en la plaza de Oriente,True,False,False,False,False
+test,https://elpais.com/economia/2005/05/13/actualidad/1115969574_850215.html,2005-05-13 13:51:00+00:00,"El IPC no da sorpresas y sube una décima de punto en abril, hasta el 3,5% interanual",True,False,False,False,False
+test,https://elpais.com/diario/2006/01/12/cvalenciana/1137097084_850215.html,2006-01-11 23:00:00+00:00,"Alicante obtendrá 120 hectómetros cúbicos de la desalinización en dos años, según Narbona",True,False,False,True,False
+test,https://elpais.com/diario/2003/12/08/opinion/1070838005_850215.html,2003-12-07 23:00:00+00:00,El fracaso en la lucha contra el hambre,True,False,False,False,False
+test,https://elpais.com/diario/1992/02/20/espana/698540417_850215.html,1992-02-19 23:00:00+00:00,El temporal de nieve y lluvia dificulta el tráfico en el centro y norte de España,True,False,False,False,False
+test,https://elpais.com/diario/2009/11/29/catalunya/1259460445_850215.html,2009-11-29 06:00:00+00:00,La Caixa augura que las fusiones reanimarán el crédito,False,False,False,False,False
+test,https://elpais.com/diario/1999/08/01/andalucia/933459744_850215.html,1999-07-31 22:00:00+00:00,Miembros de la Unesco debaten sobre los usos éticos del agua,True,False,False,True,False
+test,https://elpais.com/diario/2005/06/04/madrid/1117884256_850215.html,2005-06-03 22:00:00+00:00,El Canal tardó dos semanas en descubrir el origen de dos fugas en el distrito de Moncloa,True,False,False,False,False
+test,https://elpais.com/deportes/2012/03/12/actualidad/1331582660_733456.html,2012-03-13 01:03:35+00:00,En juego el pedigrí de la ‘Champions’,False,False,False,False,False
+test,https://elpais.com/diario/2004/09/17/andalucia/1095373328_850215.html,2004-09-16 22:00:00+00:00,Funcionarios docentes y directivos,True,False,False,False,False
+test,https://elpais.com/elpais/2011/12/04/3500_millones/1323016403_132301.html,2011-12-04 16:33:23+00:00,Crónica de la contracumbre: una «mani» en Sudáfrica,True,False,False,False,False
+test,https://elpais.com/mexico/2022-07-25/la-sequia-que-golpea-mexico.html,2022-07-25 10:15:00.292000+00:00,La sequía que arrasa México,True,False,False,True,False
+test,https://elpais.com/politica/2019/10/18/diario_de_espana/1571399670_861692.html,2019-10-18 15:20:01+00:00,La plegaria por la lluvia que une a musulmanes y cristianos,True,False,False,False,False
+test,https://elpais.com/espana/2022-06-21/la-indignacion-crece-sobre-las-ascuas-del-incendio-en-sierra-de-la-culebra.html,2022-06-21 03:40:00+00:00,La indignación crece sobre las ascuas del incendio en la sierra de la Culebra,True,False,False,False,False
+test,https://elpais.com/diario/1987/09/18/ultima/558914407_850215.html,1987-09-17 22:00:00+00:00,Traición,False,False,False,False,False
+test,https://elpais.com/diario/1983/07/13/internacional/426895222_850215.html,1983-07-12 22:00:00+00:00,La «cumbre» del África austral condena a Suráfrica,True,False,False,False,False
+test,https://elpais.com/diario/2002/07/21/madrid/1027250667_850215.html,2002-07-20 22:00:00+00:00,Manzanares,True,False,False,False,False
+test,https://elpais.com/diario/2005/10/09/ultima/1128808802_850215.html,2005-10-08 22:00:00+00:00,Pantano,True,False,False,True,False
+test,https://elpais.com/diario/2008/03/15/catalunya/1205546839_850215.html,2008-03-14 23:00:00+00:00,Agbar ofrece al Gobierno distribuir toda el agua en la región de Barcelona,True,False,False,False,False
+test,https://elpais.com/ccaa/2012/03/10/madrid/1331401260_089746.html,2012-03-11 12:15:47+00:00,Mirando al cielo,True,True,False,True,False
+test,https://elpais.com/deportes/2017/11/06/actualidad/1509981655_240053.html,2017-11-07 13:51:26+00:00,"Cristiano y Benzema, los más desacertados",False,False,False,False,False
+test,https://elpais.com/mexico/2022-04-27/samuel-y-mariana-se-acabaron-los-likes.html,2022-04-27 02:30:00.308000+00:00,Samuel y Mariana: se acabaron los ‘likes’,True,False,False,False,False
+test,https://elpais.com/diario/1989/08/21/economia/619653608_850215.html,1989-08-20 22:00:00+00:00,Buenos precios y cosecha corta en el girasol,True,True,False,False,False
+test,https://elpais.com/diario/1983/10/16/espana/435106814_850215.html,1983-10-15 23:00:00+00:00,Alcaldes afectados por el trasvase del Tajo al Segura envían un informe al Gobierno,True,False,False,False,False
+test,https://elpais.com/diario/2008/07/14/andalucia/1215987730_850215.html,2008-07-13 22:00:00+00:00,Los albañiles vuelven al campo,True,True,False,False,False
+test,https://elpais.com/diario/1983/11/16/espana/437785221_850215.html,1983-11-15 23:00:00+00:00,Mauritania y España deciden renegociar el acuerdo de pesca a partir de diciembre,True,True,False,False,False
+test,https://elpais.com/diario/2008/06/11/espana/1213135214_850215.html,2008-06-10 22:00:00+00:00,Espinosa señala «la mejora» en cambio climático pese al aumento de emisiones,True,False,False,False,False
+test,https://elpais.com/ccaa/2019/08/17/madrid/1566058935_369555.html,2019-08-17 22:44:06+00:00,Uvas convertidas en cenizas,True,True,False,False,False
+test,https://elpais.com/deportes/2022-02-24/colapso-historico-del-real-madrid-en-la-euroliga.html,2022-02-24 20:41:11.216000+00:00,Colapso histórico del Real Madrid en la Euroliga,False,False,False,False,False
+test,https://elpais.com/diario/2006/08/17/paisvasco/1155843605_850215.html,2006-08-16 22:00:00+00:00,Tres películas que juegan en casa,False,False,False,False,False
+test,https://elpais.com/ideas/2022-10-23/inmigracion-y-jemeres-rojos.html,2022-10-23 03:00:00.838000+00:00,Inmigración y jemeres rojos,True,False,False,False,False
+test,https://elpais.com/espana/catalunya/2021-03-22/dansa-quinzena-metropolitana-cierra-con-15800-asistentes-y-un-85-de-ocupacion.html,2021-03-22 11:21:51.920000+00:00,Dansa Quinzena Metropolitana cierra con 15.800 asistentes y un 85% de ocupación,False,False,False,False,False
+test,https://elpais.com/diario/2000/09/18/economia/969228007_850215.html,2000-09-17 22:00:00+00:00,La sequía de los últimos meses reduce la próxima cosecha de vino,True,True,False,False,False
+test,https://elpais.com/deportes/2009/04/12/actualidad/1239520942_850215.html,2009-04-12 20:57:00+00:00,"Seis años después, Ferrero",False,False,False,False,False
+test,https://elpais.com/diario/2005/06/20/cvalenciana/1119295087_850215.html,2005-06-19 22:00:00+00:00,El PSPV dice que Blasco es el principal «peligro» para las zonas húmedas valencianas,True,False,False,False,False
+test,https://elpais.com/espana/2022-09-05/el-pp-de-feijoo-suma-cuatro-decimas-a-su-ventaja-sobre-el-psoe.html,2022-09-05 03:40:00.472000+00:00,El PP de Feijóo suma cuatro décimas a su ventaja sobre el PSOE,True,False,False,False,False
+test,https://elpais.com/ccaa/2017/09/07/madrid/1504775818_897312.html,2017-09-07 22:16:04+00:00,Títeres para despedir las vacaciones,False,False,False,False,False
+test,https://elpais.com/deportes/2007/02/26/actualidad/1172478113_850215.html,2007-02-26 12:28:00+00:00,El Real Madrid pierde popularidad,False,False,False,False,False
+test,https://elpais.com/deportes/2022-08-24/marc-soler-gana-la-quinta-etapa-de-la-vuelta-y-pone-fin-dos-anos-de-sequia-del-ciclismo-espanol.html,2022-08-24 15:24:22.155000+00:00,Marc Soler se pone la capa en la Vuelta a España,False,False,False,False,False
+test,https://elpais.com/elpais/2016/05/02/actualidad/1462179275_910257.html,2016-05-05 08:03:36+00:00,"Nietos, la prolongación de la alegría",False,False,False,False,False
+test,https://elpais.com/diario/2005/09/28/catalunya/1127869648_850215.html,2005-09-27 22:00:00+00:00,Lleida inaugura la Feria de Sant Miquel en medio de la grave crisis del sector agrícola,True,True,False,False,False
+test,https://elpais.com/sociedad/2022-03-16/el-intenso-episodio-de-calima-alcanza-su-pico-en-espana-y-llega-a-las-puertas-de-alemania.html,2022-03-16 04:30:00.374000+00:00,El intenso episodio de calima alcanza su pico en España y llega a las puertas de Alemania,True,False,False,False,False
+test,https://elpais.com/sociedad/2007/10/30/actualidad/1193698802_850215.html,2007-10-30 10:51:00+00:00,La UE asume la sequía y la escasez de agua como un problema comunitario,True,False,False,False,False
+test,https://elpais.com/diario/1993/01/16/madrid/727187054_850215.html,1993-01-15 23:00:00+00:00,El Canal garantiza que este año no habrá restricciones de agua si continua el ahorro,True,False,False,True,False
+test,https://elpais.com/economia/2013/12/06/actualidad/1386360127_950015.html,2013-12-06 23:11:25+00:00,No hay más crédito ni lo habrá y si lo hay será más caro,False,False,False,False,False
+test,https://elpais.com/diario/2001/01/30/deportes/980809203_850215.html,2001-01-29 23:00:00+00:00,Espanyol y Barça abren hoy los cuartos de final de la Copa en Montjuïc,False,False,False,False,False
+test,https://elpais.com/diario/1999/11/06/andalucia/941844146_850215.html,1999-11-05 23:00:00+00:00,La dotación de riego en el Guadalquivir se reduce a la mitad para esta campaña,True,True,False,True,False
+test,https://elpais.com/ciencia/2022-05-20/problemas-en-la-economia-el-empleo-o-a-la-igualdad-un-informe-documenta-los-danos-colaterales-del-coronavirus.html,2022-05-20 03:20:00.272000+00:00,"Las cicatrices de la pandemia más allá de la salud: golpe a la economía, el empleo y la igualdad",True,False,False,False,False
+test,https://elpais.com/diario/1985/05/28/opinion/486079207_850215.html,1985-05-27 22:00:00+00:00,¿Desertización provocada?,True,False,False,False,False
+test,https://elpais.com/economia/2023-02-15/naturgy-dispara-sus-ingresos-y-beneficios-en-2022-impulsada-por-los-altos-precios-de-la-energia.html,2023-02-15 08:26:03.611000+00:00,Naturgy dispara su beneficio en 2022 impulsada por los altos precios de la energía,True,False,False,False,True
+test,https://elpais.com/television/2022-10-10/que-ver-hoy-en-tv-lunes-10-de-octubre-de-2022.html,2022-10-10 03:30:01.025000+00:00,¿Qué ver hoy en TV? Lunes 10 de octubre de 2022,True,False,False,False,False
+test,https://elpais.com/deportes/2015/05/11/actualidad/1431373264_021206.html,2015-05-11 20:40:04+00:00,El Rayo va sobrado ante el Getafe,False,False,False,False,False
+test,https://elpais.com/diario/2007/03/18/negocio/1174225943_850215.html,2007-03-17 23:00:00+00:00,La primera OPA para ahorrar agua,True,True,False,True,False
+test,https://elpais.com/ccaa/2012/08/16/catalunya/1345144954_276149.html,2012-08-16 22:33:05+00:00,La sequía empieza en los pozos,True,False,True,True,False
+test,https://elpais.com/diario/1995/07/07/espana/805068010_850215.html,1995-07-06 22:00:00+00:00,Valcárcel pide el máximo de competencias para Murcia,True,False,False,False,False
+test,https://elpais.com/diario/2000/02/21/deportes/951087605_850215.html,2000-02-20 23:00:00+00:00,Catanha se reencuentra con el gol El Málaga consigue ante el Numancia su primera victoria en casa en tres meses,False,False,False,False,False
+test,https://elpais.com/sociedad/2009/04/21/actualidad/1240264808_850215.html,2009-04-21 17:09:00+00:00,Oxfam asegura que las víctimas de desastres naturales se duplicarán en seis años,True,False,False,False,False
+test,https://elpais.com/diario/2000/09/30/deportes/970264808_850215.html,2000-09-29 22:00:00+00:00,El salto con pértiga vuelve a tener acento norteamericano,False,False,False,False,False
+test,https://elpais.com/elpais/2018/01/18/ciencia/1516287875_193258.html,2018-01-19 18:20:59+00:00,"2015, 2016 y 2017 han sido los años más calurosos desde que hay registros",True,False,False,False,False
+test,https://elpais.com/deportes/2022-09-11/evenepoel-el-nino-que-maduro-en-la-vuelta-a-espana.html,2022-09-11 18:11:49.026000+00:00,"Evenepoel gana la Vuelta a España, el más joven en lograrlo desde 1961 ",False,False,False,False,False
+test,https://elpais.com/diario/1999/07/28/catalunya/933124051_850215.html,1999-07-27 22:00:00+00:00,La Generalitat ayudará a 171 municipios que padecen la sequía,True,True,False,False,False
+test,https://elpais.com/espana/2022-03-06/moreno-bonilla-se-abre-una-etapa-para-el-dialogo-con-el-psoe.html,2022-03-06 04:40:00.467000+00:00,Moreno Bonilla: “Se abre una etapa para el diálogo con el PSOE”,True,True,False,False,False
+test,https://elpais.com/diario/1986/12/04/internacional/534034827_850215.html,1986-12-03 23:00:00+00:00,Amplias restricciones económicas en Cuba,True,False,False,False,False
+test,https://elpais.com/diario/1992/04/01/economia/702079209_850215.html,1992-03-31 22:00:00+00:00,Francia y España urgen a un acuerdo sobre la reforma agraria en la CE,True,True,True,False,False
+test,https://elpais.com/deportes/2016/12/30/actualidad/1483128843_240106.html,2016-12-30 22:34:53+00:00,El Barça supera el martirio turco,False,False,False,False,False
+test,https://elpais.com/diario/1984/04/15/sociedad/450828011_850215.html,1984-04-14 22:00:00+00:00,Finaliza en Segovia el I Congreso Nacional de Geología,True,False,False,False,False
+test,https://elpais.com/sociedad/2008/02/18/actualidad/1203289202_850215.html,2008-02-18 09:23:00+00:00,La lluvia llega a la península y las islas,True,True,False,True,False
+test,https://elpais.com/diario/2007/07/17/catalunya/1184634455_850215.html,2007-07-16 22:00:00+00:00,"Las cuencas de los ríos, en estado de excepcionalidad por la sequía",True,False,False,True,False
+test,https://elpais.com/diario/2011/06/11/sociedad/1307743209_850215.html,2011-06-11 05:00:00+00:00,Inglaterra y Francia sufren la peor sequía en décadas,True,True,False,False,False
+test,https://elpais.com/deportes/2014/05/17/actualidad/1400346484_726050.html,2014-05-17 21:03:03+00:00,El Arsenal acaba con nueve años de sequía,False,False,False,False,False
+test,https://elpais.com/diario/2008/04/08/catalunya/1207616842_850215.html,2008-04-07 22:00:00+00:00,Barcelona abrirá 10 pozos más de agua freática en tres años,True,False,False,False,False
+test,https://elpais.com/espana/catalunya/2020-09-27/el-cullberg-ballet-no-podra-inaugurar-la-temporada-del-mercat-por-la-covid-19.html,2020-09-27 20:27:40.182000+00:00,El Cullberg Ballet no podrá inaugurar la temporada del Mercat por la covid-19  ,False,False,False,False,False
+test,https://elpais.com/diario/2006/06/09/madrid/1149852265_850215.html,2006-06-08 22:00:00+00:00,La piscina pública de Vallehermoso pierde cada día 40.000 litros de agua,True,False,False,False,False
+test,https://elpais.com/ccaa/2016/11/20/catalunya/1479659074_059113.html,2016-11-20 20:31:59+00:00,Toreros y aficionados celebran en Barcelona la derogación de la ‘ley antitoros’,False,False,False,False,False
+test,https://elpais.com/elpais/2009/08/04/paco_nadal/1249340400_124934.html,2009-08-03 23:00:00+00:00,"Perú, el primer reportaje (III)",True,False,False,False,False
+test,https://elpais.com/diario/2001/09/01/internacional/999295222_850215.html,2001-08-31 22:00:00+00:00,Huir del infierno,True,False,False,False,False
+test,https://elpais.com/diario/1998/02/08/sociedad/886892401_850215.html,1998-02-07 23:00:00+00:00,El Gobierno retrasa los planes sobre el agua hasta lograr un consenso con los usuarios,True,False,False,False,False
+test,https://elpais.com/diario/2008/05/24/catalunya/1211591244_850215.html,2008-05-23 22:00:00+00:00,«Mossos» y regantes del Ter acaban a golpes durante una visita de Montilla,True,True,False,True,False
+test,https://elpais.com/deportes/2017/11/18/actualidad/1511019138_952081.html,2017-11-18 19:42:35+00:00,Luis Suárez acaba con su abstinencia goleadora,False,False,False,False,False
+test,https://elpais.com/diario/2007/02/18/catalunya/1171764438_850215.html,2007-02-17 23:00:00+00:00,La mayor nevada de la temporada,True,False,False,False,False
+test,https://elpais.com/sociedad/2007/02/02/actualidad/1170370802_850215.html,2007-02-02 12:38:00+00:00,"España padecerá más lluvias torrenciales, más sequías y más olas de calor",True,False,False,False,False
+test,https://elpais.com/diario/1981/07/22/economia/364600809_850215.html,1981-07-21 22:00:00+00:00,Polémica sobre las ayudas de Agricultura a la sequía,True,True,True,False,False
+test,https://elpais.com/ccaa/2012/04/11/galicia/1334165246_093125.html,2012-04-11 17:27:26+00:00,Hernández vuelve a presentar el plan contra la sequía que anunció en otoño,True,True,True,True,False
+test,https://elpais.com/politica/2017/10/16/actualidad/1508163108_759679.html,2017-10-16 18:37:52+00:00,“El fuego ha llegado a las mejores zonas de reproducción del oso pardo”,True,False,False,False,False
+test,https://elpais.com/elpais/2016/01/04/opinion/1451933633_311252.html,2016-01-04 23:05:41+00:00,El invierno de nuestros descontentos,True,False,False,False,False
+test,https://elpais.com/diario/1999/07/30/andalucia/933286936_850215.html,1999-07-29 22:00:00+00:00,"¿Sequía, qué sequía?",True,False,False,False,False
+test,https://elpais.com/politica/2018/03/22/actualidad/1521703759_778520.html,2018-03-22 22:30:13+00:00,Detenido un concejal del PSOE de un pueblo de Segovia por diez robos con fuerza,True,True,False,False,False
+test,https://elpais.com/diario/1983/11/01/espana/436489215_850215.html,1983-10-31 23:00:00+00:00,Regar con aguas del Guadalquivir será multado hasta con 5 millones,True,True,False,True,False
+test,https://elpais.com/elpais/2005/07/19/actualidad/1121761020_850215.html,2005-07-19 18:26:00+00:00,El Gobierno aprobará el viernes medidas excepcionales sobre el uso del fuego,True,False,False,False,False
+test,https://elpais.com/diario/1989/09/08/espana/621208805_850215.html,1989-09-07 22:00:00+00:00,Un desaparecido y tres heridos en Andalucía,True,True,False,True,False
+test,https://elpais.com/diario/1978/06/14/economia/266623215_850215.html,1978-06-13 22:00:00+00:00,Descienden las previsiones de producción cafetera en Brasil,True,True,False,False,False
+test,https://elpais.com/ccaa/2018/03/18/madrid/1521396656_418837.html,2018-03-19 08:54:48+00:00,Los pantanos de Madrid recogen en 15 días el agua que consume la región en cuatro meses,True,False,False,True,False
+test,https://elpais.com/ccaa/2017/08/23/madrid/1503491096_761090.html,2017-08-23 22:38:51+00:00,Chapuzón de última hora,True,False,False,False,False
+test,https://elpais.com/deportes/2020-09-20/casemiro-suplente-nueve-meses-despues-y-dos-noveles-ante-la-sequia.html,2020-09-20 22:20:07.963000+00:00,Casemiro suplente y dos noveles ante la sequía,False,False,False,False,False
+test,https://elpais.com/elpais/2018/11/19/seres_urbanos/1542622419_741904.html,2018-11-23 07:29:34+00:00,Se buscan arquitectos para diseñar casas resilientes,True,False,False,False,False
+test,https://elpais.com/diario/2003/09/12/opinion/1063317603_850215.html,2003-09-11 22:00:00+00:00,Inflación enquistada,True,False,False,False,False
+test,https://elpais.com/diario/1983/07/04/espana/426117601_850215.html,1983-07-03 22:00:00+00:00,"Madrid, al igual que otras capitales españolas, se prepara para el establecimiento de fuertes. restricciones de agua",True,False,False,True,False
+test,https://elpais.com/diario/1999/09/09/economia/936828018_850215.html,1999-09-08 22:00:00+00:00,Sube la presión,True,False,False,False,False
+test,https://elpais.com/diario/1977/03/26/internacional/228178812_850215.html,1977-03-25 23:00:00+00:00,Altos dirigentes chinos discuten el futuro de Ten Hsiao-ping,True,True,False,False,False
+test,https://elpais.com/diario/1981/11/10/economia/374194807_850215.html,1981-11-09 23:00:00+00:00,Optima cosecha de remolacha en la cuenca del Duero,True,True,False,False,False
+test,https://elpais.com/diario/1992/03/22/madrid/701267061_850215.html,1992-03-21 23:00:00+00:00,Dos plazas recién restauradas esperan desde hace meses las fuentes que las adornarán,True,False,False,False,False
+test,https://elpais.com/economia/2022-12-12/el-gobierno-calcula-en-un-19-la-caida-de-la-demanda-de-gas-entre-agosto-y-noviembre.html,2022-12-12 20:31:20.139000+00:00,El Gobierno calcula en un 19% la caída de la demanda de gas entre agosto y noviembre,True,False,False,False,True
+test,https://elpais.com/diario/1995/10/21/sociedad/814230008_850215.html,1995-10-20 23:00:00+00:00,"El agua, tema único de la reunión de ministros de la UE en Sevilla",True,False,False,False,False
+test,https://elpais.com/diario/1998/01/26/deportes/885769236_850215.html,1998-01-25 23:00:00+00:00,Pertinaz sequía en el Espanyol,False,False,False,False,False
+test,https://elpais.com/sociedad/2007/03/22/actualidad/1174518001_850215.html,2007-03-22 01:40:00+00:00,El agua potable ya es una necesidad mundial crucial,True,False,False,True,False
+test,https://elpais.com/elpais/2020/02/06/ciencia/1580976774_553007.html,2020-02-15 23:08:27+00:00,Cóctel de bacterias con fresas,True,False,False,False,False
+test,https://elpais.com/internacional/2017/01/21/actualidad/1484985193_140131.html,2017-01-21 14:41:08+00:00,"Barack Obama: “Esto no es un punto en la historia de América, es una coma”",True,False,False,False,False
+test,https://elpais.com/diario/1988/08/21/economia/588117609_850215.html,1988-08-20 22:00:00+00:00,Varias empresas multinacionales ofertan maíz a la baja para fin de año,True,True,False,False,False
+test,https://elpais.com/diario/2005/03/28/internacional/1111960814_850215.html,2005-03-27 22:00:00+00:00,"Cae la producción de opio en Afganistán, según la ONU",True,True,False,False,False
+test,https://elpais.com/diario/2009/03/01/negocio/1235914882_850215.html,2009-02-28 23:00:00+00:00,Frenazo en la oferta de fondos,False,False,False,False,False
+test,https://elpais.com/diario/1997/09/22/internacional/874879209_850215.html,1997-09-21 22:00:00+00:00,Los comunistas proponen al fin a Kim Jong II como líder norcoreano,True,False,False,False,False
+test,https://elpais.com/internacional/2019/01/11/argentina/1547229456_644166.html,2019-01-12 02:20:10+00:00,Las inundaciones en el noreste de Argentina dejan tres muertos,True,False,True,False,False
+test,https://elpais.com/diario/1996/03/25/madrid/827756657_850215.html,1996-03-24 23:00:00+00:00,Naufragios de ciudad,True,False,False,True,False
+test,https://elpais.com/elpais/2016/07/21/3500_millones/1469102694_146910.html,2016-07-21 12:04:54+00:00,Resiliencia: el muelle que impulsa la vida,True,True,False,True,False
+test,https://elpais.com/diario/2009/04/14/catalunya/1239671245_850215.html,2009-04-13 22:00:00+00:00,La caída de ventas y la sequía de crédito frenan la inversión empresarial,False,False,False,False,False
+test,https://elpais.com/espana/2022-08-19/el-verano-mas-duro-en-medio-siglo-de-los-aviones-apagafuegos.html,2022-08-19 03:40:00.366000+00:00,El verano más duro en medio siglo de los aviones apagafuegos,True,False,False,True,False
+test,https://elpais.com/sociedad/2020/01/15/actualidad/1579115969_126335.html,2020-01-16 08:28:50+00:00,‘Dale una vuelta’ | Cómo retener los incendios forestales,False,False,False,False,False
+test,https://elpais.com/economia/2013/04/28/actualidad/1367165650_661535.html,2013-04-29 00:19:36+00:00,El Gobierno rebaja la fiscalidad agraria,True,True,True,True,False
+test,https://elpais.com/diario/1985/06/22/espana/488239226_850215.html,1985-06-21 22:00:00+00:00,Automatizada la información hidrológica en la cuenca del Ebro,False,False,False,False,False
+test,https://elpais.com/diario/1995/08/11/madrid/808140256_850215.html,1995-08-10 22:00:00+00:00,Tejados voladores y piscinas fecales,True,False,False,True,False
+test,https://elpais.com/diario/2008/04/09/catalunya/1207703242_850215.html,2008-04-08 22:00:00+00:00,Lavar el coche con manguera consume más de 500 litros de agua,True,False,False,True,False
+test,https://elpais.com/diario/1993/01/30/opinion/728348406_850215.html,1993-01-29 23:00:00+00:00,¿País vertebrado?,True,False,False,False,False
+test,https://elpais.com/diario/1997/11/18/portada/879807602_850215.html,1997-11-17 23:00:00+00:00,El reventón de un depósito de agua se cobra nueve vidas en Melilla,False,False,False,False,False
+test,https://elpais.com/elpais/2011/07/15/3500_millones/1310704200_131070.html,2011-07-15 04:30:00+00:00,La crisis del Cuerno de África desde el campo de refugiados de Dadaab,True,False,True,True,False
+test,https://elpais.com/diario/1995/08/14/madrid/808399471_850215.html,1995-08-13 22:00:00+00:00,Blindaje acuífero,True,True,True,True,False
+test,https://elpais.com/elpais/2019/10/29/planeta_futuro/1572363354_802645.html,2019-11-03 23:00:33+00:00,El hambre que cien años dura,True,True,False,True,False
+test,https://elpais.com/diario/2006/10/23/madrid/1161602660_850215.html,2006-10-22 22:00:00+00:00,La Confederación Hidrográfica halla 289 pozos ilegales en dos años,True,False,False,True,False
+test,https://elpais.com/sociedad/2019/06/20/actualidad/1561018561_180258.html,2019-06-20 15:54:55+00:00,España vuelve a la sequía a las puertas de un verano muy caluroso,True,True,False,True,False
+test,https://elpais.com/opinion/2022-10-29/feijoo-va-de-resbalon-en-resbalon.html,2022-10-29 03:00:01.069000+00:00,Feijóo: los traspiés y lo que no son traspiés,False,False,False,False,False
+test,https://elpais.com/planeta-futuro/2021-11-08/la-onu-advierte-de-que-45-millones-de-personas-estan-al-borde-de-la-hambruna.html,2021-11-08 12:31:27.161000+00:00,La ONU advierte de que 45 millones de personas están al borde de la hambruna,True,True,False,False,False
+test,https://elpais.com/diario/2006/02/09/sociedad/1139439611_850215.html,2006-02-08 23:00:00+00:00,"El hambre amenaza la vida de 3,5 millones de personas en Kenia",True,True,True,True,False
+test,https://elpais.com/diario/2008/06/04/andalucia/1212531735_850215.html,2008-06-03 22:00:00+00:00,Los arroceros anuncian querellas contra Costas,True,True,False,True,False
+test,https://elpais.com/diario/1991/03/17/opinion/669164406_850215.html,1991-03-16 23:00:00+00:00,Nuevas crisis en la agenda,True,False,False,False,True
+test,https://elpais.com/diario/2008/04/19/espana/1208556002_850215.html,2008-04-18 22:00:00+00:00,El Ebro a Barcelona por «conducción»,True,False,False,True,False
+test,https://elpais.com/diario/2000/01/20/cvalenciana/948399478_850215.html,2000-01-19 23:00:00+00:00,La escasez de lluvias otoñales deja los embalses un 20% por debajo de la media,True,True,False,True,False
+test,https://elpais.com/diario/1984/10/07/espana/465951619_850215.html,1984-10-06 23:00:00+00:00,El Gobierno regional no reconoce a la comisión del trasvase poder para autorizar envíos a Murcia,True,False,False,False,False
+test,https://elpais.com/diario/2010/12/06/andalucia/1291591324_850215.html,2010-12-06 06:00:00+00:00,Las lluvias aceleran el desembalse en las presas del Guadalquivir,True,False,False,False,False
+test,https://elpais.com/diario/1976/09/12/deportes/211327215_850215.html,1976-09-11 22:00:00+00:00,La lluvia y barro de Balaidos preocupan a Carmelo y Luis,True,False,False,True,False
+test,https://elpais.com/diario/2008/04/20/opinion/1208642408_850215.html,2008-04-19 22:00:00+00:00,El arte del circunloquio,False,False,False,False,False
+test,https://elpais.com/diario/1993/01/20/espana/727484405_850215.html,1993-01-19 23:00:00+00:00,La Junta andaluza invertirá 2.368 millones en obras para paliar la sequía,True,False,False,True,False
+test,https://elpais.com/diario/1977/02/06/economia/224031620_850215.html,1977-02-05 23:00:00+00:00,El consumo de energía eléctrica,True,False,False,False,True
+test,https://elpais.com/diario/2006/10/05/madrid/1160047457_850215.html,2006-10-04 22:00:00+00:00,"Madrid, a prueba de diluvios",False,False,False,False,False
+test,https://elpais.com/economia/2005/05/06/actualidad/1115364781_850215.html,2005-05-06 14:12:00+00:00,El Gobierno aprueba medidas de urgencia contra la sequía,True,True,False,True,False
+test,https://elpais.com/diario/1991/09/23/economia/685576810_850215.html,1991-09-22 22:00:00+00:00,Bloqueado a la baja el mercado nacional de cereales,True,True,False,False,False
+test,https://elpais.com/economia/2012/08/10/actualidad/1344612286_390678.html,2012-08-10 15:24:46+00:00,Un verano muy revelador,True,True,True,True,False
+test,https://elpais.com/diario/1983/10/06/madrid/434291054_850215.html,1983-10-05 23:00:00+00:00,Transportistas privados venden el agua a peseta el litro en los pueblos que sufren restricciones,True,False,True,True,False
+test,https://elpais.com/television/2022-05-26/que-ver-hoy-en-tv-jueves-26-de-mayo-de-2022.html,2022-05-26 03:30:00.413000+00:00,¿Qué ver hoy en TV? Jueves 26 de mayo de 2022,False,False,False,False,False
+test,https://elpais.com/diario/1992/10/24/madrid/719929464_850215.html,1992-10-23 23:00:00+00:00,Las denuncias por regar jardines en plena sequía incluyen a nueve organismos oficiales,True,False,False,True,False
+test,https://elpais.com/diario/2008/05/15/catalunya/1210813645_850215.html,2008-05-14 22:00:00+00:00,Baltasar relajó las medidas antisequía sin informar al Gobierno,True,False,False,True,False
+test,https://elpais.com/elpais/2013/05/05/opinion/1367774047_136084.html,2013-05-05 22:33:13+00:00,¿No es noticia?,True,True,True,True,False
+test,https://elpais.com/diario/1992/08/05/internacional/712965609_850215.html,1992-08-04 22:00:00+00:00,Gobierno y guerrilla de Mozambique abren negociaciones de paz en Roma,True,True,True,True,False
+test,https://elpais.com/diario/2005/11/28/sociedad/1133132407_850215.html,2005-11-27 23:00:00+00:00,Los suizos vetan en referéndum el cultivo o cría de transgénicos por cinco años,False,False,False,False,False
+test,https://elpais.com/diario/1982/05/26/espana/391212027_850215.html,1982-05-25 22:00:00+00:00,Cinco pueblos de Badajoz en «alerta roja» por la sequía,True,False,False,True,False
+test,https://elpais.com/diario/1998/10/15/andalucia/908403737_850215.html,1998-10-14 22:00:00+00:00,Sigue controlada,False,False,False,False,False
+test,https://elpais.com/diario/1985/11/03/madrid/499868655_850215.html,1985-11-02 23:00:00+00:00,La lluvia aleja el peligro de contaminación,True,False,False,True,False
+test,https://elpais.com/espana/catalunya/2022-06-16/cataluna-pide-ayuda-al-ejercito-y-a-los-agricultores-para-apagar-los-incendios-en-artesa-y-corbera-debre.html,2022-06-16 06:07:47.162000+00:00,Cataluña afronta el peor escenario: varios fuegos simultáneos y una ola de calor prematura,True,False,False,True,False
+test,https://elpais.com/diario/2005/09/22/andalucia/1127341351_850215.html,2005-09-21 22:00:00+00:00,Las suministradoras de agua dicen que el control sanitario exigido por la Junta es demasiado rígido,True,False,False,True,False
+test,https://elpais.com/diario/2005/10/01/madrid/1128165868_850215.html,2005-09-30 22:00:00+00:00,"Simancas quiere un pacto con Aguirre sobre grandes obras, agua y sanidad",True,False,False,True,False
+test,https://elpais.com/diario/1980/08/02/agenda/334015202_850215.html,1980-08-01 22:00:00+00:00,"A partir de mañana,",False,False,False,False,False
+test,https://elpais.com/economia/2013/08/09/agencias/1376050182_377503.html,2013-08-09 12:09:46+00:00,Los embalses del Duero tienen un 80 por ciento más de reservas que el verano pasado,False,False,False,False,False
+test,https://elpais.com/internacional/2021-09-02/la-onu-alerta-de-que-afganistan-se-enfrenta-a-una-catastrofe-humanitaria.html,2021-09-02 19:48:33.450000+00:00,La ONU alerta de que Afganistán se enfrenta a una “catástrofe humanitaria” ,True,True,True,True,False
+test,https://elpais.com/diario/1995/08/10/opinion/808005606_850215.html,1995-08-09 22:00:00+00:00,¿Qué hacer?,True,False,False,False,False
+test,https://elpais.com/diario/2005/06/08/economia/1118181608_850215.html,2005-06-07 22:00:00+00:00,"El cordero, el pollo y la ternera suben más del 10% en un año",True,True,True,False,False
+test,https://elpais.com/diario/2005/07/28/opinion/1122501604_850215.html,2005-07-27 22:00:00+00:00,"Hambres, hambrunas  y olvidos",True,False,False,True,False
