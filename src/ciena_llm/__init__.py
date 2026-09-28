@@ -9,7 +9,7 @@ import dotenv
 # pylint: disable=wrong-import-position
 dotenv.load_dotenv()
 
-from ciena_llm.article import Article
+from ciena_llm.article import Article, BaseArticleLoader
 from ciena_llm.article.loader import ArticleLoader
 from ciena_llm.config.loader import ConfigLoader
 
@@ -24,9 +24,12 @@ from ciena_llm.output import OutputManager
 
 
 class ClimateImpactExtractor:
-    def __init__(self, override_config_path=None):
+    def __init__(self, override_config_path=None, article_loader:BaseArticleLoader=None):
         # Create loaders
-        self.article_loader = ArticleLoader()
+        self.article_loader:BaseArticleLoader = article_loader
+        if self.article_loader is None:
+            self.article_loader = ArticleLoader()
+
         self.articles = []
         self.config_loader = ConfigLoader(
             config_path=os.path.join(os.path.dirname(__file__), "config/config.yaml"),

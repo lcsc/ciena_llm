@@ -12,10 +12,10 @@ import re
 
 from tqdm import tqdm
 
-from ciena_llm.article import Article
+from ciena_llm.article import Article, BaseArticleLoader
 
 
-class ArticleLoader:
+class ArticleLoader(BaseArticleLoader):
     """
     Article loader from different sources and using different schemas.
     """
@@ -204,26 +204,3 @@ class ArticleLoader:
             for row in self.problematic_articles:
                 csv_writer.writerow(row)
 
-    def clean_text(self, text: str) -> str:
-        """
-        Remove extra characters from text.
-        """
-
-        # Cleans up some garbage HTML tags from news body text
-        text = text.replace("&quot;", "'")
-        text = text.replace("\xa0", " ")
-
-        # Get all different quote styles and unify them under a unique one
-        text = text.replace("“", '"')
-        text = text.replace("”", '"')
-        text = text.replace("«", '"')
-        text = text.replace("»", '"')
-        text = text.replace("'", '"')
-
-        # Match and remove HTML tags like this one: &#039;
-        text = re.sub(r"&#[0-9]+;", "", text)
-
-        # Clean multiple spaces and output them as just one
-        text = re.sub(r"\s\s+", " ", text)
-
-        return text
