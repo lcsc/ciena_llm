@@ -1,9 +1,8 @@
 # Change Log
 
 ##  0.5.0
-* [x] Modularize Article Loader 
-* [] Feedback for Storing WorkInProgress
-* [] Resume from checkpoint (WIP)
+* Modularize Article Loader 
+* Feedback for step result
 
 
 ## 0.4.2

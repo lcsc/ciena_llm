@@ -13,11 +13,15 @@ from .log import setup_logging, format_execution_time
 
 
 class ClimateImpactExtractorTest:
-    def __init__(self, test_name, dataset_path, override_config=None, results_dir=None, article_loader:BaseArticleLoader=None):
+    def __init__(self, test_name, dataset_path, override_config=None, results_dir=None,
+                    callbacks=None,
+                    article_loader:BaseArticleLoader=None):
         self.test_name = test_name
         self.dataset_path = dataset_path
         self.override_config = override_config
+        self.callbacks = callbacks
         self.article_loader = article_loader
+        self.callbacks= callbacks
 
         # Create results directory with provided path or default path
         if results_dir:
@@ -57,7 +61,7 @@ class ClimateImpactExtractorTest:
         start_time = time.time()
 
         # Create the ClimateImpactExtractor instance
-        extractor = ClimateImpactExtractor(override_config_path,article_loader=self.article_loader)
+        extractor = ClimateImpactExtractor(override_config_path,article_loader=self.article_loader, callbacks=self.callbacks)
 
         # Save Job configurations
         # - Datset path

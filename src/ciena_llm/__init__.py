@@ -21,14 +21,22 @@ from ciena_llm.chain import (
 )
 from ciena_llm.extraction_schema.factory import ExtractionSchemaFactory
 from ciena_llm.output import OutputManager
+from ciena_llm.output.callback import ClimateImpactExtractorCallback
 
 
 class ClimateImpactExtractor:
-    def __init__(self, override_config_path=None, article_loader:BaseArticleLoader=None):
+    def __init__(self, 
+                override_config_path=None, 
+                article_loader:BaseArticleLoader=None,
+                callbacks: List[ClimateImpactExtractorCallback] = None):
         # Create loaders
         self.article_loader:BaseArticleLoader = article_loader
         if self.article_loader is None:
             self.article_loader = ArticleLoader()
+        
+        self.callbacks: List[ClimateImpactExtractorCallback] = callbacks
+        if self.callbacks is None:
+            self.callbacks = []
 
         self.articles = []
         self.config_loader = ConfigLoader(
@@ -132,18 +140,21 @@ class ClimateImpactExtractor:
                 "article_id": article_id,
                 "text": article_text,
             }
+            for cb in self.callbacks: cb.start(article)
 
             # Summarization step (if enabled, will only execute in the first stage)
             if self.summarization_chain:
                 result = self.summarization_chain.invoke(input_data)
                 article_text = result["output"]
                 input_data["text"] = article_text
+                for cb in self.callbacks: cb.summary(article, result)
 
             # Extraction step (if enabled)
             if self.extraction_chain:
                 result = self.extraction_chain.invoke(input_data)
                 input_data["text"] = result["output"]
                 extracted_data = result["output"]
+                for cb in self.callbacks: cb.extraction(article, result)
 
             # Self-Criticism step (if enabled)
             if self.self_criticism_chain:
@@ -160,16 +171,19 @@ class ClimateImpactExtractor:
                 }
                 result = self.self_criticism_chain.invoke(self_criticism_input_data)
                 extracted_data = result["output"]
+                for cb in self.callbacks: cb.self_criticism(article, result)
 
             # Response Parsing step (if enabled)
             if self.response_parsing_chain:
                 result = self.response_parsing_chain.invoke(input_data)
                 extracted_data = result["output"]
+                for cb in self.callbacks: cb.response_parsing(article, result)
 
             # Store extracted data in the article
             article.extracted_data = (
                 extracted_data.model_dump() if extracted_data.model_dump() else {}
             )
+            for cb in self.callbacks: cb.end(article)
 
             # Logging results
             self._log_results(article)
